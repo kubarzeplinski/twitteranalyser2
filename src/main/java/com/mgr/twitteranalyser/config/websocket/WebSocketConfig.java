@@ -1,4 +1,4 @@
-package com.mgr.twitteranalyser.config;
+package com.mgr.twitteranalyser.config.websocket;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
