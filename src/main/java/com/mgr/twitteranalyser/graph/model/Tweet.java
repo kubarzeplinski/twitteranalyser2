@@ -1,15 +1,16 @@
 package com.mgr.twitteranalyser.graph.model;
 
-import lombok.NoArgsConstructor;
+import java.io.Serializable;
 import org.neo4j.ogm.annotation.EndNode;
 import org.neo4j.ogm.annotation.RelationshipEntity;
 import org.neo4j.ogm.annotation.StartNode;
+import lombok.NoArgsConstructor;
 import twitter4j.GeoLocation;
 import twitter4j.Status;
 
 @NoArgsConstructor
 @RelationshipEntity(type = "INTERESTED_IN")
-public class Tweet {
+public class Tweet implements Serializable {
 
     Long id;
     private String text;
