@@ -8,22 +8,26 @@ import org.apache.spark.streaming.api.java.JavaDStream;
 import org.apache.spark.streaming.api.java.JavaPairDStream;
 import org.apache.spark.streaming.api.java.JavaReceiverInputDStream;
 import org.springframework.stereotype.Service;
+import com.mgr.twitteranalyser.graph.model.Keyword;
+import com.mgr.twitteranalyser.graph.model.Tweet;
+import com.mgr.twitteranalyser.graph.repository.KeywordRepository;
+import com.mgr.twitteranalyser.graph.repository.UserRepository;
 import scala.Tuple2;
 import twitter4j.Status;
 
 @Service
 public class ApacheSparkService implements Serializable {
 
-//    private UserRepository userRepository;
-//    private KeywordRepository keywordRepository;
+    private static UserRepository userRepository;
+    private static KeywordRepository keywordRepository;
 
-/*    public ApacheSparkService(UserRepository userRepository, KeywordRepository keywordRepository) {
-        this.userRepository = userRepository;
-        this.keywordRepository = keywordRepository;
-    }*/
+    public ApacheSparkService(UserRepository userRepository, KeywordRepository keywordRepository) {
+        ApacheSparkService.userRepository = userRepository;
+        ApacheSparkService.keywordRepository = keywordRepository;
+    }
 
     public void processData(JavaReceiverInputDStream<Status> inputStream, String keyWordString) {
-//        Keyword keyword = new Keyword(keyWordString);
+        Keyword keyword = new Keyword(keyWordString);
 
         JavaDStream<Status> filteredDStream = inputStream.filter(status ->
                 StringUtils.containsIgnoreCase(status.getText(), keyWordString)
@@ -42,7 +46,7 @@ public class ApacheSparkService implements Serializable {
                 public void call(Tuple2<twitter4j.User, Status> t) {
                     System.out.println(t._1().getScreenName());
 
-/*                    Status status = t._2();
+                    Status status = t._2();
                     com.mgr.twitteranalyser.graph.model.User user = userRepository
                             .findByScreenName(status.getUser().getScreenName());
                     if (user == null) {
@@ -51,7 +55,7 @@ public class ApacheSparkService implements Serializable {
                     }
                     Tweet tweet = new Tweet(keyword, user, status);
                     keyword.setTweet(tweet);
-                    keywordRepository.save(keyword);*/
+                    keywordRepository.save(keyword);
                 }
 
             });

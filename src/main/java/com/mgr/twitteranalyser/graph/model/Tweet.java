@@ -6,6 +6,7 @@ import org.neo4j.ogm.annotation.RelationshipEntity;
 import org.neo4j.ogm.annotation.StartNode;
 import lombok.NoArgsConstructor;
 import twitter4j.GeoLocation;
+import twitter4j.Place;
 import twitter4j.Status;
 
 @NoArgsConstructor
@@ -36,10 +37,11 @@ public class Tweet implements Serializable {
 
     private void setLocation(Status status) {
         GeoLocation location = null;
+        Place place = status.getPlace();
 
         if (status.getGeoLocation() != null) {
             location = status.getGeoLocation();
-        } else if (status.getPlace() != null) {
+        } else if (place != null && place.getGeometryCoordinates() != null) {
             location = status.getPlace().getGeometryCoordinates()[0][0];
         }
         if (location == null) {
