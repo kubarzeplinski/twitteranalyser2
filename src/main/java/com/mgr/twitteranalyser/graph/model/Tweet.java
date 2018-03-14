@@ -20,19 +20,13 @@ public class Tweet implements Serializable {
     @EndNode
     private Keyword keyword;
     @StartNode
-    private User user;
+    private TwitterUser twitterUser;
 
-    public Tweet(Keyword keyword, User user, Status status) {
+    public Tweet(Keyword keyword, TwitterUser twitterUser, Status status) {
         this.keyword = keyword;
-        this.user = user;
+        this.twitterUser = twitterUser;
         this.text = status.getText();
         setLocation(status);
-    }
-
-    public Tweet(Keyword keyword, User user, String text) {
-        this.keyword = keyword;
-        this.user = user;
-        this.text = text;
     }
 
     private void setLocation(Status status) {
@@ -44,9 +38,11 @@ public class Tweet implements Serializable {
         } else if (place != null && place.getGeometryCoordinates() != null) {
             location = status.getPlace().getGeometryCoordinates()[0][0];
         }
+
         if (location == null) {
             return;
         }
+
         this.latitude = location.getLatitude();
         this.longitude = location.getLongitude();
     }

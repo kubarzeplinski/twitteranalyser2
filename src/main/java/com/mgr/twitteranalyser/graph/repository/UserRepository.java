@@ -1,13 +1,13 @@
 package com.mgr.twitteranalyser.graph.repository;
 
 import java.io.Serializable;
-import com.mgr.twitteranalyser.graph.model.User;
+import com.mgr.twitteranalyser.graph.model.TwitterUser;
 import org.springframework.data.neo4j.repository.GraphRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRepository extends GraphRepository<User>, Serializable {
+public interface UserRepository extends GraphRepository<TwitterUser>, Serializable {
 
-    User findByScreenName(String screenName);
+    TwitterUser findByScreenName(String screenName);
 
 }
