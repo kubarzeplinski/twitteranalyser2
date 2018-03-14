@@ -1,0 +1,13 @@
+{
+  "name": "project",
+  "version": "0.0.1",
+  "license": "UNLICENCED",
+  "private": true,
+  "scripts": {
+    "test": "echo",
+    "build": "mkdir dist"
+  },
+  "devDependencies": {
+    "webpack": "^3.10.0"
+  }
+}
