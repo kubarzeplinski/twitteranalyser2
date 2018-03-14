@@ -30,6 +30,7 @@ public class ApacheSparkService implements Serializable {
 
     public void processData(JavaReceiverInputDStream<Status> inputStream, String keywordString) {
         Keyword keyword = new Keyword(keywordString);
+        keywordRepository.save(keyword);
 
         JavaDStream<Status> filteredDStream = inputStream.filter(status ->
                 StringUtils.containsIgnoreCase(status.getText(), keywordString)
@@ -50,11 +51,10 @@ public class ApacheSparkService implements Serializable {
                     TwitterUser twitterUser = twitterUserRepository.findByScreenName(user.getScreenName());
                     if (twitterUser == null) {
                         twitterUser = new TwitterUser(user);
-                        twitterUserRepository.save(twitterUser);
                     }
                     Tweet tweet = new Tweet(keyword, twitterUser, status);
-                    keyword.setTweet(tweet);
-                    keywordRepository.save(keyword);
+                    twitterUser.addTweet(tweet);
+                    twitterUserRepository.save(twitterUser);
                 }
 
             });

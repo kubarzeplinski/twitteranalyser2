@@ -1,7 +1,9 @@
 package com.mgr.twitteranalyser.dashboard.graph.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import org.neo4j.ogm.annotation.GraphId;
 import org.neo4j.ogm.annotation.NodeEntity;
 import lombok.Getter;
@@ -14,27 +16,36 @@ public class TwitterUser implements Serializable {
 
     @GraphId
     private Long nodeId;
-    @Getter
-    private String screenName;
-    private String location;
+
+    private Date createdAt;
     private String description;
+    private int favouritesCount;
     private int followersCount;
     private int friendsCount;
-    private int favouritesCount;
-    private Date createdAt;
-    private String timeZone;
     private String lang;
+    private String location;
+    @Getter
+    private String screenName;
+    private String timeZone;
+
+    private List<Tweet> interestedIn;
 
     public TwitterUser(User user) {
-        this.screenName = user.getScreenName();
-        this.location = user.getLocation();
+        this.createdAt = user.getCreatedAt();
         this.description = user.getDescription();
+        this.favouritesCount = user.getFavouritesCount();
         this.followersCount = user.getFollowersCount();
         this.friendsCount = user.getFollowersCount();
-        this.favouritesCount = user.getFavouritesCount();
-        this.createdAt = user.getCreatedAt();
-        this.timeZone = user.getTimeZone();
         this.lang = user.getLang();
+        this.location = user.getLocation();
+        this.screenName = user.getScreenName();
+        this.timeZone = user.getTimeZone();
+
+        this.interestedIn = new ArrayList<>();
+    }
+
+    public void addTweet(Tweet tweet) {
+        interestedIn.add(tweet);
     }
 
 }
