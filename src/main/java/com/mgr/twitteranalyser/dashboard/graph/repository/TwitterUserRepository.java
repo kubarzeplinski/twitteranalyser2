@@ -8,6 +8,6 @@ import com.mgr.twitteranalyser.dashboard.graph.model.TwitterUser;
 @Repository
 public interface TwitterUserRepository extends GraphRepository<TwitterUser>, Serializable {
 
-    TwitterUser findByScreenName(String screenName);
+    TwitterUser findById(long id);
 
 }

@@ -22,6 +22,7 @@ public class TwitterUser implements Serializable {
     private int favouritesCount;
     private int followersCount;
     private int friendsCount;
+    private long id;
     private String lang;
     private String location;
     @Getter
@@ -36,6 +37,7 @@ public class TwitterUser implements Serializable {
         this.favouritesCount = user.getFavouritesCount();
         this.followersCount = user.getFollowersCount();
         this.friendsCount = user.getFollowersCount();
+        this.id = user.getId();
         this.lang = user.getLang();
         this.location = user.getLocation();
         this.screenName = user.getScreenName();
