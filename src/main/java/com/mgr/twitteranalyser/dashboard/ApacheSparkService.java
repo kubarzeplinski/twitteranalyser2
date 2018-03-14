@@ -12,7 +12,7 @@ import com.mgr.twitteranalyser.graph.model.Keyword;
 import com.mgr.twitteranalyser.graph.model.Tweet;
 import com.mgr.twitteranalyser.graph.model.TwitterUser;
 import com.mgr.twitteranalyser.graph.repository.KeywordRepository;
-import com.mgr.twitteranalyser.graph.repository.UserRepository;
+import com.mgr.twitteranalyser.graph.repository.TwitterUserRepository;
 import scala.Tuple2;
 import twitter4j.Status;
 import twitter4j.User;
@@ -20,11 +20,11 @@ import twitter4j.User;
 @Service
 public class ApacheSparkService implements Serializable {
 
-    private static UserRepository userRepository;
+    private static TwitterUserRepository twitterUserRepository;
     private static KeywordRepository keywordRepository;
 
-    public ApacheSparkService(UserRepository userRepository, KeywordRepository keywordRepository) {
-        ApacheSparkService.userRepository = userRepository;
+    public ApacheSparkService(TwitterUserRepository twitterUserRepository, KeywordRepository keywordRepository) {
+        ApacheSparkService.twitterUserRepository = twitterUserRepository;
         ApacheSparkService.keywordRepository = keywordRepository;
     }
 
@@ -47,10 +47,10 @@ public class ApacheSparkService implements Serializable {
                     User user = t._1();
                     Status status = t._2();
 
-                    TwitterUser twitterUser = userRepository.findByScreenName(user.getScreenName());
+                    TwitterUser twitterUser = twitterUserRepository.findByScreenName(user.getScreenName());
                     if (twitterUser == null) {
                         twitterUser = new TwitterUser(user);
-                        userRepository.save(twitterUser);
+                        twitterUserRepository.save(twitterUser);
                     }
                     Tweet tweet = new Tweet(keyword, twitterUser, status);
                     keyword.setTweet(tweet);
