@@ -29,8 +29,11 @@ public class ApacheSparkService implements Serializable {
     }
 
     public void processData(JavaReceiverInputDStream<Status> inputStream, String keywordString) {
-        Keyword keyword = new Keyword(keywordString);
-        keywordRepository.save(keyword);
+        Keyword keyword = keywordRepository.findByName(keywordString);
+        if (keyword == null) {
+            keyword = new Keyword(keywordString);
+            keywordRepository.save(keyword);
+        }
 
         JavaDStream<Status> filteredDStream = inputStream.filter(status ->
                 StringUtils.containsIgnoreCase(status.getText(), keywordString)
@@ -39,6 +42,7 @@ public class ApacheSparkService implements Serializable {
         JavaPairDStream<User, Status> userStatusStream =
                 filteredDStream.mapToPair((status) -> new Tuple2<>(status.getUser(), status));
 
+        Keyword finalKeyword = keyword;
         userStatusStream.foreachRDD((VoidFunction<JavaPairRDD<User, Status>>) pairRDD -> {
 
             pairRDD.foreach(new VoidFunction<Tuple2<User, Status>>() {
@@ -52,7 +56,7 @@ public class ApacheSparkService implements Serializable {
                     if (twitterUser == null) {
                         twitterUser = new TwitterUser(user);
                     }
-                    Tweet tweet = new Tweet(keyword, twitterUser, status);
+                    Tweet tweet = new Tweet(finalKeyword, twitterUser, status);
                     twitterUser.addTweet(tweet);
                     twitterUserRepository.save(twitterUser);
                 }
