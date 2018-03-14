@@ -1,4 +1,4 @@
-package com.mgr.twitteranalyser.graph.model;
+package com.mgr.twitteranalyser.dashboard.graph.model;
 
 import java.io.Serializable;
 import org.neo4j.ogm.annotation.EndNode;

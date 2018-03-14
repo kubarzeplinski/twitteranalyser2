@@ -1,4 +1,4 @@
-package com.mgr.twitteranalyser.graph.model;
+package com.mgr.twitteranalyser.dashboard.graph.model;
 
 import java.io.Serializable;
 import java.util.Date;
