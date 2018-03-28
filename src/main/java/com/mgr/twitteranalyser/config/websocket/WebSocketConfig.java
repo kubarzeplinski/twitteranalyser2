@@ -18,7 +18,10 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/twitter-analyser").withSockJS();
+        registry
+                .addEndpoint("/twitter-analyser")
+                .setAllowedOrigins("*")
+                .withSockJS();
     }
 
 }

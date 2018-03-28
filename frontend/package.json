@@ -39,6 +39,9 @@
     "react-router-redux": "^5.0.0-alpha.8",
     "redux": "3.6.0",
     "redux-devtools-extension": "^2.13.2",
-    "redux-thunk": "2.2.0"
+    "redux-thunk": "2.2.0",
+    "sockjs-client": "^1.1.4",
+    "stomp": "^0.1.1",
+    "webstomp-client": "latest"
   }
 }
