@@ -11,10 +11,12 @@ export default class App extends React.Component {
         return (
             <div>
                 <MainNavbar/>
-                <KeywordInput/>
-                <RunButton/>
-                <StopButton/>
-                <Graph/>
+                <div className="panel-content">
+                    <KeywordInput/>
+                    <RunButton/>
+                    <StopButton/>
+                    <Graph/>
+                </div>
             </div>
         );
     }

@@ -4,14 +4,36 @@ import "./graph.scss"
 
 export default class Graph extends React.Component {
 
+    init() {
+        const config = {
+            caption: function (node) {
+                return node.caption;
+            },
+            dataSource: 'data/contrib.json',
+            divSelector: "#alchemy",
+            forceLocked: false,
+            graphHeight: function () {
+                return 500;
+            },
+            graphWidth: function () {
+                return 1454;
+            },
+            initialScale: 0.7,
+            linkDistance: function () {
+                return 40;
+            },
+        };
+        alchemy = new Alchemy(config);
+    }
+
+    componentDidMount() {
+        this.init();
+    }
+
     render() {
         return (
             <Card className="graph-card">
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                    et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                    aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-                    culpa qui officia deserunt mollit anim id est laborum.</p>
+                <div className="alchemy" id="alchemy"/>
             </Card>
         );
     }
