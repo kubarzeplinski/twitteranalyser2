@@ -9,8 +9,11 @@ export default class Graph extends React.Component {
             caption: function (node) {
                 return node.caption;
             },
+            cluster: true,
             dataSource: 'data/contrib.json',
+            directedEdges: true,
             divSelector: "#alchemy",
+            edgeCaptionsOnByDefault: true,
             forceLocked: false,
             graphHeight: function () {
                 return 500;
@@ -22,6 +25,7 @@ export default class Graph extends React.Component {
             linkDistance: function () {
                 return 40;
             },
+            nodeCaptionsOnByDefault: true
         };
         alchemy = new Alchemy(config);
     }
