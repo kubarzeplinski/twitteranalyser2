@@ -9,6 +9,7 @@ const defaultState = {
 const prefix = "controls/";
 
 const KEYWORD_ADDED = prefix + "keyword/added";
+const KEYWORD_REMOVED = prefix + "keyword/removed";
 const RUN_BUTTON_CLICKED = prefix + "run-button/clicked";
 const STOP_BUTTON_CLICKED = prefix + "stop-button/clicked";
 const WEB_SOCKET_INITIALIZED = prefix + "web-socket/initialized";
@@ -20,6 +21,16 @@ export default function reducer(state = defaultState, action) {
                 ...state,
                 isKeywordInputBlocked: false,
                 isRunButtonBlocked: false,
+                isStopButtonBlocked: true,
+                keyword: action.keyword,
+            };
+        }
+        case KEYWORD_REMOVED: {
+            return {
+                ...state,
+                isKeywordInputBlocked: false,
+                isRunButtonBlocked: true,
+                isStopButtonBlocked: true,
                 keyword: action.keyword,
             };
         }
@@ -33,6 +44,7 @@ export default function reducer(state = defaultState, action) {
             };
         }
         case STOP_BUTTON_CLICKED: {
+            stop();
             return {
                 ...state,
                 isKeywordInputBlocked: false,
@@ -51,7 +63,13 @@ export default function reducer(state = defaultState, action) {
     }
 }
 
-export function handleKeywordAdd(keyword) {
+export function handleKeywordChange(keyword) {
+    if(_.isEmpty(keyword)) {
+        return {
+            type: KEYWORD_REMOVED,
+            keyword
+        }
+    }
     return {
         type: KEYWORD_ADDED,
         keyword,
@@ -88,4 +106,8 @@ export function initWebSocket() {
 
 function sendKeyword(keyword) {
     stompClient.send("/app/dashboard/graphData", {}, JSON.stringify({"name": keyword}));
+}
+
+function stop() {
+    stompClient.send("/app/dashboard/stop", {}, "");
 }

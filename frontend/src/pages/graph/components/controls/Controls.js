@@ -26,7 +26,7 @@ export default class Controls extends React.Component {
             <div>
                 <KeywordInput
                     isDisabled={this.props.isKeywordInputBlocked}
-                    onChange={this.props.handleKeywordAdd}
+                    onChange={this.props.handleKeywordChange}
                     placeholder={"Keyword..."}
                     value={this.props.keyword}
                 />
