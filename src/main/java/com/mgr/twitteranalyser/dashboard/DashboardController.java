@@ -13,8 +13,9 @@ import twitter4j.Status;
 @MessageMapping(value = "/dashboard")
 public class DashboardController {
 
-    private ApacheSparkConfigService apacheSparkConfigService;
-    private ApacheSparkService apacheSparkService;
+    private final ApacheSparkConfigService apacheSparkConfigService;
+    private final ApacheSparkService apacheSparkService;
+    private JavaStreamingContext context;
 
     public DashboardController(ApacheSparkConfigService apacheSparkConfigService, ApacheSparkService apacheSparkService) {
         this.apacheSparkConfigService = apacheSparkConfigService;
@@ -24,10 +25,15 @@ public class DashboardController {
     @MessageMapping("/graphData")
     public void getGraphData(Keyword message) {
         TwitterCredentials credentials = apacheSparkConfigService.getDefaultCredentials();
-        JavaStreamingContext context = apacheSparkConfigService.createContext(credentials.getApplicationName());
+        context = apacheSparkConfigService.createContext(credentials.getApplicationName());
         JavaReceiverInputDStream<Status> inputStream = apacheSparkConfigService.createStream(credentials, context);
         apacheSparkService.processData(inputStream, message.getName());
         apacheSparkConfigService.start(context);
+    }
+
+    @MessageMapping("/stop")
+    public void stop() {
+        apacheSparkConfigService.stop(context);
     }
 
 }
