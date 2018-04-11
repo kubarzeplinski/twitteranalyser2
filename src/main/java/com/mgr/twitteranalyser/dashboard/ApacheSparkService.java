@@ -29,14 +29,16 @@ public class ApacheSparkService implements Serializable {
     }
 
     public void processData(JavaReceiverInputDStream<Status> inputStream, String keywordString) {
-        Keyword keyword = keywordRepository.findByName(keywordString);
+        String finalKeywordString = keywordString.toLowerCase();
+
+        Keyword keyword = keywordRepository.findByName(finalKeywordString);
         if (keyword == null) {
-            keyword = new Keyword(keywordString);
+            keyword = new Keyword(finalKeywordString);
             keywordRepository.save(keyword);
         }
 
         JavaDStream<Status> filteredDStream = inputStream.filter(status ->
-                StringUtils.containsIgnoreCase(status.getText(), keywordString)
+                StringUtils.containsIgnoreCase(status.getText(), finalKeywordString)
         );
 
         JavaPairDStream<User, Status> userStatusStream =
