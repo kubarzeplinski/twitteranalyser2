@@ -29,6 +29,7 @@
   "dependencies": {
     "@blueprintjs/core": "1.35.5",
     "babel-polyfill": "6.23.0",
+    "lodash": "^4.17.5",
     "prop-types": "^15.5.10",
     "react": "^16.1.0",
     "react-addons-css-transition-group": "15.6.2",
@@ -39,9 +40,6 @@
     "react-router-redux": "^5.0.0-alpha.8",
     "redux": "3.6.0",
     "redux-devtools-extension": "^2.13.2",
-    "redux-thunk": "2.2.0",
-    "sockjs-client": "^1.1.4",
-    "stomp": "^0.1.1",
-    "webstomp-client": "latest"
+    "redux-thunk": "2.2.0"
   }
 }
