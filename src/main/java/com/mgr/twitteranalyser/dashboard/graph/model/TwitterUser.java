@@ -29,7 +29,7 @@ public class TwitterUser implements Serializable {
     private String screenName;
     private String timeZone;
 
-    private List<Tweet> interestedIn;
+    private List<InterestedInRelation> interestedIn;
 
     public TwitterUser(User user) {
         this.createdAt = user.getCreatedAt();
@@ -46,8 +46,8 @@ public class TwitterUser implements Serializable {
         this.interestedIn = new ArrayList<>();
     }
 
-    public void addTweet(Tweet tweet) {
-        interestedIn.add(tweet);
+    public void addTweet(InterestedInRelation interestedInRelation) {
+        interestedIn.add(interestedInRelation);
     }
 
 }

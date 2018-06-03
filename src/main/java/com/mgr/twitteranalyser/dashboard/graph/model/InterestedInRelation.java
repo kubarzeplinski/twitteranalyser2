@@ -10,7 +10,7 @@ import twitter4j.Status;
 
 @NoArgsConstructor
 @RelationshipEntity(type = "INTERESTED_IN")
-public class Tweet implements Serializable {
+public class InterestedInRelation implements Serializable {
 
     @GraphId
     private Long id;
@@ -21,7 +21,7 @@ public class Tweet implements Serializable {
     @StartNode
     private TwitterUser twitterUser;
 
-    public Tweet(Keyword keyword, TwitterUser twitterUser, Status status) {
+    public InterestedInRelation(Keyword keyword, TwitterUser twitterUser, Status status) {
         this.keyword = keyword;
         this.location = status.getUser().getLocation();
         this.text = status.getText();

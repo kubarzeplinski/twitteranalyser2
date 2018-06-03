@@ -9,7 +9,7 @@ import org.apache.spark.streaming.api.java.JavaPairDStream;
 import org.apache.spark.streaming.api.java.JavaReceiverInputDStream;
 import org.springframework.stereotype.Service;
 import com.mgr.twitteranalyser.dashboard.graph.model.Keyword;
-import com.mgr.twitteranalyser.dashboard.graph.model.Tweet;
+import com.mgr.twitteranalyser.dashboard.graph.model.InterestedInRelation;
 import com.mgr.twitteranalyser.dashboard.graph.model.TwitterUser;
 import com.mgr.twitteranalyser.dashboard.graph.repository.KeywordRepository;
 import com.mgr.twitteranalyser.dashboard.graph.repository.TwitterUserRepository;
@@ -58,8 +58,8 @@ public class ApacheSparkService implements Serializable {
                     if (twitterUser == null) {
                         twitterUser = new TwitterUser(user);
                     }
-                    Tweet tweet = new Tweet(finalKeyword, twitterUser, status);
-                    twitterUser.addTweet(tweet);
+                    InterestedInRelation interestedInRelation = new InterestedInRelation(finalKeyword, twitterUser, status);
+                    twitterUser.addTweet(interestedInRelation);
                     twitterUserRepository.save(twitterUser);
                 }
 
