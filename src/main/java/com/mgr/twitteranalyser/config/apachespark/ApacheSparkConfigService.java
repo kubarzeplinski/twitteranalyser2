@@ -16,15 +16,15 @@ import twitter4j.conf.ConfigurationBuilder;
 @Service
 public class ApacheSparkConfigService {
 
-    @Value("spring.social.twitter.application-name")
+    @Value("${spring.social.twitter.application-name")
     private String applicationName;
-    @Value("spring.social.twitter.consumer-key")
+    @Value("${spring.social.twitter.consumer-key}")
     private String consumerKey;
-    @Value("spring.social.twitter.consumer-secret")
+    @Value("${spring.social.twitter.consumer-secret}")
     private String consumerSecret;
-    @Value("spring.social.twitter.access-token")
+    @Value("${spring.social.twitter.access-token}")
     private String accessToken;
-    @Value("spring.social.twitter.access-token-secret")
+    @Value("${spring.social.twitter.access-token-secret}")
     private String accessTokenSecret;
 
     public TwitterCredentials getDefaultCredentials() {
