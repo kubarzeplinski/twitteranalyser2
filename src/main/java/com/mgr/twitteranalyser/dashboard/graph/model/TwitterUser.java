@@ -12,6 +12,7 @@ import twitter4j.User;
 
 @NoArgsConstructor
 @NodeEntity
+@Getter
 public class TwitterUser implements Serializable {
 
     @GraphId
@@ -25,11 +26,10 @@ public class TwitterUser implements Serializable {
     private long id;
     private String lang;
     private String location;
-    @Getter
     private String screenName;
     private String timeZone;
 
-    private List<InterestedInRelation> interestedIn;
+    private List<InterestedInRelation> interestedInRelations;
 
     public TwitterUser(User user) {
         this.createdAt = user.getCreatedAt();
@@ -43,11 +43,11 @@ public class TwitterUser implements Serializable {
         this.screenName = user.getScreenName();
         this.timeZone = user.getTimeZone();
 
-        this.interestedIn = new ArrayList<>();
+        this.interestedInRelations = new ArrayList<>();
     }
 
-    public void addTweet(InterestedInRelation interestedInRelation) {
-        interestedIn.add(interestedInRelation);
+    public void addInterestedInRelation(InterestedInRelation interestedInRelation) {
+        interestedInRelations.add(interestedInRelation);
     }
 
 }

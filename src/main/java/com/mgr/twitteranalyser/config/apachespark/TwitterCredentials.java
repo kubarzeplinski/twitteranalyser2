@@ -12,8 +12,8 @@ public class TwitterCredentials {
     private final String accessToken;
     private final String accessTokenSecret;
 
-    public TwitterCredentials(String applicationName, String consumerKey, String consumerSecret, String accessToken,
-                              String accessTokenSecret) {
+    TwitterCredentials(String applicationName, String consumerKey, String consumerSecret, String accessToken,
+                       String accessTokenSecret) {
         this.applicationName = applicationName;
         this.consumerKey = consumerKey;
         this.consumerSecret = consumerSecret;

@@ -10,4 +10,6 @@ public interface TwitterUserRepository extends GraphRepository<TwitterUser>, Ser
 
     TwitterUser findById(long id);
 
+    Iterable<TwitterUser> findAll();
+
 }

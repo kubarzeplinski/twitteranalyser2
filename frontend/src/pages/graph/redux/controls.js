@@ -1,3 +1,5 @@
+import "whatwg-fetch";
+
 const defaultState = {
     isKeywordInputBlocked: false,
     isRunButtonBlocked: true,
@@ -64,7 +66,7 @@ export default function reducer(state = defaultState, action) {
 }
 
 export function handleKeywordChange(keyword) {
-    if(_.isEmpty(keyword)) {
+    if (_.isEmpty(keyword)) {
         return {
             type: KEYWORD_REMOVED,
             keyword
@@ -105,9 +107,23 @@ export function initWebSocket() {
 }
 
 function sendKeyword(keyword) {
-    stompClient.send("/app/dashboard/graphData", {}, JSON.stringify({"name": keyword}));
+    fetch('http://localhost:8080/dashboard/start', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            nodeId: 1,
+            name: keyword,
+        })
+    });
 }
 
 function stop() {
-    stompClient.send("/app/dashboard/stop", {}, "");
+    fetch('http://localhost:8080/dashboard/stop', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
 }

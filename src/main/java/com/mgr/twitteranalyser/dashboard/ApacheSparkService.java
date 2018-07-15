@@ -8,8 +8,9 @@ import org.apache.spark.streaming.api.java.JavaDStream;
 import org.apache.spark.streaming.api.java.JavaPairDStream;
 import org.apache.spark.streaming.api.java.JavaReceiverInputDStream;
 import org.springframework.stereotype.Service;
-import com.mgr.twitteranalyser.dashboard.graph.model.Keyword;
+import org.springframework.transaction.annotation.Transactional;
 import com.mgr.twitteranalyser.dashboard.graph.model.InterestedInRelation;
+import com.mgr.twitteranalyser.dashboard.graph.model.Keyword;
 import com.mgr.twitteranalyser.dashboard.graph.model.TwitterUser;
 import com.mgr.twitteranalyser.dashboard.graph.repository.KeywordRepository;
 import com.mgr.twitteranalyser.dashboard.graph.repository.TwitterUserRepository;
@@ -18,17 +19,19 @@ import twitter4j.Status;
 import twitter4j.User;
 
 @Service
+@Transactional
 public class ApacheSparkService implements Serializable {
 
     private static TwitterUserRepository twitterUserRepository;
     private static KeywordRepository keywordRepository;
 
-    public ApacheSparkService(TwitterUserRepository twitterUserRepository, KeywordRepository keywordRepository) {
+    public ApacheSparkService(TwitterUserRepository twitterUserRepository,
+                              KeywordRepository keywordRepository) {
         ApacheSparkService.twitterUserRepository = twitterUserRepository;
         ApacheSparkService.keywordRepository = keywordRepository;
     }
 
-    public void processData(JavaReceiverInputDStream<Status> inputStream, String keywordString) {
+    void processData(JavaReceiverInputDStream<Status> inputStream, String keywordString) {
         String finalKeywordString = keywordString.toLowerCase();
 
         Keyword keyword = keywordRepository.findByName(finalKeywordString);
@@ -45,12 +48,8 @@ public class ApacheSparkService implements Serializable {
                 filteredDStream.mapToPair((status) -> new Tuple2<>(status.getUser(), status));
 
         Keyword finalKeyword = keyword;
-        userStatusStream.foreachRDD((VoidFunction<JavaPairRDD<User, Status>>) pairRDD -> {
-
-            pairRDD.foreach(new VoidFunction<Tuple2<User, Status>>() {
-
-                @Override
-                public void call(Tuple2<User, Status> t) {
+        userStatusStream.foreachRDD((VoidFunction<JavaPairRDD<User, Status>>) pairRDD ->
+                pairRDD.foreach((VoidFunction<Tuple2<User, Status>>) t -> {
                     User user = t._1();
                     Status status = t._2();
 
@@ -59,13 +58,10 @@ public class ApacheSparkService implements Serializable {
                         twitterUser = new TwitterUser(user);
                     }
                     InterestedInRelation interestedInRelation = new InterestedInRelation(finalKeyword, twitterUser, status);
-                    twitterUser.addTweet(interestedInRelation);
+                    twitterUser.addInterestedInRelation(interestedInRelation);
                     twitterUserRepository.save(twitterUser);
-                }
-
-            });
-
-        });
+                })
+        );
 
     }
 
