@@ -1,6 +1,10 @@
 package com.mgr.twitteranalyser.dashboard;
 
-import java.io.Serializable;
+import com.mgr.twitteranalyser.dashboard.model.InterestedInRelation;
+import com.mgr.twitteranalyser.dashboard.model.Keyword;
+import com.mgr.twitteranalyser.dashboard.model.TwitterUser;
+import com.mgr.twitteranalyser.dashboard.repository.KeywordRepository;
+import com.mgr.twitteranalyser.dashboard.repository.TwitterUserRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.function.VoidFunction;
@@ -9,14 +13,11 @@ import org.apache.spark.streaming.api.java.JavaPairDStream;
 import org.apache.spark.streaming.api.java.JavaReceiverInputDStream;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.mgr.twitteranalyser.dashboard.graph.model.InterestedInRelation;
-import com.mgr.twitteranalyser.dashboard.graph.model.Keyword;
-import com.mgr.twitteranalyser.dashboard.graph.model.TwitterUser;
-import com.mgr.twitteranalyser.dashboard.graph.repository.KeywordRepository;
-import com.mgr.twitteranalyser.dashboard.graph.repository.TwitterUserRepository;
 import scala.Tuple2;
 import twitter4j.Status;
 import twitter4j.User;
+
+import java.io.Serializable;
 
 @Service
 @Transactional
@@ -53,9 +54,9 @@ public class ApacheSparkService implements Serializable {
                     User user = t._1();
                     Status status = t._2();
 
-                    TwitterUser twitterUser = twitterUserRepository.findById(user.getId());
+                    TwitterUser twitterUser = twitterUserRepository.findByUserId(user.getId());
                     if (twitterUser == null) {
-                        twitterUser = new TwitterUser(user);
+                        twitterUser = new TwitterUser(user, finalKeywordString);
                     }
                     InterestedInRelation interestedInRelation = new InterestedInRelation(finalKeyword, twitterUser, status);
                     twitterUser.addInterestedInRelation(interestedInRelation);

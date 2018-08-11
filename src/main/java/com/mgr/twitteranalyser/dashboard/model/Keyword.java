@@ -1,18 +1,17 @@
-package com.mgr.twitteranalyser.dashboard.graph.model;
+package com.mgr.twitteranalyser.dashboard.model;
 
-import java.io.Serializable;
-import org.neo4j.ogm.annotation.GraphId;
-import org.neo4j.ogm.annotation.NodeEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.neo4j.ogm.annotation.NodeEntity;
+
+import java.io.Serializable;
 
 @NodeEntity
 @NoArgsConstructor
 @Getter
 public class Keyword implements Serializable {
 
-    @GraphId
-    private Long nodeId;
+    private Long id;
     private String name;
 
     public Keyword(String name) {

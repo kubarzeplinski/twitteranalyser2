@@ -1,19 +1,18 @@
-package com.mgr.twitteranalyser.dashboard.graph.model;
+package com.mgr.twitteranalyser.dashboard.model;
 
-import java.io.Serializable;
-import org.neo4j.ogm.annotation.EndNode;
-import org.neo4j.ogm.annotation.GraphId;
-import org.neo4j.ogm.annotation.RelationshipEntity;
-import org.neo4j.ogm.annotation.StartNode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.neo4j.ogm.annotation.EndNode;
+import org.neo4j.ogm.annotation.RelationshipEntity;
+import org.neo4j.ogm.annotation.StartNode;
 import twitter4j.Status;
+
+import java.io.Serializable;
 
 @NoArgsConstructor
 @RelationshipEntity(type = "INTERESTED_IN")
 public class InterestedInRelation implements Serializable {
 
-    @GraphId
     private Long id;
     @EndNode
     @Getter

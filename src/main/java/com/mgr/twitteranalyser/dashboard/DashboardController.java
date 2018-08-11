@@ -1,22 +1,18 @@
 package com.mgr.twitteranalyser.dashboard;
 
-import java.util.Optional;
+import com.mgr.twitteranalyser.config.apachespark.ApacheSparkConfigService;
+import com.mgr.twitteranalyser.config.apachespark.TwitterCredentials;
+import com.mgr.twitteranalyser.dashboard.model.Keyword;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.spark.streaming.api.java.JavaReceiverInputDStream;
 import org.apache.spark.streaming.api.java.JavaStreamingContext;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import com.mgr.twitteranalyser.config.apachespark.ApacheSparkConfigService;
-import com.mgr.twitteranalyser.config.apachespark.TwitterCredentials;
-import com.mgr.twitteranalyser.dashboard.graph.model.Keyword;
-import com.mgr.twitteranalyser.dashboard.graph.repository.TwitterUserRepository;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.*;
 import twitter4j.Status;
+
+import java.util.Optional;
 
 @RestController
 @EnableScheduling
@@ -26,25 +22,27 @@ public class DashboardController {
 
     private final ApacheSparkConfigService apacheSparkConfigService;
     private final ApacheSparkService apacheSparkService;
-    private final TwitterUserRepository twitterUserRepository;
     private final SimpMessagingTemplate simpMessagingTemplate;
+    private final StatsService statsService;
 
     private JavaStreamingContext context;
     private volatile boolean contextInitialized = false;
     private volatile boolean apacheSparkStarted = false;
+    private volatile String keywordName;
 
     public DashboardController(ApacheSparkConfigService apacheSparkConfigService,
                                ApacheSparkService apacheSparkService,
-                               TwitterUserRepository twitterUserRepository,
-                               SimpMessagingTemplate simpMessagingTemplate) {
+                               SimpMessagingTemplate simpMessagingTemplate,
+                               StatsService statsService) {
         this.apacheSparkConfigService = apacheSparkConfigService;
         this.apacheSparkService = apacheSparkService;
-        this.twitterUserRepository = twitterUserRepository;
         this.simpMessagingTemplate = simpMessagingTemplate;
+        this.statsService = statsService;
     }
 
     @PostMapping("/start")
     public void start(@RequestBody Keyword keyword) {
+        keywordName = keyword.getName();
         TwitterCredentials credentials = apacheSparkConfigService.getDefaultCredentials();
         context = apacheSparkConfigService.createContext(credentials.getApplicationName());
         JavaReceiverInputDStream<Status> inputStream = apacheSparkConfigService.createStream(credentials, context);
@@ -71,8 +69,7 @@ public class DashboardController {
     public void getGraphData() {
         if (contextInitialized && apacheSparkStarted) {
             log.info("Sending graph data...");
-            //TODO prepare information to send to frontend
-            simpMessagingTemplate.convertAndSend("/dashboard/graphData", "Hello");
+            simpMessagingTemplate.convertAndSend("/dashboard/graphData", statsService.getStats(keywordName));
         }
     }
 
