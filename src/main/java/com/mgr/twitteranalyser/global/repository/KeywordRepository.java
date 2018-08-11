@@ -1,6 +1,6 @@
-package com.mgr.twitteranalyser.dashboard.repository;
+package com.mgr.twitteranalyser.global.repository;
 
-import com.mgr.twitteranalyser.dashboard.model.Keyword;
+import com.mgr.twitteranalyser.global.model.Keyword;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

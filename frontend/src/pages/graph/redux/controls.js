@@ -97,7 +97,7 @@ export function initWebSocket() {
     stompClient = Stomp.over(socket);
     stompClient.connect({}, (frame) => {
         console.log('Connected: ' + frame);
-        stompClient.subscribe('/dashboard/graphData', function (data) {
+        stompClient.subscribe('/statistics/statisticsData', function (data) {
             //TODO send data to graph
         });
     });
@@ -107,7 +107,7 @@ export function initWebSocket() {
 }
 
 function sendKeyword(keyword) {
-    fetch('http://localhost:8080/dashboard/start', {
+    fetch('http://localhost:8080/statistics/start', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -120,7 +120,7 @@ function sendKeyword(keyword) {
 }
 
 function stop() {
-    fetch('http://localhost:8080/dashboard/stop', {
+    fetch('http://localhost:8080/statistics/stop', {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'

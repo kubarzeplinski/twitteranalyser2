@@ -1,5 +1,6 @@
-package com.mgr.twitteranalyser.dashboard.model;
+package com.mgr.twitteranalyser.statistics.model;
 
+import com.mgr.twitteranalyser.global.model.TwitterUser;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,7 +10,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @Getter
-public class StatsDTO {
+public class StatisticsDTO {
 
     private final List<TwitterUser> latest5Users;
     private final Long numberOfUsers;

@@ -1,8 +1,10 @@
-package com.mgr.twitteranalyser.dashboard;
+package com.mgr.twitteranalyser.statistics;
 
 import com.mgr.twitteranalyser.config.apachespark.ApacheSparkConfigService;
 import com.mgr.twitteranalyser.config.apachespark.TwitterCredentials;
-import com.mgr.twitteranalyser.dashboard.model.Keyword;
+import com.mgr.twitteranalyser.global.model.Keyword;
+import com.mgr.twitteranalyser.statistics.service.ApacheSparkService;
+import com.mgr.twitteranalyser.statistics.service.StatisticsService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.spark.streaming.api.java.JavaReceiverInputDStream;
 import org.apache.spark.streaming.api.java.JavaStreamingContext;
@@ -16,28 +18,28 @@ import java.util.Optional;
 
 @RestController
 @EnableScheduling
-@RequestMapping(value = "/dashboard")
+@RequestMapping(value = "/statistics")
 @Slf4j
-public class DashboardController {
+public class StatisticsController {
 
     private final ApacheSparkConfigService apacheSparkConfigService;
     private final ApacheSparkService apacheSparkService;
     private final SimpMessagingTemplate simpMessagingTemplate;
-    private final StatsService statsService;
+    private final StatisticsService statisticsService;
 
     private JavaStreamingContext context;
     private volatile boolean contextInitialized = false;
     private volatile boolean apacheSparkStarted = false;
     private volatile String keywordName;
 
-    public DashboardController(ApacheSparkConfigService apacheSparkConfigService,
-                               ApacheSparkService apacheSparkService,
-                               SimpMessagingTemplate simpMessagingTemplate,
-                               StatsService statsService) {
+    public StatisticsController(ApacheSparkConfigService apacheSparkConfigService,
+                                ApacheSparkService apacheSparkService,
+                                SimpMessagingTemplate simpMessagingTemplate,
+                                StatisticsService statisticsService) {
         this.apacheSparkConfigService = apacheSparkConfigService;
         this.apacheSparkService = apacheSparkService;
         this.simpMessagingTemplate = simpMessagingTemplate;
-        this.statsService = statsService;
+        this.statisticsService = statisticsService;
     }
 
     @PostMapping("/start")
@@ -66,10 +68,10 @@ public class DashboardController {
     }
 
     @Scheduled(fixedRate = 10000)
-    public void getGraphData() {
+    public void getStatisticsData() {
         if (contextInitialized && apacheSparkStarted) {
             log.info("Sending graph data...");
-            simpMessagingTemplate.convertAndSend("/dashboard/graphData", statsService.getStats(keywordName));
+            simpMessagingTemplate.convertAndSend("/statistics/statisticsData", statisticsService.getStatistics(keywordName));
         }
     }
 

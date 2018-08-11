@@ -1,10 +1,10 @@
-package com.mgr.twitteranalyser.dashboard;
+package com.mgr.twitteranalyser.statistics.service;
 
-import com.mgr.twitteranalyser.dashboard.model.InterestedInRelation;
-import com.mgr.twitteranalyser.dashboard.model.Keyword;
-import com.mgr.twitteranalyser.dashboard.model.TwitterUser;
-import com.mgr.twitteranalyser.dashboard.repository.KeywordRepository;
-import com.mgr.twitteranalyser.dashboard.repository.TwitterUserRepository;
+import com.mgr.twitteranalyser.global.model.InterestedInRelation;
+import com.mgr.twitteranalyser.global.model.Keyword;
+import com.mgr.twitteranalyser.global.model.TwitterUser;
+import com.mgr.twitteranalyser.global.repository.KeywordRepository;
+import com.mgr.twitteranalyser.global.repository.TwitterUserRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.function.VoidFunction;
@@ -32,7 +32,7 @@ public class ApacheSparkService implements Serializable {
         ApacheSparkService.keywordRepository = keywordRepository;
     }
 
-    void processData(JavaReceiverInputDStream<Status> inputStream, String keywordString) {
+    public void processData(JavaReceiverInputDStream<Status> inputStream, String keywordString) {
         String finalKeywordString = keywordString.toLowerCase();
 
         Keyword keyword = keywordRepository.findByName(finalKeywordString);

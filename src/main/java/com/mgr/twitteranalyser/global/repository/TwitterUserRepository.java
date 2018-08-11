@@ -1,6 +1,6 @@
-package com.mgr.twitteranalyser.dashboard.repository;
+package com.mgr.twitteranalyser.global.repository;
 
-import com.mgr.twitteranalyser.dashboard.model.TwitterUser;
+import com.mgr.twitteranalyser.global.model.TwitterUser;
 import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
