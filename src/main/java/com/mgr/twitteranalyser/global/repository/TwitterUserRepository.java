@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.stream.Stream;
 
 @Repository
 public interface TwitterUserRepository extends PagingAndSortingRepository<TwitterUser, Long>, Serializable {
@@ -36,5 +37,8 @@ public interface TwitterUserRepository extends PagingAndSortingRepository<Twitte
             "ORDER BY n.location ASC " +
             "LIMIT 5")
     List<String> findDistinctTop5ByLastKeywordOrderByLocationAsc(@Param("lastKeyword") String lastKeyword);
+
+    @Query("MATCH (t:TwitterUser)-[r:INTERESTED_IN_RELATIONS]->(k:Keyword) WHERE k.name = {keyword} RETURN t")
+    Stream<TwitterUser> findAllByKeyword(@Param("keyword") String keyword);
 
 }
