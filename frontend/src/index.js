@@ -8,6 +8,7 @@ import "./scss/app.scss";
 import App from "./app/App";
 import {Route} from "react-router";
 import GraphPage from "./pages/graph/GraphPage";
+import StatisticsPage from "./pages/statistics/StatisticsPage";
 
 export const {store, history} = configureStore();
 const root = document.getElementById('root');
@@ -18,7 +19,7 @@ const render = () => {
             <ConnectedRouter history={history}>
                 <App>
                     <Route path="/graph" component={GraphPage}/>
-                    <Route path="/statistics"/>
+                    <Route path="/statistics" component={StatisticsPage}/>
                 </App>
             </ConnectedRouter>
         </Provider>,
