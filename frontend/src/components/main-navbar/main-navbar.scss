@@ -1,0 +1,22 @@
+.main-navbar {
+    background-color: #0a2744;
+    color: #FFFFFF;
+
+    .pt-navbar-heading {
+        color: #FFFFFF;
+    }
+
+    .navbar-divider {
+        background-color: #FFFFFF;
+    }
+
+    .navbar-icon {
+        &::before {
+            color: #FFFFFF;
+        }
+        span {
+            color: #FFFFFF;
+        }
+    }
+
+}

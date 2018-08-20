@@ -1,7 +1,5 @@
 import React from "react";
-import MainNavbar from "../pages/graph/components/main-navbar/MainNavbar";
-import Graph from "../pages/graph/components/graph/Graph";
-import Controls from "../pages/graph/components/controls/ControlsContainer";
+import MainNavbar from "../components/main-navbar/MainNavbar";
 
 export default class App extends React.Component {
 
@@ -9,10 +7,7 @@ export default class App extends React.Component {
         return (
             <div>
                 <MainNavbar/>
-                <div className="panel-content">
-                    <Controls/>
-                    <Graph/>
-                </div>
+                {this.props.children}
             </div>
         );
     }

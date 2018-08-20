@@ -4,6 +4,10 @@ import "./graph.scss"
 
 export default class Graph extends React.Component {
 
+    componentDidMount() {
+        this.init();
+    }
+
     init() {
         const config = {
             caption: function (node) {
@@ -28,10 +32,6 @@ export default class Graph extends React.Component {
             nodeCaptionsOnByDefault: true
         };
         alchemy = new Alchemy(config);
-    }
-
-    componentDidMount() {
-        this.init();
     }
 
     render() {
