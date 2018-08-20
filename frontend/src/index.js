@@ -9,6 +9,7 @@ import App from "./app/App";
 import {Route} from "react-router";
 import GraphPage from "./pages/graph/GraphPage";
 import StatisticsPage from "./pages/statistics/StatisticsPage";
+import IndexPage from "./pages/index/IndexPage";
 
 export const {store, history} = configureStore();
 const root = document.getElementById('root');
@@ -18,8 +19,9 @@ const render = () => {
         <Provider store={store}>
             <ConnectedRouter history={history}>
                 <App>
-                    <Route path="/graph" component={GraphPage}/>
-                    <Route path="/statistics" component={StatisticsPage}/>
+                    <Route exact path="/" component={IndexPage}/>
+                    <Route exact path="/graph" component={GraphPage}/>
+                    <Route exact path="/statistics" component={StatisticsPage}/>
                 </App>
             </ConnectedRouter>
         </Provider>,

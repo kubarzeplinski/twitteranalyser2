@@ -5,10 +5,22 @@ body {
 
     .panel-content {
         margin: 0 20px;
+
+        .pt-card {
+            margin: 20px 0;
+
+            p {
+                color: #182026;
+            }
+        }
     }
 
     .pt-button {
         margin: 0 5px;
+    }
+
+    a:hover {
+        text-decoration: none;
     }
 
 }
