@@ -8,7 +8,7 @@ const defaultState = {
     keyword: "",
 };
 
-const prefix = "controls/";
+const prefix = "statistics-controls/";
 
 const KEYWORD_ADDED = prefix + "keyword/added";
 const KEYWORD_REMOVED = prefix + "keyword/removed";

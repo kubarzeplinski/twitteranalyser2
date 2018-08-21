@@ -8,7 +8,7 @@ import "./scss/app.scss";
 import App from "./app/App";
 import {Route} from "react-router";
 import GraphPage from "./pages/graph/GraphPage";
-import StatisticsPage from "./pages/statistics/StatisticsPage";
+import StatisticsPage from "./pages/statistics/StatisticsPageContainer";
 import IndexPage from "./pages/index/IndexPage";
 
 export const {store, history} = configureStore();

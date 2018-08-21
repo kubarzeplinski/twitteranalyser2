@@ -1,9 +1,9 @@
 import {connect} from "react-redux";
 import Controls from "./Controls";
-import {handleKeywordChange, handleRunButtonClick, handleStopButtonClick, initWebSocket} from "../../redux/controls";
+import {handleKeywordChange, handleRunButtonClick, handleStopButtonClick, initWebSocket} from "../../redux/statistics-controls";
 
 function mapStateToProps(state) {
-    const {isKeywordInputBlocked, isRunButtonBlocked, isStopButtonBlocked, keyword} = state.controls;
+    const {isKeywordInputBlocked, isRunButtonBlocked, isStopButtonBlocked, keyword} = state.statisticsControls;
     return {
         isKeywordInputBlocked,
         isRunButtonBlocked,

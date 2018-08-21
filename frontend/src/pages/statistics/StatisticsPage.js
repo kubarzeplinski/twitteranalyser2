@@ -1,16 +1,38 @@
-import Controls from "./components/controls/ControlsContainer";
 import React from "react";
+import PropTypes from 'prop-types';
+import Controls from "./components/controls/ControlsContainer";
 import {IconNames} from "@blueprintjs/icons";
-import {Button, Card, Elevation, Intent, Tag} from "@blueprintjs/core";
+import {Button, Card, Dialog, Elevation, Intent, Tag} from "@blueprintjs/core";
 
 export default class StatisticsPage extends React.Component {
 
+    static propTypes = {
+        isInfoDialogOpen: PropTypes.bool,
+        handleInfoButtonClick: PropTypes.func,
+        handleInfoDialogClose: PropTypes.func
+    };
+
     render() {
+        const {handleInfoButtonClick, isInfoDialogOpen, handleInfoDialogClose} = this.props;
         return (
             <div className="panel-content">
                 <h4>
                     Statistics
-                    <Button className="pt-minimal" iconName={IconNames.INFO_SIGN}/>
+                    <Button
+                        className="pt-minimal"
+                        iconName={IconNames.INFO_SIGN}
+                        onClick={handleInfoButtonClick}
+                    />
+                    <Dialog
+                        iconName={IconNames.CHART}
+                        isOpen={isInfoDialogOpen}
+                        onClose={handleInfoDialogClose}
+                        title="Statistics"
+                    >
+                        <div className="pt-dialog-body">
+                            Some content
+                        </div>
+                    </Dialog>
                 </h4>
                 <Controls/>
                 <div>

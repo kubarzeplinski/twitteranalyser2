@@ -1,10 +1,12 @@
 import {combineReducers} from "redux";
-import controls from "../pages/graph/redux/controls";
+import statisticsControls from "../pages/statistics/redux/statistics-controls";
+import statisticsPage from "../pages/statistics/redux/statistics-page";
 
 export default function rootReducer(state = {}, action) {
 
     return combineReducers({
-        controls
+        statisticsPage,
+        statisticsControls
     })(state, action);
 
 }
