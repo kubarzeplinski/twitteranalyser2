@@ -10,16 +10,11 @@ export default class Controls extends React.Component {
         handleKeywordAdd: PropTypes.func,
         handleRunButtonClick: PropTypes.func,
         handleStopButtonClick: PropTypes.func,
-        initWebSocket: PropTypes.func,
         isKeywordInputBlocked: PropTypes.bool,
         isRunButtonBlocked: PropTypes.bool,
         isStopButtonBlocked: PropTypes.bool,
         keyword: PropTypes.string,
     };
-
-    componentDidMount() {
-        this.props.initWebSocket();
-    }
 
     render() {
         return (

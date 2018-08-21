@@ -1,11 +1,8 @@
-import "whatwg-fetch";
-
 const defaultState = {
     isKeywordInputBlocked: false,
     isRunButtonBlocked: true,
     isStopButtonBlocked: true,
-    isWebSocketInitialized: false,
-    keyword: "",
+    keyword: ""
 };
 
 const prefix = "statistics-controls/";
@@ -14,7 +11,6 @@ const KEYWORD_ADDED = prefix + "keyword/added";
 const KEYWORD_REMOVED = prefix + "keyword/removed";
 const RUN_BUTTON_CLICKED = prefix + "run-button/clicked";
 const STOP_BUTTON_CLICKED = prefix + "stop-button/clicked";
-const WEB_SOCKET_INITIALIZED = prefix + "web-socket/initialized";
 
 export default function reducer(state = defaultState, action) {
     switch (action.type) {
@@ -54,12 +50,6 @@ export default function reducer(state = defaultState, action) {
                 isStopButtonBlocked: true,
             };
         }
-        case WEB_SOCKET_INITIALIZED: {
-            return {
-                ...state,
-                isWebSocketInitialized: true,
-            };
-        }
         default:
             return state;
     }
@@ -88,22 +78,6 @@ export function handleStopButtonClick() {
     return {
         type: STOP_BUTTON_CLICKED,
     };
-}
-
-let stompClient = null;
-
-export function initWebSocket() {
-    const socket = new SockJS('http://localhost:8080/twitter-analyser');
-    stompClient = Stomp.over(socket);
-    stompClient.connect({}, (frame) => {
-        console.log('Connected: ' + frame);
-        stompClient.subscribe('/statistics/statisticsData', function (data) {
-            //TODO send data to graph
-        });
-    });
-    return {
-        type: WEB_SOCKET_INITIALIZED,
-    }
 }
 
 function sendKeyword(keyword) {

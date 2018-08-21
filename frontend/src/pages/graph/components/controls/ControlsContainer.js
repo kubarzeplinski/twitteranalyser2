@@ -1,6 +1,6 @@
 import {connect} from "react-redux";
 import Controls from "./Controls";
-import {handleKeywordChange, handleRunButtonClick, handleStopButtonClick, initWebSocket} from "../../redux/controls";
+import {handleKeywordChange, handleRunButtonClick, handleStopButtonClick} from "../../redux/controls";
 
 function mapStateToProps(state) {
     const {isKeywordInputBlocked, isRunButtonBlocked, isStopButtonBlocked, keyword} = state.controls;
@@ -22,10 +22,7 @@ function mapDispatchToProps(dispatch) {
         },
         handleStopButtonClick() {
             dispatch(handleStopButtonClick());
-        },
-        initWebSocket() {
-            dispatch(initWebSocket());
-        },
+        }
     };
 }
 

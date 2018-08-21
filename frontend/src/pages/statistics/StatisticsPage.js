@@ -1,8 +1,12 @@
 import React from "react";
 import PropTypes from 'prop-types';
+import _ from "lodash";
+import "whatwg-fetch";
 import Controls from "./components/controls/ControlsContainer";
 import {IconNames} from "@blueprintjs/icons";
 import {Button, Card, Dialog, Elevation, Intent, Tag} from "@blueprintjs/core";
+
+let stompClient = null;
 
 export default class StatisticsPage extends React.Component {
 
@@ -11,6 +15,26 @@ export default class StatisticsPage extends React.Component {
         handleInfoButtonClick: PropTypes.func,
         handleInfoDialogClose: PropTypes.func
     };
+
+    constructor(args) {
+        super(args);
+        this.componentDidMount = this.componentDidMount.bind(this);
+        this.state = {
+            data: []
+        }
+    }
+
+    componentDidMount() {
+        const socket = new SockJS('http://localhost:8080/twitter-analyser');
+        stompClient = Stomp.over(socket);
+        stompClient.connect({}, (frame) => {
+            console.log('Connected: ' + frame);
+            stompClient.subscribe('/statistics/statisticsData', (data) => {
+                console.log("data", data.body);
+                this.setState({data: JSON.parse(data.body)});
+            });
+        });
+    }
 
     render() {
         const {handleInfoButtonClick, isInfoDialogOpen, handleInfoDialogClose} = this.props;
@@ -38,68 +62,72 @@ export default class StatisticsPage extends React.Component {
                 <div>
                     <Card elevation={Elevation.TWO}>
                         <h4>Latest 5 users</h4>
-                        <Tag className="pt-large" intent={Intent.PRIMARY}>
-                            <span>ABC</span>
-                        </Tag>
-                        <Tag className="pt-large" intent={Intent.PRIMARY}>
-                            <span>Tom Jones</span>
-                        </Tag>
-                        <Tag className="pt-large" intent={Intent.PRIMARY}>
-                            <span>James Bond</span>
-                        </Tag>
-                        <Tag className="pt-large" intent={Intent.PRIMARY}>
-                            <span>James Bond</span>
-                        </Tag>
-                        <Tag className="pt-large" intent={Intent.PRIMARY}>
-                            <span>Monica Belluci</span>
-                        </Tag>
+                        {this.prepareLatest5Users()}
                     </Card>
                     <Card elevation={Elevation.TWO}>
                         <h4>Number of users</h4>
-                        <Tag className="pt-large">
-                            <span>12345</span>
-                        </Tag>
+                        {this.prepareNumberOfUsersUsers()}
                     </Card>
                 </div>
                 <div>
                     <Card elevation={Elevation.TWO}>
                         <h4>Top 5 locations</h4>
-                        <Tag className="pt-large" intent={Intent.SUCCESS}>
-                            <span>New York</span>
-                        </Tag>
-                        <Tag className="pt-large" intent={Intent.SUCCESS}>
-                            <span>Warsaw</span>
-                        </Tag>
-                        <Tag className="pt-large" intent={Intent.SUCCESS}>
-                            <span>Zakopane</span>
-                        </Tag>
-                        <Tag className="pt-large" intent={Intent.SUCCESS}>
-                            <span>Rome</span>
-                        </Tag>
-                        <Tag className="pt-large" intent={Intent.SUCCESS}>
-                            <span>Sydney</span>
-                        </Tag>
+                        {this.prepareTop5Locations()}
                     </Card>
                     <Card elevation={Elevation.TWO}>
                         <h4>Top 5 users by followers</h4>
-                        <Tag className="pt-large" intent={Intent.WARNING}>
-                            <span>John Kowalski</span>
-                        </Tag>
-                        <Tag className="pt-large" intent={Intent.WARNING}>
-                            <span>James Bond</span>
-                        </Tag>
-                        <Tag className="pt-large" intent={Intent.WARNING}>
-                            <span>Mark Twain</span>
-                        </Tag>
-                        <Tag className="pt-large" intent={Intent.WARNING}>
-                            <span>Michael Nowak</span>
-                        </Tag>
-                        <Tag className="pt-large" intent={Intent.WARNING}>
-                            <span>Johnny Bravo</span>
-                        </Tag>
+                        {this.prepareTop5UsersByFollowers()}
                     </Card>
                 </div>
             </div>
+        );
+    }
+
+    prepareLatest5Users() {
+        const {latest5Users} = this.state.data;
+        if (_.isUndefined(latest5Users)) {
+            return;
+        }
+        return _.map(latest5Users, (user) =>
+            <Tag key={user.userId} className="pt-large" intent={Intent.PRIMARY}>
+                <span>{user.screenName}</span>
+            </Tag>
+        );
+    }
+
+    prepareNumberOfUsersUsers() {
+        const {numberOfUsers} = this.state.data;
+        if (_.isUndefined(numberOfUsers)) {
+            return;
+        }
+        return (
+            <Tag className="pt-large">
+                <span>{numberOfUsers}</span>
+            </Tag>
+        );
+    }
+
+    prepareTop5Locations() {
+        const {top5Locations} = this.state.data;
+        if (_.isUndefined(top5Locations)) {
+            return;
+        }
+        return _.map(top5Locations, (location) =>
+            <Tag key={location} className="pt-large" intent={Intent.SUCCESS}>
+                <span>{location}</span>
+            </Tag>
+        );
+    }
+
+    prepareTop5UsersByFollowers() {
+        const {top5UsersByFollowers} = this.state.data;
+        if (_.isUndefined(top5UsersByFollowers)) {
+            return;
+        }
+        return _.map(top5UsersByFollowers, (user) =>
+            <Tag key={user.userId} className="pt-large" intent={Intent.WARNING}>
+                <span>{user.screenName}</span>
+            </Tag>
         );
     }
 
