@@ -4,7 +4,7 @@ body {
     background-color: lightgray;
 
     .panel-content {
-        margin: 0 20px;
+        margin: 10px 20px;
 
         .pt-card {
             margin: 20px 0;
@@ -24,6 +24,10 @@ body {
             .pt-tag {
                 margin: 0 10px 10px 0;
             }
+        }
+
+        h4 button {
+            line-height: 0.9rem;
         }
     }
 

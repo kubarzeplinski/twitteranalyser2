@@ -34,7 +34,9 @@ export default class StatisticsPage extends React.Component {
                     </Card>
                     <Card elevation={Elevation.TWO}>
                         <h4>Number of users</h4>
-                        <h5>12345</h5>
+                        <Tag className="pt-large">
+                            <span>12345</span>
+                        </Tag>
                     </Card>
                 </div>
                 <div>
