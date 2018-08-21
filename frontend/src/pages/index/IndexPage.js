@@ -19,7 +19,7 @@ export default class IndexPage extends React.Component {
                             Statistics&nbsp;
                             <Icon iconName={IconNames.CHART} iconSize={Icon.SIZE_LARGE}/>
                         </h4>
-                        <p>Analyse twitter live streaming data for keyword.</p>
+                        <p>Analyse twitter live streaming data for chosen keyword.</p>
                     </Card>
                 </Link>
                 <Link to="/graph">

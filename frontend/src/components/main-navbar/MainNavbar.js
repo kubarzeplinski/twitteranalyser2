@@ -3,6 +3,7 @@ import "./main-navbar.scss";
 import React from "react";
 import {Button, Navbar, NavbarDivider, NavbarGroup, NavbarHeading} from "@blueprintjs/core";
 import {Link} from "react-router-dom";
+import {IconNames} from "@blueprintjs/icons";
 
 export default class MainNavbar extends React.Component {
 
@@ -15,16 +16,16 @@ export default class MainNavbar extends React.Component {
                     </Link>
                     <NavbarDivider className="navbar-divider"/>
                     <Link to="/statistics">
-                        <Button className="pt-minimal navbar-icon" iconName="chart" text="Statistics"/>
+                        <Button className="pt-minimal navbar-icon" iconName={IconNames.CHART} text="Statistics"/>
                     </Link>
                     <Link to="/graph">
-                        <Button className="pt-minimal navbar-icon" iconName="graph" text="Graph"/>
+                        <Button className="pt-minimal navbar-icon" iconName={IconNames.GRAPH} text="Graph"/>
                     </Link>
                 </NavbarGroup>
                 <NavbarGroup align="right">
-                    <Button className="pt-minimal navbar-icon" iconName="user"/>
-                    <Button className="pt-minimal navbar-icon" iconName="notifications"/>
-                    <Button className="pt-minimal navbar-icon" iconName="cog"/>
+                    <Button className="pt-minimal navbar-icon" iconName={IconNames.USER}/>
+                    <Button className="pt-minimal navbar-icon" iconName={IconNames.NOTIFICATIONS}/>
+                    <Button className="pt-minimal navbar-icon" iconName={IconNames.COG}/>
                 </NavbarGroup>
             </Navbar>
         );
