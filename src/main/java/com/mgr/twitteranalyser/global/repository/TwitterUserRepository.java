@@ -15,15 +15,17 @@ public interface TwitterUserRepository extends PagingAndSortingRepository<Twitte
 
     TwitterUser findByUserId(long userId);
 
-    @Query("MATCH (n) " +
-            "WHERE n.lastKeyword = {lastKeyword} AND n.createdAt IS NOT NULL " +
-            "RETURN n " +
-            "ORDER BY n.createdAt DESC " +
+    @Query("MATCH (t:TwitterUser)-[r:INTERESTED_IN_RELATIONS]->(k:Keyword) " +
+            "WHERE r.createdAt IS NOT NULL " +
+            "AND k.name = {keyword} " +
+            "RETURN t " +
+            "ORDER BY r.createdAt DESC " +
             "LIMIT 5")
-    List<TwitterUser> findTop5ByLastKeywordOrderByCreatedAtDesc(@Param("lastKeyword") String lastKeyword);
+    List<TwitterUser> findTop5ByLastKeywordOrderByCreatedAtDesc(@Param("keyword") String keyword);
 
     Long countByLastKeyword(String lastKeyword);
 
+    //TODO remove lastKeyword, rewrite query
     @Query("MATCH (n) " +
             "WHERE n.lastKeyword = {lastKeyword} AND n.followersCount IS NOT NULL " +
             "RETURN n " +
@@ -31,6 +33,7 @@ public interface TwitterUserRepository extends PagingAndSortingRepository<Twitte
             "LIMIT 5")
     List<TwitterUser> findTop5ByLastKeywordOrderByFollowersCountDesc(@Param("lastKeyword") String lastKeyword);
 
+    //TODO remove lastKeyword, rewrite query
     @Query("MATCH (n) " +
             "WHERE n.lastKeyword = {lastKeyword} AND n.location IS NOT NULL " +
             "RETURN DISTINCT n.location " +
