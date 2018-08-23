@@ -21,25 +21,28 @@ public interface TwitterUserRepository extends PagingAndSortingRepository<Twitte
             "RETURN t " +
             "ORDER BY r.createdAt DESC " +
             "LIMIT 5")
-    List<TwitterUser> findTop5ByLastKeywordOrderByCreatedAtDesc(@Param("keyword") String keyword);
+    List<TwitterUser> findTop5ByKeywordOrderByCreatedAtDesc(@Param("keyword") String keyword);
 
-    Long countByLastKeyword(String lastKeyword);
+    @Query("MATCH (t:TwitterUser)-[r:INTERESTED_IN_RELATIONS]->(k:Keyword) " +
+            "WHERE k.name = {keyword} " +
+            "RETURN COUNT(t)")
+    Long countByKeyword(@Param("keyword") String keyword);
 
-    //TODO remove lastKeyword, rewrite query
-    @Query("MATCH (n) " +
-            "WHERE n.lastKeyword = {lastKeyword} AND n.followersCount IS NOT NULL " +
-            "RETURN n " +
-            "ORDER BY n.followersCount DESC " +
+    @Query("MATCH (t:TwitterUser)-[r:INTERESTED_IN_RELATIONS]->(k:Keyword) " +
+            "WHERE k.name = {keyword} " +
+            "AND t.followersCount IS NOT NULL " +
+            "RETURN t " +
+            "ORDER BY t.followersCount DESC " +
             "LIMIT 5")
-    List<TwitterUser> findTop5ByLastKeywordOrderByFollowersCountDesc(@Param("lastKeyword") String lastKeyword);
+    List<TwitterUser> findTop5ByKeywordOrderByFollowersCountDesc(@Param("keyword") String keyword);
 
-    //TODO remove lastKeyword, rewrite query
-    @Query("MATCH (n) " +
-            "WHERE n.lastKeyword = {lastKeyword} AND n.location IS NOT NULL " +
-            "RETURN DISTINCT n.location " +
-            "ORDER BY n.location ASC " +
+    @Query("MATCH (t:TwitterUser)-[r:INTERESTED_IN_RELATIONS]->(k:Keyword) " +
+            "WHERE k.name = {keyword} " +
+            "AND t.location IS NOT NULL " +
+            "RETURN DISTINCT t.location " +
+            "ORDER BY t.location ASC " +
             "LIMIT 5")
-    List<String> findDistinctTop5ByLastKeywordOrderByLocationAsc(@Param("lastKeyword") String lastKeyword);
+    List<String> findDistinctTop5ByKeywordOrderByLocationAsc(@Param("keyword") String keyword);
 
     @Query("MATCH (t:TwitterUser)-[r:INTERESTED_IN_RELATIONS]->(k:Keyword) WHERE k.name = {keyword} RETURN t")
     Stream<TwitterUser> findAllByKeyword(@Param("keyword") String keyword);

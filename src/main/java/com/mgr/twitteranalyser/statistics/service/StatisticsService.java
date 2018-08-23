@@ -15,11 +15,11 @@ public class StatisticsService {
     private final TwitterUserRepository twitterUserRepository;
 
     public StatisticsDTO getStatistics(String keyword) {
-        List<TwitterUser> latest5Users = twitterUserRepository.findTop5ByLastKeywordOrderByCreatedAtDesc(keyword);
-        Long numberOfUsers = twitterUserRepository.countByLastKeyword(keyword);
-        List<String> top5Locations = twitterUserRepository.findDistinctTop5ByLastKeywordOrderByLocationAsc(keyword);
+        List<TwitterUser> latest5Users = twitterUserRepository.findTop5ByKeywordOrderByCreatedAtDesc(keyword);
+        Long numberOfUsers = twitterUserRepository.countByKeyword(keyword);
+        List<String> top5Locations = twitterUserRepository.findDistinctTop5ByKeywordOrderByLocationAsc(keyword);
         List<TwitterUser> top5UsersByFollowers =
-                twitterUserRepository.findTop5ByLastKeywordOrderByFollowersCountDesc(keyword);
+                twitterUserRepository.findTop5ByKeywordOrderByFollowersCountDesc(keyword);
 
         return StatisticsDTO.builder()
                 .latest5Users(latest5Users)

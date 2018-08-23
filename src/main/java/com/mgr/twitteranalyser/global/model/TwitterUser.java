@@ -24,14 +24,13 @@ public class TwitterUser implements Serializable {
     private int friendsCount;
     private long userId;
     private String lang;
-    private String lastKeyword;
     private String location;
     private String screenName;
     private String timeZone;
 
     private List<InterestedInRelation> interestedInRelations;
 
-    public TwitterUser(User user, String keyword) {
+    public TwitterUser(User user) {
         this.createdAt = user.getCreatedAt();
         this.description = user.getDescription();
         this.favouritesCount = user.getFavouritesCount();
@@ -39,7 +38,6 @@ public class TwitterUser implements Serializable {
         this.friendsCount = user.getFollowersCount();
         this.userId = user.getId();
         this.lang = user.getLang();
-        this.lastKeyword = keyword;
         this.location = user.getLocation();
         this.screenName = user.getScreenName();
         this.timeZone = user.getTimeZone();

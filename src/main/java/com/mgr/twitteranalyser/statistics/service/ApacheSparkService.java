@@ -56,7 +56,7 @@ public class ApacheSparkService implements Serializable {
 
                     TwitterUser twitterUser = twitterUserRepository.findByUserId(user.getId());
                     if (twitterUser == null) {
-                        twitterUser = new TwitterUser(user, finalKeywordString);
+                        twitterUser = new TwitterUser(user);
                     }
                     InterestedInRelation interestedInRelation = new InterestedInRelation(finalKeyword, twitterUser, status);
                     twitterUser.addInterestedInRelation(interestedInRelation);
