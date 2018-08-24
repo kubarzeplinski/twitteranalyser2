@@ -1,8 +1,11 @@
+import "./controls.scss";
+
 import React from "react";
 import PropTypes from "prop-types";
 import KeywordInput from "./keyword-input/KeywordInput";
 import RunButton from "./run-button/RunButton";
 import StopButton from "./stop-button/StopButton";
+import {Intent, ProgressBar} from "@blueprintjs/core";
 
 export default class Controls extends React.Component {
 
@@ -17,21 +20,26 @@ export default class Controls extends React.Component {
     };
 
     render() {
+        const {isKeywordInputBlocked, isRunButtonBlocked} = this.props;
         return (
             <div>
                 <KeywordInput
-                    isDisabled={this.props.isKeywordInputBlocked}
+                    isDisabled={isKeywordInputBlocked}
                     onChange={this.props.handleKeywordChange}
                     placeholder={"Keyword..."}
                     value={this.props.keyword}
                 />
                 <RunButton
-                    isDisabled={this.props.isRunButtonBlocked}
+                    isDisabled={isRunButtonBlocked}
                     onClick={this.props.handleRunButtonClick}
                 />
                 <StopButton
                     isDisabled={this.props.isStopButtonBlocked}
                     onClick={this.props.handleStopButtonClick}
+                />
+                <ProgressBar
+                    intent={Intent.PRIMARY}
+                    value={isKeywordInputBlocked && isRunButtonBlocked ? 1 : 0}
                 />
             </div>
         );
