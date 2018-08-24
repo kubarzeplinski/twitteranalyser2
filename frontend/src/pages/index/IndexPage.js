@@ -35,7 +35,7 @@ export default class IndexPage extends React.Component {
                                 Graph&nbsp;
                                 <Icon iconName={IconNames.GRAPH} iconSize={Icon.SIZE_LARGE}/>
                             </h4>
-                            <p>Analyse your historical twitter data from live streaming sessions.</p>
+                            <p>Analyse your historical twitter data from live streaming sessions for chosen keyword.</p>
                         </Card>
                     </Link>
                 </div>

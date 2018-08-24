@@ -1,19 +1,16 @@
 import React from "react";
 import PropTypes from "prop-types";
 import KeywordInput from "./keyword-input/KeywordInput";
-import RunButton from "./run-button/RunButton";
-import StopButton from "./stop-button/StopButton";
+import SearchButton from "./search-button/SearchButton";
 
 export default class Controls extends React.Component {
 
     static propTypes = {
         handleKeywordAdd: PropTypes.func,
-        handleRunButtonClick: PropTypes.func,
-        handleStopButtonClick: PropTypes.func,
+        handleSearchButtonClick: PropTypes.func,
         isKeywordInputBlocked: PropTypes.bool,
-        isRunButtonBlocked: PropTypes.bool,
-        isStopButtonBlocked: PropTypes.bool,
-        keyword: PropTypes.string,
+        isSearchButtonBlocked: PropTypes.bool,
+        keyword: PropTypes.string
     };
 
     render() {
@@ -25,13 +22,9 @@ export default class Controls extends React.Component {
                     placeholder={"Keyword..."}
                     value={this.props.keyword}
                 />
-                <RunButton
-                    isDisabled={this.props.isRunButtonBlocked}
-                    onClick={this.props.handleRunButtonClick}
-                />
-                <StopButton
-                    isDisabled={this.props.isStopButtonBlocked}
-                    onClick={this.props.handleStopButtonClick}
+                <SearchButton
+                    isDisabled={this.props.isSearchButtonBlocked}
+                    onClick={this.props.handleSearchButtonClick}
                 />
             </div>
         );

@@ -1,14 +1,13 @@
 import {connect} from "react-redux";
 import Controls from "./Controls";
-import {handleKeywordChange, handleRunButtonClick, handleStopButtonClick} from "../../redux/controls";
+import {handleKeywordChange, handleSearchButtonClick} from "../../redux/graph-controls";
 
 function mapStateToProps(state) {
-    const {isKeywordInputBlocked, isRunButtonBlocked, isStopButtonBlocked, keyword} = state.controls;
+    const {isKeywordInputBlocked, isSearchButtonBlocked, keyword} = state.graphControls;
     return {
         isKeywordInputBlocked,
-        isRunButtonBlocked,
-        isStopButtonBlocked,
-        keyword,
+        isSearchButtonBlocked,
+        keyword
     };
 }
 
@@ -17,11 +16,8 @@ function mapDispatchToProps(dispatch) {
         handleKeywordChange(keyword) {
             dispatch(handleKeywordChange(keyword));
         },
-        handleRunButtonClick() {
-            dispatch(handleRunButtonClick());
-        },
-        handleStopButtonClick() {
-            dispatch(handleStopButtonClick());
+        handleSearchButtonClick() {
+            dispatch(handleSearchButtonClick());
         }
     };
 }

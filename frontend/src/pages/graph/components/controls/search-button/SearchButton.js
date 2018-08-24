@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-export default class StopButton extends React.Component {
+export default class SearchButton extends React.Component {
 
     static propTypes = {
         isDisabled: PropTypes.bool,
@@ -15,12 +15,12 @@ export default class StopButton extends React.Component {
     render() {
         return (
             <button
-                type="button"
-                className="pt-button pt-intent-danger"
+                className="pt-button pt-intent-success"
                 disabled={this.props.isDisabled}
+                type="button"
                 onClick={this.props.onClick}
             >
-                Stop
+                Search
             </button>
         );
     }
