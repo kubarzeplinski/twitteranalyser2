@@ -20,7 +20,13 @@ export default class IndexPage extends React.Component {
                                 Statistics&nbsp;
                                 <Icon iconName={IconNames.CHART} iconSize={Icon.SIZE_LARGE}/>
                             </h4>
-                            <p>Analyse twitter live streaming data for chosen keyword.</p>
+                            <p>Analyse twitter live streaming and your historical data for chosen keyword.</p>
+                            <ul>
+                                <li>Latest 5 users</li>
+                                <li>Number of users</li>
+                                <li>Top 5 locations</li>
+                                <li>Top 5 users by followers</li>
+                            </ul>
                         </Card>
                     </Link>
                     <Link to="/graph">
@@ -29,7 +35,7 @@ export default class IndexPage extends React.Component {
                                 Graph&nbsp;
                                 <Icon iconName={IconNames.GRAPH} iconSize={Icon.SIZE_LARGE}/>
                             </h4>
-                            <p>Analyse historical twitter data from live streaming sessions.</p>
+                            <p>Analyse your historical twitter data from live streaming sessions.</p>
                         </Card>
                     </Link>
                 </div>
