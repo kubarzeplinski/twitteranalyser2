@@ -27,7 +27,7 @@
     "webpack-dev-server": "2.9.7"
   },
   "dependencies": {
-    "@blueprintjs/core": "1.35.5",
+    "@blueprintjs/core": "1.39.0",
     "@blueprintjs/icons": "^3.0.0",
     "babel-polyfill": "6.23.0",
     "lodash": "^4.17.5",
