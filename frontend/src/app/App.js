@@ -1,5 +1,5 @@
 import React from "react";
-import MainNavbar from "../components/main-navbar/MainNavbar";
+import MainNavbar from "../components/main-navbar/MainNavbarContainer";
 
 export default class App extends React.Component {
 

@@ -43,15 +43,15 @@ public class StatisticsController {
     }
 
     @PostMapping("/start")
-    public void start(@RequestBody Keyword keyword) {
-        keywordName = keyword.getName();
+    public void start(@RequestBody String keyword) {
+        keywordName = keyword;
         TwitterCredentials credentials = apacheSparkConfigService.getDefaultCredentials();
         context = apacheSparkConfigService.createContext(credentials.getApplicationName());
         JavaReceiverInputDStream<Status> inputStream = apacheSparkConfigService.createStream(credentials, context);
         contextInitialized = true;
         apacheSparkStarted = true;
         log.info("Apache Spark started.");
-        apacheSparkService.processData(inputStream, keyword.getName());
+        apacheSparkService.processData(inputStream, keywordName);
         apacheSparkConfigService.start(context);
     }
 

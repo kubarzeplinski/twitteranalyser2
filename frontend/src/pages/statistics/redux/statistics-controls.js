@@ -1,5 +1,6 @@
 const defaultState = {
     isKeywordInputBlocked: false,
+    isProcessingOn: false,
     isRunButtonBlocked: true,
     isStopButtonBlocked: true,
     keyword: ""
@@ -37,8 +38,9 @@ export default function reducer(state = defaultState, action) {
             return {
                 ...state,
                 isKeywordInputBlocked: true,
+                isProcessingOn: true,
                 isRunButtonBlocked: true,
-                isStopButtonBlocked: false,
+                isStopButtonBlocked: false
             };
         }
         case STOP_BUTTON_CLICKED: {
@@ -46,8 +48,9 @@ export default function reducer(state = defaultState, action) {
             return {
                 ...state,
                 isKeywordInputBlocked: false,
+                isProcessingOn: false,
                 isRunButtonBlocked: false,
-                isStopButtonBlocked: true,
+                isStopButtonBlocked: true
             };
         }
         default:
@@ -86,10 +89,7 @@ function sendKeyword(keyword) {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-            nodeId: 1,
-            name: keyword,
-        })
+        body: JSON.stringify({keyword})
     });
 }
 
