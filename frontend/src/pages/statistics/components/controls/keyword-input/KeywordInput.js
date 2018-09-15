@@ -2,7 +2,7 @@ import "./keyword-input.scss"
 
 import React from "react";
 import PropTypes from "prop-types";
-import * as _ from "lodash";
+import _ from "lodash";
 
 export default class KeywordInput extends React.Component {
 
