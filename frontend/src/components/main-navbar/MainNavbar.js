@@ -46,7 +46,7 @@ export default class MainNavbar extends React.Component {
             const className = classNames("pt-large", { "pulsing-keyword-tag": isProcessingOn });
             return (
                 <Tag className={className} intent={Intent.SUCCESS}>
-                    <span>Analysis for keyword: {keyword}</span>
+                    <span>Live analysis for keyword: {keyword}</span>
                 </Tag>
             );
         }
