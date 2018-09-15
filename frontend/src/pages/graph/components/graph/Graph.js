@@ -33,8 +33,8 @@ export default class Graph extends React.Component {
         });
 
         //TODO set width and height dynamically
-        const width = 1439;
-        const height = 460;
+        const width = 1490;
+        const height = 494;
 
         const force = d3.layout.force()
             .nodes(d3.values(nodes))
