@@ -7,7 +7,7 @@ import configureStore from "./app/reduxStore";
 import "./scss/app.scss";
 import App from "./app/App";
 import {Route} from "react-router";
-import GraphPage from "./pages/graph/GraphPage";
+import GraphPage from "./pages/graph/GraphPageContainer";
 import StatisticsPage from "./pages/statistics/StatisticsPageContainer";
 import IndexPage from "./pages/index/IndexPage";
 
