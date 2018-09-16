@@ -5,6 +5,8 @@ import com.mgr.twitteranalyser.global.model.TwitterUser;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+//TODO remove
+@Deprecated
 @AllArgsConstructor
 @Getter
 public class Node {

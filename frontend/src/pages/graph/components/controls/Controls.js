@@ -24,10 +24,15 @@ export default class Controls extends React.Component {
                 />
                 <SearchButton
                     isDisabled={this.props.isSearchButtonBlocked}
-                    onClick={this.props.handleSearchButtonClick}
+                    onClick={() => this.handleSearchButtonClick()}
                 />
             </div>
         );
+    }
+
+    handleSearchButtonClick() {
+        const {handleSearchButtonClick, keyword} = this.props;
+        handleSearchButtonClick(keyword);
     }
 
 }

@@ -4,6 +4,8 @@ const defaultState = {
     isKeywordInputBlocked: false,
     isSearchButtonBlocked: true,
     keyword: "",
+    data: undefined,
+    isDataLoading: false
 };
 
 const prefix = "graph-controls/";
@@ -11,6 +13,7 @@ const prefix = "graph-controls/";
 const KEYWORD_ADDED = prefix + "keyword/added";
 const KEYWORD_REMOVED = prefix + "keyword/removed";
 const SEARCH_BUTTON_CLICKED = prefix + "run-button/clicked";
+const NEW_DATA_FETCHED = prefix + "new-data";
 
 export default function reducer(state = defaultState, action) {
     switch (action.type) {
@@ -31,12 +34,19 @@ export default function reducer(state = defaultState, action) {
             };
         }
         case SEARCH_BUTTON_CLICKED: {
-            sendKeyword(state.keyword);
             return {
                 ...state,
                 isKeywordInputBlocked: false,
-                isSearchButtonBlocked: false
+                isSearchButtonBlocked: false,
+                isDataLoading: true
             };
+        }
+        case NEW_DATA_FETCHED: {
+            return {
+                ...state,
+                data: action.data,
+                isDataLoading: false
+            }
         }
         default:
             return state;
@@ -62,13 +72,9 @@ export function handleSearchButtonClick() {
     };
 }
 
-function sendKeyword(keyword) {
-    fetch('http://localhost:8080/graph/' + keyword, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-        .then((resp) => resp.json())
-        .then((data) => console.log(data));
+export function handleNewDataFetch(data) {
+    return {
+        type: NEW_DATA_FETCHED,
+        data
+    };
 }

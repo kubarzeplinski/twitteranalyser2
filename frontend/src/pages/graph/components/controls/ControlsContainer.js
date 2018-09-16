@@ -1,6 +1,6 @@
 import {connect} from "react-redux";
 import Controls from "./Controls";
-import {handleKeywordChange, handleSearchButtonClick} from "../../redux/graph-controls";
+import {handleKeywordChange, handleNewDataFetch, handleSearchButtonClick} from "../../redux/graph-controls";
 
 function mapStateToProps(state) {
     const {isKeywordInputBlocked, isSearchButtonBlocked, keyword} = state.graphControls;
@@ -16,8 +16,16 @@ function mapDispatchToProps(dispatch) {
         handleKeywordChange(keyword) {
             dispatch(handleKeywordChange(keyword));
         },
-        handleSearchButtonClick() {
+        handleSearchButtonClick(keyword) {
             dispatch(handleSearchButtonClick());
+            fetch('http://localhost:8080/graph/' + keyword, {
+                method: 'GET',
+                headers: {'Content-Type': 'application/json'}
+            })
+                .then((response) => response.json())
+                .then((response) => {
+                    dispatch(handleNewDataFetch(response));
+                });
         }
     };
 }

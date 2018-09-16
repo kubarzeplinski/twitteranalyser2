@@ -1,5 +1,5 @@
 import Controls from "./components/controls/ControlsContainer";
-import Graph from "./components/graph/Graph";
+import Graph from "./components/graph/GraphContainer";
 import React from "react";
 import {Button, Dialog} from "@blueprintjs/core";
 import * as IconNames from "@blueprintjs/icons/lib/esm/generated/iconNames";

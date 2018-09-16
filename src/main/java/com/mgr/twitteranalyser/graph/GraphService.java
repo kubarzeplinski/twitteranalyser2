@@ -3,10 +3,9 @@ package com.mgr.twitteranalyser.graph;
 import com.mgr.twitteranalyser.global.model.Keyword;
 import com.mgr.twitteranalyser.global.repository.KeywordRepository;
 import com.mgr.twitteranalyser.global.repository.TwitterUserRepository;
-import com.mgr.twitteranalyser.graph.model.Edge;
+import com.mgr.twitteranalyser.graph.model.Link;
 import com.mgr.twitteranalyser.graph.model.GraphDataDTO;
 import com.mgr.twitteranalyser.graph.model.Node;
-import com.mgr.twitteranalyser.graph.model.RelationType;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,14 +26,12 @@ public class GraphService {
         }
         Set<Node> nodes = getUsers(keyword);
 
-        Set<Edge> edges = nodes
+        Set<Link> links = nodes
                 .stream()
-                .map(node -> new Edge(RelationType.INTERESTED_IN.name(), node.getId(), keywordNode.getId()))
+                .map(node -> new Link(node.getCaption(), keywordNode.getCaption()))
                 .collect(Collectors.toSet());
 
-        nodes.add(keywordNode);
-
-        return new GraphDataDTO(edges, nodes);
+        return new GraphDataDTO(links);
     }
 
     private Node getKeywordNode(String keyword) {

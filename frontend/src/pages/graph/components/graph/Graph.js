@@ -1,35 +1,49 @@
 import "./graph.scss"
 
 import React from "react";
-import {Card} from "@blueprintjs/core";
+import PropTypes from "prop-types";
+import {Card, Intent, Spinner} from "@blueprintjs/core";
 import * as d3 from "d3";
 import _ from "lodash";
 
-const links = [
-    {source: "Sarah", target: "Alice"},
-    {source: "Eveie", target: "Alice"},
-    {source: "Peter", target: "Alice"},
-    {source: "Mario", target: "Alice"},
-    {source: "James", target: "Alice"},
-    {source: "Ted", target: "Alice"},
-    {source: "AAA", target: "Alice"},
-    {source: "P", target: "Alice"},
-    {source: "Marco", target: "Alice"},
-    {source: "James Rodrigues", target: "Alice"}
-];
-
 export default class Graph extends React.Component {
 
-    componentDidMount() {
+    static propTypes = {
+        links: PropTypes.arrayOf(PropTypes.shape({
+            source: PropTypes.string.isRequired,
+            target: PropTypes.string.isRequired,
+        })),
+        isDataLoading: PropTypes.bool
+    };
+
+    render() {
+        return (
+            <Card className="graph-card">
+                {this.prepareCardContent()}
+                <svg className="graph-chart"/>
+            </Card>
+        );
+    }
+
+    prepareCardContent() {
+        if (this.props.isDataLoading) {
+            return (
+                <div className="graph-spinner">
+                    <Spinner intent={Intent.PRIMARY} className="pt-large"/>
+                </div>
+            );
+        }
+        this.renderGraph();
+    }
+
+    renderGraph() {
+        const {links} = this.props;
         const nodes = {};
 
         // Compute the distinct nodes from the links.
         _.forEach(links, (link) => {
-            link.source = nodes[link.source] ||
-                (nodes[link.source] = {name: link.source});
-            link.target = nodes[link.target] ||
-                (nodes[link.target] = {name: link.target});
-            link.value = +link.value;
+            link.source = nodes[link.source] || (nodes[link.source] = {name: link.source});
+            link.target = nodes[link.target] || (nodes[link.target] = {name: link.target});
         });
 
         //TODO set width and height dynamically
@@ -107,14 +121,6 @@ export default class Graph extends React.Component {
             node.attr("transform", d => "translate(" + d.x + "," + d.y + ")");
         }
 
-    }
-
-    render() {
-        return (
-            <Card className="graph-card">
-                <svg className="graph-chart"/>
-            </Card>
-        );
     }
 
 }

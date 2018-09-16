@@ -5,10 +5,9 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class Edge {
+public class Link {
 
-    private final String caption;
-    private final long source;
-    private final long target;
+    private final String source;
+    private final String target;
 
 }

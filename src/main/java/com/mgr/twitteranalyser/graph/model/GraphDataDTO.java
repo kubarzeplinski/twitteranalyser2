@@ -9,7 +9,6 @@ import java.util.Set;
 @Getter
 public class GraphDataDTO {
 
-    private final Set<Edge> edges;
-    private final Set<Node> nodes;
+    private final Set<Link> links;
 
 }
