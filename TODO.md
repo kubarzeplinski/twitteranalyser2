@@ -7,3 +7,4 @@ TODO
 - Graph: fix issue with rendering chart again;
 - Graph: add fetching user data after clicking on node;
 - Graph: add fullscreen mode;
+- Graph: add basic stats at the top of the chart card;
