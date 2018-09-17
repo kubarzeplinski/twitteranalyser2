@@ -2,7 +2,7 @@ import "./graph.scss"
 
 import React from "react";
 import PropTypes from "prop-types";
-import {Card, Intent, Spinner} from "@blueprintjs/core";
+import {Card, Intent, Spinner, Tag} from "@blueprintjs/core";
 import * as d3 from "d3";
 import _ from "lodash";
 
@@ -16,12 +16,24 @@ export default class Graph extends React.Component {
         isDataLoading: PropTypes.bool
     };
 
+    componentDidMount() {
+        {this.prepareCardContent()}
+    }
+
     render() {
         return (
-            <Card className="graph-card">
-                {this.prepareCardContent()}
-                <svg className="graph-chart"/>
-            </Card>
+            <div>
+                <div className="card-label">
+                    <h5>Number of users</h5>
+                    <Tag className="pt-large">
+                        <span>{this.props.links.length}</span>
+                    </Tag>
+                </div>
+                <Card className="graph-card">
+                    <svg className="graph-chart"/>
+                    {this.prepareCardContent()}
+                </Card>
+            </div>
         );
     }
 
@@ -38,10 +50,11 @@ export default class Graph extends React.Component {
 
     renderGraph() {
         const {links} = this.props;
+        const linksCopy = _.cloneDeep(links);
         const nodes = {};
 
         // Compute the distinct nodes from the links.
-        _.forEach(links, (link) => {
+        _.forEach(linksCopy, (link) => {
             link.source = nodes[link.source] || (nodes[link.source] = {name: link.source});
             link.target = nodes[link.target] || (nodes[link.target] = {name: link.target});
         });
@@ -52,7 +65,7 @@ export default class Graph extends React.Component {
 
         const force = d3.layout.force()
             .nodes(d3.values(nodes))
-            .links(links)
+            .links(linksCopy)
             .size([width, height])
             .linkDistance(100)
             .charge(-300)

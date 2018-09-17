@@ -1,9 +1,10 @@
 .panel-content {
-    
+
     .pt-card.graph-card {
         width: 100% !important;
         height: 500px !important;
         padding: 3px;
+        margin-top: 5px;
 
         .graph-chart {
             path.link {
@@ -33,6 +34,17 @@
             .pt-spinner {
                 margin: auto;
             }
+        }
+    }
+
+    .card-label {
+        h5 {
+            margin-top: 20px;
+            display: inline-block;
+        }
+
+        .pt-tag {
+            margin-left: 10px;
         }
     }
 
