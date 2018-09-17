@@ -31,10 +31,6 @@ export default class MainNavbar extends React.Component {
                 </NavbarGroup>
                 <NavbarGroup align="right">
                     {this.prepareKeyWordTag()}
-                    <NavbarDivider className="navbar-divider"/>
-                    <Button className="pt-minimal navbar-icon" iconName={IconNames.USER}/>
-                    <Button className="pt-minimal navbar-icon" iconName={IconNames.NOTIFICATIONS}/>
-                    <Button className="pt-minimal navbar-icon" iconName={IconNames.COG}/>
                 </NavbarGroup>
             </Navbar>
         );
