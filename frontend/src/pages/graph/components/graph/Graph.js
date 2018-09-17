@@ -13,11 +13,13 @@ export default class Graph extends React.Component {
             source: PropTypes.string.isRequired,
             target: PropTypes.string.isRequired,
         })),
-        isDataLoading: PropTypes.bool
+        isDataLoading: PropTypes.bool,
+        handleNodeClick: PropTypes.func,
+        handleUserDialogClose: PropTypes.func
     };
 
     componentDidMount() {
-        {this.prepareCardContent()}
+        this.prepareCardContent();
     }
 
     render() {
@@ -105,6 +107,7 @@ export default class Graph extends React.Component {
             .enter()
             .append("g")
             .attr("class", "node")
+            .on("click", click.bind(this))
             .call(force.drag);
 
         // add the nodes
@@ -132,6 +135,10 @@ export default class Graph extends React.Component {
             });
 
             node.attr("transform", d => "translate(" + d.x + "," + d.y + ")");
+        }
+
+        function click(event) {
+            this.props.handleNodeClick(event.name);
         }
 
     }

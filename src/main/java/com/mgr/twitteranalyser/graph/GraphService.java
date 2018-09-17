@@ -2,11 +2,13 @@ package com.mgr.twitteranalyser.graph;
 
 import com.mgr.twitteranalyser.global.model.Keyword;
 import com.mgr.twitteranalyser.global.model.KeywordDTO;
+import com.mgr.twitteranalyser.global.model.TwitterUser;
 import com.mgr.twitteranalyser.global.repository.KeywordRepository;
 import com.mgr.twitteranalyser.global.repository.TwitterUserRepository;
 import com.mgr.twitteranalyser.graph.model.GraphDataDTO;
 import com.mgr.twitteranalyser.graph.model.Link;
 import com.mgr.twitteranalyser.graph.model.Node;
+import com.mgr.twitteranalyser.graph.model.TwitterUserDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,6 +59,14 @@ public class GraphService {
         return keywordRepository.readAllByNameNotNull()
                 .map(KeywordDTO::new)
                 .collect(Collectors.toList());
+    }
+
+    public TwitterUserDTO getUser(String screenName) {
+        TwitterUser twitterUser = twitterUserRepository.findByScreenName(screenName)
+                .orElseThrow(
+                        () -> new RuntimeException(String.format("User with screen name: %s not found.", screenName))
+                );
+        return new TwitterUserDTO(twitterUser);
     }
 
 }

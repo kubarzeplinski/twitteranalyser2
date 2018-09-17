@@ -2,6 +2,7 @@ package com.mgr.twitteranalyser.graph;
 
 import com.mgr.twitteranalyser.global.model.KeywordDTO;
 import com.mgr.twitteranalyser.graph.model.GraphDataDTO;
+import com.mgr.twitteranalyser.graph.model.TwitterUserDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +26,11 @@ public class GraphController {
     @GetMapping("/keywords")
     public List<KeywordDTO> getKeywords() {
         return graphService.getKeywords();
+    }
+
+    @GetMapping("/user/{screenName}")
+    public TwitterUserDTO getUser(@PathVariable String screenName) {
+        return graphService.getUser(screenName);
     }
 
 }

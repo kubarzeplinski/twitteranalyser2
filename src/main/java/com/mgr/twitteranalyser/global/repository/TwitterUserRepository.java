@@ -7,11 +7,14 @@ import org.springframework.data.repository.query.Param;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 public interface TwitterUserRepository extends PagingAndSortingRepository<TwitterUser, Long>, Serializable {
 
     TwitterUser findByUserId(long userId);
+
+    Optional<TwitterUser> findByScreenName(String screenName);
 
     @Query("MATCH (t:TwitterUser)-[r:INTERESTED_IN_RELATIONS]->(k:Keyword) " +
             "WHERE r.createdAt IS NOT NULL " +

@@ -12,21 +12,20 @@ import twitter4j.Status;
 import java.io.Serializable;
 import java.util.Date;
 
-@NoArgsConstructor
 @RelationshipEntity(type = "INTERESTED_IN")
+@NoArgsConstructor
+@Getter
 public class InterestedInRelation implements Serializable {
 
     private Date createdAt;
     private GeoLocation geoLocation;
     private Long id;
     @EndNode
-    @Getter
     private Keyword keyword;
     private String location;
     private Place place;
     private String text;
     @StartNode
-    @Getter
     private TwitterUser twitterUser;
 
     public InterestedInRelation(Keyword keyword, TwitterUser twitterUser, Status status) {

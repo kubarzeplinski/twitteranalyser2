@@ -1,12 +1,14 @@
 import {connect} from "react-redux";
-import {handleInfoButtonClick, handleInfoDialogClose} from "./redux/graph-page";
+import {handleInfoButtonClick, handleInfoDialogClose, handleUserDialogClose} from "./redux/graph-page";
 import GraphPage from "./GraphPage";
 import {handleKeywordsFetch} from "./redux/graph-controls";
 
 function mapStateToProps(state) {
-    const {isInfoDialogOpen} = state.graphPage;
+    const {isInfoDialogOpen, isUserDialogOpen, userData} = state.graphPage;
     return {
-        isInfoDialogOpen
+        isInfoDialogOpen,
+        isUserDialogOpen,
+        userData
     };
 }
 
@@ -27,6 +29,9 @@ function mapDispatchToProps(dispatch) {
                 .then((response) => {
                     dispatch(handleKeywordsFetch(response));
                 });
+        },
+        handleUserDialogClose() {
+            dispatch(handleUserDialogClose());
         }
     };
 }
