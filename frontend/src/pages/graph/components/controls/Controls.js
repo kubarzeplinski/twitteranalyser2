@@ -1,29 +1,25 @@
 import React from "react";
 import PropTypes from "prop-types";
-import KeywordInput from "./keyword-input/KeywordInput";
+import KeywordSelector from "./keyword-selector/KeywordSelector";
 import SearchButton from "./search-button/SearchButton";
 
 export default class Controls extends React.Component {
 
     static propTypes = {
-        handleKeywordAdd: PropTypes.func,
         handleSearchButtonClick: PropTypes.func,
-        isKeywordInputBlocked: PropTypes.bool,
-        isSearchButtonBlocked: PropTypes.bool,
-        keyword: PropTypes.string
+        handleKeywordChange: PropTypes.func,
+        keyword: PropTypes.string,
+        keywords: PropTypes.array
     };
 
     render() {
         return (
             <div>
-                <KeywordInput
-                    isDisabled={this.props.isKeywordInputBlocked}
+                <KeywordSelector
                     onChange={this.props.handleKeywordChange}
-                    placeholder={"Keyword..."}
-                    value={this.props.keyword}
+                    keywords={this.props.keywords}
                 />
                 <SearchButton
-                    isDisabled={this.props.isSearchButtonBlocked}
                     onClick={() => this.handleSearchButtonClick()}
                 />
             </div>

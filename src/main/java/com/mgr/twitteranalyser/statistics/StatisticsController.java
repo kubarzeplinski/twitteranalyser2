@@ -2,7 +2,7 @@ package com.mgr.twitteranalyser.statistics;
 
 import com.mgr.twitteranalyser.config.apachespark.ApacheSparkConfigService;
 import com.mgr.twitteranalyser.config.apachespark.TwitterCredentials;
-import com.mgr.twitteranalyser.global.model.Keyword;
+import com.mgr.twitteranalyser.global.model.KeywordDTO;
 import com.mgr.twitteranalyser.statistics.service.ApacheSparkService;
 import com.mgr.twitteranalyser.statistics.service.StatisticsService;
 import lombok.extern.slf4j.Slf4j;
@@ -43,8 +43,8 @@ public class StatisticsController {
     }
 
     @PostMapping("/start")
-    public void start(@RequestBody String keyword) {
-        keywordName = keyword;
+    public void start(@RequestBody KeywordDTO keyword) {
+        keywordName = keyword.getName();
         TwitterCredentials credentials = apacheSparkConfigService.getDefaultCredentials();
         context = apacheSparkConfigService.createContext(credentials.getApplicationName());
         JavaReceiverInputDStream<Status> inputStream = apacheSparkConfigService.createStream(credentials, context);

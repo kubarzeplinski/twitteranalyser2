@@ -89,7 +89,7 @@ function sendKeyword(keyword) {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({keyword})
+        body: JSON.stringify({name: keyword})
     });
 }
 

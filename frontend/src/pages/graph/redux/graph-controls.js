@@ -1,37 +1,35 @@
 import "whatwg-fetch";
+import _ from "lodash";
 
 const defaultState = {
-    isKeywordInputBlocked: false,
-    isSearchButtonBlocked: true,
-    keyword: "",
     data: undefined,
-    isDataLoading: false
+    isDataLoading: false,
+    keyword: "",
+    keywords: []
 };
 
 const prefix = "graph-controls/";
 
-const KEYWORD_ADDED = prefix + "keyword/added";
-const KEYWORD_REMOVED = prefix + "keyword/removed";
+const KEYWORD_CHANGED = prefix + "keyword/changed";
+const KEYWORDS_FETCHED = prefix + "keywords/fetched";
+const NEW_DATA_FETCHED = prefix + "new-data/fetched";
 const SEARCH_BUTTON_CLICKED = prefix + "run-button/clicked";
-const NEW_DATA_FETCHED = prefix + "new-data";
 
 export default function reducer(state = defaultState, action) {
     switch (action.type) {
-        case KEYWORD_ADDED: {
+        case KEYWORD_CHANGED: {
             return {
                 ...state,
-                isKeywordInputBlocked: false,
-                isSearchButtonBlocked: false,
                 keyword: action.keyword
-            };
+            }
         }
-        case KEYWORD_REMOVED: {
+        case KEYWORDS_FETCHED: {
+            const keywords = action.keywords;
             return {
                 ...state,
-                isKeywordInputBlocked: false,
-                isSearchButtonBlocked: true,
-                keyword: action.keyword
-            };
+                keyword: !_.isNil(keywords[0]) ? keywords[0].name : "",
+                keywords: keywords
+            }
         }
         case SEARCH_BUTTON_CLICKED: {
             return {
@@ -54,16 +52,17 @@ export default function reducer(state = defaultState, action) {
 }
 
 export function handleKeywordChange(keyword) {
-    if (_.isEmpty(keyword)) {
-        return {
-            type: KEYWORD_REMOVED,
-            keyword
-        }
-    }
     return {
-        type: KEYWORD_ADDED,
+        type: KEYWORD_CHANGED,
         keyword
     };
+}
+
+export function handleKeywordsFetch(keywords) {
+    return {
+        type: KEYWORDS_FETCHED,
+        keywords
+    }
 }
 
 export function handleSearchButtonClick() {

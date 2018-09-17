@@ -10,11 +10,13 @@ export default class GraphPage extends React.Component {
     static propTypes = {
         isInfoDialogOpen: PropTypes.bool,
         handleInfoButtonClick: PropTypes.func,
-        handleInfoDialogClose: PropTypes.func
+        handleInfoDialogClose: PropTypes.func,
+        handleKeywordsFetch: PropTypes.func
     };
 
     render() {
-        const {handleInfoButtonClick, isInfoDialogOpen, handleInfoDialogClose} = this.props;
+        const {handleInfoButtonClick, isInfoDialogOpen, handleInfoDialogClose, handleKeywordsFetch} = this.props;
+        handleKeywordsFetch();
         return (
             <div className="panel-content">
                 <h4>

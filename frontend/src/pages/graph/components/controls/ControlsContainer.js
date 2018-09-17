@@ -3,11 +3,10 @@ import Controls from "./Controls";
 import {handleKeywordChange, handleNewDataFetch, handleSearchButtonClick} from "../../redux/graph-controls";
 
 function mapStateToProps(state) {
-    const {isKeywordInputBlocked, isSearchButtonBlocked, keyword} = state.graphControls;
+    const {keyword, keywords} = state.graphControls;
     return {
-        isKeywordInputBlocked,
-        isSearchButtonBlocked,
-        keyword
+        keyword,
+        keywords
     };
 }
 

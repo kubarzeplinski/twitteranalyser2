@@ -4,13 +4,11 @@ import com.mgr.twitteranalyser.global.model.TwitterUser;
 import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Stream;
 
-@Repository
 public interface TwitterUserRepository extends PagingAndSortingRepository<TwitterUser, Long>, Serializable {
 
     TwitterUser findByUserId(long userId);
