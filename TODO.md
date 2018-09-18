@@ -11,3 +11,4 @@ TODO
 - Graph: add basic stats at the top of the chart card; DONE
 - Frontend: refactoring;
 - Frontend: remove icons in the top right corner; DONE
+- Frontend: upgrade version of Blueprint library;

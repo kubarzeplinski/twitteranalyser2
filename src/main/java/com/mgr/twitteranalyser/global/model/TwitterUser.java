@@ -6,8 +6,8 @@ import org.neo4j.ogm.annotation.NodeEntity;
 import twitter4j.User;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @NoArgsConstructor
@@ -17,7 +17,9 @@ public class TwitterUser implements Serializable {
 
     private Long id;
 
-    private Date createdAt;
+    @Deprecated
+    private java.util.Date createdAt;
+    private LocalDate createdAtLocalDate;
     private String description;
     private int favouritesCount;
     private int followersCount;
@@ -32,6 +34,7 @@ public class TwitterUser implements Serializable {
 
     public TwitterUser(User user) {
         this.createdAt = user.getCreatedAt();
+        this.createdAtLocalDate = new java.sql.Date(user.getCreatedAt().getTime()).toLocalDate();
         this.description = user.getDescription();
         this.favouritesCount = user.getFavouritesCount();
         this.followersCount = user.getFollowersCount();

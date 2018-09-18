@@ -6,6 +6,7 @@ import com.mgr.twitteranalyser.global.model.TwitterUser;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,7 +15,9 @@ import java.util.stream.Collectors;
 @Getter
 public class TwitterUserDTO {
 
+    @Deprecated
     private Date createdAt;
+    private LocalDate createdAtLocalDate;
     private String description;
     private int favouritesCount;
     private int followersCount;
@@ -29,6 +32,7 @@ public class TwitterUserDTO {
 
     public TwitterUserDTO(TwitterUser user) {
         this.createdAt = user.getCreatedAt();
+        this.createdAtLocalDate = user.getCreatedAtLocalDate();
         this.description = user.getDescription();
         this.favouritesCount = user.getFavouritesCount();
         this.followersCount = user.getFollowersCount();

@@ -4,6 +4,7 @@ import React from "react";
 import {Button, Dialog} from "@blueprintjs/core";
 import * as IconNames from "@blueprintjs/icons/lib/esm/generated/iconNames";
 import PropTypes from "prop-types";
+import moment from "moment";
 
 export default class GraphPage extends React.Component {
 
@@ -52,6 +53,8 @@ export default class GraphPage extends React.Component {
 
     renderUserDialog() {
         const {isUserDialogOpen, handleUserDialogClose, userData} = this.props;
+        const date = userData.createdAtLocalDate || userData.createdAt;
+        const createdAtDate = moment(date).format("DD/MM/YYYY").valueOf();
         return (
             <Dialog
                 iconName={IconNames.USER}
@@ -60,7 +63,7 @@ export default class GraphPage extends React.Component {
                 title={`${userData.screenName}`}
             >
                 <div className="pt-dialog-body">
-                    <b>Account created at:</b> {userData.createdAt}
+                    <b>Account created at:</b> {createdAtDate}
                     <br/>
                     <b>Account description:</b> {userData.description}
                     <br/>
