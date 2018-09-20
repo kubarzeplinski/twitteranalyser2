@@ -13,18 +13,15 @@ public class Node {
 
     private final String caption;
     private final long id;
-    private final int size;
 
     public Node(TwitterUser user) {
         this.caption = user.getScreenName();
         this.id = user.getId();
-        this.size = user.getFollowersCount();
     }
 
     public Node(Keyword keyword) {
         this.caption = keyword.getName();
         this.id = keyword.getId();
-        this.size = 1;
     }
 
 }

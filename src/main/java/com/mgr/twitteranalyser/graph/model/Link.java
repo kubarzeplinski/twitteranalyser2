@@ -9,6 +9,5 @@ public class Link {
 
     private final String source;
     private final String target;
-    private final int sourceSize;
 
 }
