@@ -34,7 +34,7 @@ public class GraphService {
 
         Set<Link> links = nodes
                 .stream()
-                .map(node -> new Link(node.getCaption(), keywordNode.getCaption()))
+                .map(node -> new Link(node.getCaption(), keywordNode.getCaption(), node.getSize()))
                 .collect(Collectors.toSet());
 
         return new GraphDataDTO(links);

@@ -3,8 +3,8 @@ import "./graph.scss"
 import React from "react";
 import PropTypes from "prop-types";
 import {Card, Intent, Spinner, Tag} from "@blueprintjs/core";
-import * as d3 from "d3";
-import _ from "lodash";
+import GraphContent from "./GraphContent";
+import {prepareGraphContentData} from "./graphContentUtils";
 
 export default class Graph extends React.Component {
 
@@ -18,11 +18,13 @@ export default class Graph extends React.Component {
         handleUserDialogClose: PropTypes.func
     };
 
-    componentDidMount() {
-        this.prepareCardContent();
-    }
+    // componentDidMount() {
+    // this.prepareCardContent();
+    // }
 
     render() {
+        /*<svg className="graph-chart"/>*/
+        /*{this.prepareCardContent()}*/
         return (
             <div>
                 <div className="card-label">
@@ -32,7 +34,6 @@ export default class Graph extends React.Component {
                     </Tag>
                 </div>
                 <Card className="graph-card">
-                    <svg className="graph-chart"/>
                     {this.prepareCardContent()}
                 </Card>
             </div>
@@ -47,10 +48,31 @@ export default class Graph extends React.Component {
                 </div>
             );
         }
-        this.renderGraph();
+        const data = prepareGraphContentData(this.props.links, 'sourceSize', this.graphContentColors);
+        return (
+            <GraphContent
+                ref={(e) => {
+                    this.graphContent = e;
+                }}
+                data={data}
+                width={1490}
+                height={494}
+                backgroundColor={"#FFFFFF"}
+                initClickListener={false}
+            />
+        );
     }
 
-    renderGraph() {
+    get graphContentColors() {
+        return {
+            labelColor: '#FFF',
+            backgroundColor: '#0a2744',
+            hoverBackgroundColor: '#1b6c9e',
+            opacityBackgroundColor: '#121212'
+        }
+    }
+
+    /*renderGraph() {
         const {links} = this.props;
         const linksCopy = _.cloneDeep(links);
         const nodes = {};
@@ -141,6 +163,6 @@ export default class Graph extends React.Component {
             this.props.handleNodeClick(event.name);
         }
 
-    }
+    }*/
 
 }
