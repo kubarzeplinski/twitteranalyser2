@@ -3,7 +3,8 @@ import "./graph.scss"
 import React from "react";
 import PropTypes from "prop-types";
 import {Card, Intent, Spinner, Tag} from "@blueprintjs/core";
-import GraphContent from "./GraphContent";
+import GraphContent from "./graph-content/GraphContent";
+import GraphNavigation from "./graph-navigation/GraphNavigation";
 
 export default class Graph extends React.Component {
 
@@ -26,6 +27,10 @@ export default class Graph extends React.Component {
                         <span>{this.props.links.length}</span>
                     </Tag>
                 </div>
+                <GraphNavigation
+                    onPlusClick={() => this.graphContent.zoomTransition(1.3)}
+                    onMinusClick={() => this.graphContent.zoomTransition(0.7)}
+                />
                 <Card className="graph-card">
                     {this.prepareCardContent()}
                 </Card>
@@ -41,7 +46,16 @@ export default class Graph extends React.Component {
                 </div>
             );
         }
-        return <GraphContent {...this.props} />;
+        return (
+            <GraphContent
+                ref={(e) => {
+                    this.graphContent = e;
+                }}
+                {...this.props}
+                width={1473}
+                height={494}
+            />
+        );
     }
 
 }

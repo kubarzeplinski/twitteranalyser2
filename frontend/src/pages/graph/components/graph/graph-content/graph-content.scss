@@ -1,0 +1,24 @@
+#graph-content {
+
+    cursor: move;
+
+    .links line {
+        stroke: #999;
+        stroke-opacity: 0.2;
+    }
+
+    .nodes {
+
+        cursor: pointer;
+
+        circle {
+            stroke: #999;
+            stroke-width: 1.5px;
+        }
+
+        .node-label {
+            font-size: 8px;
+        }
+
+    }
+}
