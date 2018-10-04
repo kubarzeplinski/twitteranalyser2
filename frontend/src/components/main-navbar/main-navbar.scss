@@ -1,22 +1,68 @@
-.main-navbar {
+.bp3-navbar.main-navbar {
     background-color: #0a2744;
-    color: #FFFFFF;
+    position: relative;
+    z-index: 10;
+    box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.1), 0 0 0 rgba(16, 22, 26, 0), 0 1px 1px rgba(16, 22, 26, 0.2);
+    height: 50px;
+    padding: 0 15px;
+    text-transform: none;
+    line-height: 1.28581;
+    letter-spacing: 0;
+    font-family: -apple-system, "BlinkMacSystemFont", "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Open Sans", "Helvetica Neue", "Icons16", sans-serif;
+    font-size: 14px;
+    font-weight: 400;
 
-    .pt-navbar-heading {
-        color: #FFFFFF;
+    .bp3-navbar-group.bp3-align-left {
+        float: left;
+        display: flex;
+        align-items: center;
+        height: 50px;
+
+        .bp3-navbar-heading {
+            margin-right: 15px;
+            font-size: 16px;
+            color: #FFFFFF;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .bp3-navbar-divider.navbar-divider {
+            background-color: #FFFFFF;
+            margin: 0 10px;
+            border-left: 1px solid rgba(16, 22, 26, 0.15);
+            height: 20px;
+        }
+
+        .bp3-button.bp3-minimal.navbar-icon {
+            background-color: #0a2744;
+            color: #FFFFFF;
+            border: none;
+            cursor: pointer;
+            text-transform: none;
+            letter-spacing: 0;
+            font-family: -apple-system, "BlinkMacSystemFont", "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Open Sans", "Helvetica Neue", "Icons16", sans-serif;
+            font-size: 15px;
+            font-weight: 400;
+            margin: 0 5px;
+            display: inline-block;
+            border-radius: 3px;
+            padding: 0 10px;
+            vertical-align: middle;
+            min-width: 30px;
+            min-height: 30px;
+            line-height: 30px;
+
+            .bp3-icon {
+                margin-left: 7px;
+            }
+        }
     }
 
-    .navbar-divider {
-        background-color: #FFFFFF;
-    }
-
-    .navbar-icon {
-        &::before {
-            color: #FFFFFF;
-        }
-        span {
-            color: #FFFFFF;
-        }
+    .bp3-navbar-group.bp3-align-right {
+        display: flex;
+        align-items: center;
+        height: 50px;
+        float: right;
     }
 
     .pulsing-keyword-tag {

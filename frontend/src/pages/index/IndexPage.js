@@ -18,7 +18,7 @@ export default class IndexPage extends React.Component {
                         <Card elevation={Elevation.TWO}>
                             <h4>
                                 Statistics&nbsp;
-                                <Icon iconName={IconNames.CHART} iconSize={Icon.SIZE_LARGE}/>
+                                <Icon icon={IconNames.CHART} iconSize={Icon.SIZE_LARGE}/>
                             </h4>
                             <p>Analyse twitter live streaming and your historical data for chosen keyword.</p>
                             <ul>
@@ -33,7 +33,7 @@ export default class IndexPage extends React.Component {
                         <Card elevation={Elevation.TWO}>
                             <h4>
                                 Graph&nbsp;
-                                <Icon iconName={IconNames.GRAPH} iconSize={Icon.SIZE_LARGE}/>
+                                <Icon icon={IconNames.GRAPH} iconSize={Icon.SIZE_LARGE}/>
                             </h4>
                             <p>Analyse your historical twitter data from live streaming sessions for chosen keyword.</p>
                         </Card>
