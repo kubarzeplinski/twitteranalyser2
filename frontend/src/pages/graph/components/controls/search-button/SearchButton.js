@@ -10,7 +10,7 @@ export default class SearchButton extends React.Component {
     render() {
         return (
             <button
-                className="pt-button pt-intent-success"
+                className="bp3-button bp3-intent-success"
                 type="button"
                 onClick={this.props.onClick}
             >

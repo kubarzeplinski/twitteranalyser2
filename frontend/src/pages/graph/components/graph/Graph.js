@@ -23,7 +23,7 @@ export default class Graph extends React.Component {
             <div>
                 <div className="card-label">
                     <h5>Number of users</h5>
-                    <Tag className="pt-large">
+                    <Tag className="bp3-large">
                         <span>{this.props.links.length}</span>
                     </Tag>
                 </div>
@@ -42,7 +42,7 @@ export default class Graph extends React.Component {
         if (this.props.isDataLoading) {
             return (
                 <div className="graph-spinner">
-                    <Spinner intent={Intent.PRIMARY} className="pt-large"/>
+                    <Spinner intent={Intent.PRIMARY} className="bp3-large"/>
                 </div>
             );
         }
@@ -53,7 +53,7 @@ export default class Graph extends React.Component {
                 }}
                 {...this.props}
                 width={1473}
-                height={494}
+                height={475}
             />
         );
     }

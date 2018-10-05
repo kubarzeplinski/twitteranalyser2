@@ -14,10 +14,11 @@ export default class Controls extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className="controls">
                 <KeywordSelector
                     onChange={this.props.handleKeywordChange}
                     keywords={this.props.keywords}
+                    keyword={this.props.keyword}
                 />
                 <SearchButton
                     onClick={() => this.handleSearchButtonClick()}

@@ -41,8 +41,8 @@ export default class GraphContent extends React.Component {
         this.links = _.cloneDeep(this.props.links);
         this.computeDistinctNodes(_.cloneDeep(this.links));
         this.createSimulation();
-        this.createNodes();
         this.createLinks();
+        this.createNodes();
         this.simulation.on("tick", this.handleTick.bind(this));
         this.initZoom();
     }

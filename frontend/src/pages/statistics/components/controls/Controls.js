@@ -28,7 +28,7 @@ export default class Controls extends React.Component {
     render() {
         const {isKeywordInputBlocked, isRunButtonBlocked} = this.props;
         return (
-            <div>
+            <div className="controls">
                 <KeywordInput
                     isDisabled={isKeywordInputBlocked}
                     onChange={this.props.handleKeywordChange}

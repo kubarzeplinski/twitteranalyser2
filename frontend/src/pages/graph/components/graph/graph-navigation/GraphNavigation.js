@@ -20,12 +20,12 @@ export default class GraphNavigation extends React.Component {
         return (
             <div className="graph-navigation">
                 <Icon
-                    iconName={IconNames.ZOOM_IN}
+                    icon={IconNames.ZOOM_IN}
                     iconSize={Icon.SIZE_LARGE}
                     onClick={this.props.onPlusClick}
                 />
                 <Icon
-                    iconName={IconNames.ZOOM_OUT}
+                    icon={IconNames.ZOOM_OUT}
                     iconSize={Icon.SIZE_LARGE}
                     onClick={this.props.onMinusClick}
                 />

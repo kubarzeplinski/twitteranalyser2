@@ -56,14 +56,20 @@ body {
 
         }
 
-        h4 button {
-            line-height: 0.9rem;
-            background-color: white;
-            box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.1), 0 0 0 rgba(16, 22, 26, 0), 0 1px 1px rgba(16, 22, 26, 0.2);
-            cursor: pointer;
-            border-radius: 3px;
-            color: #182026;
-            border: none;
+        h4 {
+            .bp3-button {
+                line-height: 0.9rem;
+                box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.1), 0 0 0 rgba(16, 22, 26, 0), 0 1px 1px rgba(16, 22, 26, 0.2);
+                cursor: pointer;
+                border-radius: 3px;
+                color: #182026;
+                border: none;
+                background-color: #f5f8fa;;
+            }
+
+            .bp3-button:hover {
+                background-color: white;
+            }
         }
     }
 
@@ -82,12 +88,27 @@ body {
     h4 {
         color: #182026;
         font-weight: 600;
-        margin: 0 0 10px;
+        margin: 0 10px 10px 0;
         padding: 0;
         line-height: 0.9em;
         font-size: 20px;
         display: block;
         font-family: -apple-system, "BlinkMacSystemFont", "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Open Sans", "Helvetica Neue", "Icons16", sans-serif;
+    }
+
+    h5 {
+        color: #182026;
+        font-weight: 600;
+        margin: 0 10px 10px 0;
+        padding: 0;
+        line-height: 0.9em;
+        font-size: 16px;
+        display: block;
+        font-family: -apple-system, "BlinkMacSystemFont", "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Open Sans", "Helvetica Neue", "Icons16", sans-serif;
+    }
+
+    .controls {
+        margin: 20px 0 0 0;
     }
 
 }

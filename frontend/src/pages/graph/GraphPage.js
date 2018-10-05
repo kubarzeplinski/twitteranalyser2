@@ -1,8 +1,8 @@
 import Controls from "./components/controls/ControlsContainer";
 import Graph from "./components/graph/GraphContainer";
 import React from "react";
-import {Button, Dialog} from "@blueprintjs/core";
-import * as IconNames from "@blueprintjs/icons/lib/esm/generated/iconNames";
+import {Button, Dialog, Classes} from "@blueprintjs/core";
+import {IconNames} from "@blueprintjs/icons";
 import PropTypes from "prop-types";
 import moment from "moment";
 
@@ -29,17 +29,17 @@ export default class GraphPage extends React.Component {
                 <h4>
                     Graph
                     <Button
-                        className="pt-minimal"
-                        iconName={IconNames.INFO_SIGN}
+                        className="bp3-minimal"
+                        icon={IconNames.INFO_SIGN}
                         onClick={handleInfoButtonClick}
                     />
                     <Dialog
-                        iconName={IconNames.GRAPH}
+                        icon={IconNames.GRAPH}
                         isOpen={isInfoDialogOpen}
                         onClose={handleInfoDialogClose}
                         title="Graph"
                     >
-                        <div className="pt-dialog-body">
+                        <div className={Classes.DIALOG_BODY}>
                             Some content
                         </div>
                     </Dialog>
@@ -57,12 +57,12 @@ export default class GraphPage extends React.Component {
         const createdAtDate = moment(date).format("DD/MM/YYYY").valueOf();
         return (
             <Dialog
-                iconName={IconNames.USER}
+                icon={IconNames.USER}
                 isOpen={isUserDialogOpen}
                 onClose={handleUserDialogClose}
                 title={`${userData.screenName}`}
             >
-                <div className="pt-dialog-body">
+                <div className={Classes.DIALOG_BODY}>
                     <b>Account created at:</b> {createdAtDate}
                     <br/>
                     <b>Account description:</b> {userData.description}

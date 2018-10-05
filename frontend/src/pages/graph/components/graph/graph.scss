@@ -1,8 +1,8 @@
 .panel-content {
 
-    .pt-card.graph-card {
+    .bp3-card.graph-card {
         width: 100% !important;
-        height: 500px !important;
+        height: 480px !important;
         padding: 3px;
         margin-top: 5px;
 
@@ -31,7 +31,7 @@
             height: 100%;
             display: flex;
 
-            .pt-spinner {
+            .bp3-spinner {
                 margin: auto;
             }
         }
@@ -43,7 +43,7 @@
             display: inline-block;
         }
 
-        .pt-tag {
+        .bp3-tag {
             margin-left: 10px;
         }
     }
