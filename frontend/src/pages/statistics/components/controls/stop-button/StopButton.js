@@ -16,7 +16,7 @@ export default class StopButton extends React.Component {
         return (
             <button
                 type="button"
-                className="pt-button pt-intent-danger"
+                className="bp3-button bp3-intent-danger"
                 disabled={this.props.isDisabled}
                 onClick={this.props.onClick}
             >

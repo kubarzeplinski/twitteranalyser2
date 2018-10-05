@@ -27,7 +27,7 @@ export default class KeywordInput extends React.Component {
     render() {
         return (
             <input
-                className="pt-input .modifier keyword-input"
+                className="bp3-input .modifier keyword-input"
                 dir="auto"
                 disabled={this.props.isDisabled}
                 onChange={this.handleChange.bind(this)}

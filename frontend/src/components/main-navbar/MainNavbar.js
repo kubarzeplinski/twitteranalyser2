@@ -43,7 +43,7 @@ export default class MainNavbar extends React.Component {
     prepareKeyWordTag() {
         const {isProcessingOn, keyword} = this.props;
         if (isProcessingOn) {
-            const className = classNames("pt-large", { "pulsing-keyword-tag": isProcessingOn });
+            const className = classNames("bp3-large", { "pulsing-keyword-tag": isProcessingOn });
             return (
                 <Tag className={className} intent={Intent.SUCCESS}>
                     <span>Live analysis for keyword: {keyword}</span>

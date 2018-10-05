@@ -15,7 +15,7 @@ export default class RunButton extends React.Component {
     render() {
         return (
             <button
-                className="pt-button pt-intent-success"
+                className="bp3-button bp3-intent-success"
                 disabled={this.props.isDisabled}
                 type="button"
                 onClick={this.props.onClick}

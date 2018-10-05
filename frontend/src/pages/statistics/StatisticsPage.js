@@ -4,7 +4,7 @@ import _ from "lodash";
 import "whatwg-fetch";
 import Controls from "./components/controls/ControlsContainer";
 import {IconNames} from "@blueprintjs/icons";
-import {Button, Card, Dialog, Elevation, Intent, Tag} from "@blueprintjs/core";
+import {Button, Card, Classes, Dialog, Elevation, Intent, Tag} from "@blueprintjs/core";
 
 let stompClient = null;
 
@@ -44,17 +44,20 @@ export default class StatisticsPage extends React.Component {
                     Statistics
                     <Button
                         className="pt-minimal"
-                        iconName={IconNames.INFO_SIGN}
+                        icon={IconNames.INFO_SIGN}
                         onClick={handleInfoButtonClick}
                     />
                     <Dialog
-                        iconName={IconNames.CHART}
+                        icon={IconNames.CHART}
                         isOpen={isInfoDialogOpen}
                         onClose={handleInfoDialogClose}
                         title="Statistics"
                     >
-                        <div className="pt-dialog-body">
-                            Some content
+                        <div className={Classes.DIALOG_BODY}>
+                            <p>
+                                Statistics page is a place where you can analyze twitter live streaming data by every
+                                keyword.
+                            </p>
                         </div>
                     </Dialog>
                 </h4>
@@ -89,7 +92,7 @@ export default class StatisticsPage extends React.Component {
             return;
         }
         return _.map(latest5Users, (user) =>
-            <Tag key={user.userId} className="pt-large" intent={Intent.PRIMARY}>
+            <Tag key={user.userId} className="bp3-large" intent={Intent.PRIMARY}>
                 <span>{user.screenName}</span>
             </Tag>
         );
@@ -101,7 +104,7 @@ export default class StatisticsPage extends React.Component {
             return;
         }
         return (
-            <Tag className="pt-large">
+            <Tag className="bp3-large">
                 <span>{numberOfUsers}</span>
             </Tag>
         );
@@ -113,7 +116,7 @@ export default class StatisticsPage extends React.Component {
             return;
         }
         return _.map(top5Locations, (location) =>
-            <Tag key={location} className="pt-large" intent={Intent.SUCCESS}>
+            <Tag key={location} className="bp3-large" intent={Intent.SUCCESS}>
                 <span>{location}</span>
             </Tag>
         );
@@ -125,7 +128,7 @@ export default class StatisticsPage extends React.Component {
             return;
         }
         return _.map(top5UsersByFollowers, (user) =>
-            <Tag key={user.userId} className="pt-large" intent={Intent.WARNING}>
+            <Tag key={user.userId} className="bp3-large" intent={Intent.WARNING}>
                 <span>{user.screenName}</span>
             </Tag>
         );

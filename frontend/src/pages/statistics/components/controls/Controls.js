@@ -2,10 +2,11 @@ import "./controls.scss";
 
 import React from "react";
 import PropTypes from "prop-types";
+import {Intent, ProgressBar, Toaster} from "@blueprintjs/core";
+import {IconNames} from "@blueprintjs/icons";
 import KeywordInput from "./keyword-input/KeywordInput";
 import RunButton from "./run-button/RunButton";
 import StopButton from "./stop-button/StopButton";
-import {Intent, ProgressBar, Toaster} from "@blueprintjs/core";
 
 export default class Controls extends React.Component {
 
@@ -21,8 +22,7 @@ export default class Controls extends React.Component {
 
     constructor(props) {
         super(props);
-        this.runToaster = React.createRef();
-        this.stopToaster = React.createRef();
+        this.toaster = React.createRef();
     }
 
     render() {
@@ -47,34 +47,27 @@ export default class Controls extends React.Component {
                     intent={Intent.PRIMARY}
                     value={isKeywordInputBlocked && isRunButtonBlocked ? 1 : 0}
                 />
-                <Toaster ref={this.runToaster}/>
-                <Toaster ref={this.stopToaster}/>
+                <Toaster ref={this.toaster}/>
             </div>
         );
     }
 
     handleRunButtonClick() {
         this.props.handleRunButtonClick();
-        const key = this.runToaster.current.show();
-        this.runToaster.current.update(
-            key,
-            {
-                intent: Intent.SUCCESS,
-                message: "Analysis with keyword " + this.props.keyword + " started."
-            }
-        );
+        this.toaster.current.show({
+            intent: Intent.SUCCESS,
+            message: "Analysis with keyword " + this.props.keyword + " started.",
+            icon: IconNames.TICK
+        });
     }
 
     handleStopButtonClick() {
         this.props.handleStopButtonClick();
-        const key = this.stopToaster.current.show();
-        this.stopToaster.current.update(
-            key,
-            {
-                intent: Intent.DANGER,
-                message: "Analysis stopped."
-            }
-        );
+        this.toaster.current.show({
+            intent: Intent.DANGER,
+            message: "Analysis stopped.",
+            icon: IconNames.WARNING_SIGN
+        });
     }
 
 }
