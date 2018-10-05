@@ -1,3 +1,9 @@
-.bp3-progress-bar {
-    width: 48%;
+.controls {
+    .bp3-progress-bar {
+        width: 48%;
+    }
+
+    .bp3-button {
+        margin-top: -20px;
+    }
 }
