@@ -26,6 +26,7 @@ public class GraphService {
     private final KeywordRepository keywordRepository;
     private final TwitterUserRepository twitterUserRepository;
 
+    //TODO fix for retweeted relation
     GraphDataDTO getData(String keyword) {
         Node keywordNode = getKeywordNode(keyword);
         if (keywordNode == null) {
@@ -51,7 +52,7 @@ public class GraphService {
 
     private Set<Node> getUsers(String keyword) {
         return twitterUserRepository
-                .findAllByKeyword(keyword)
+                .findAllInterestedInByKeyword(keyword)
                 .map(Node::new)
                 .collect(Collectors.toSet());
     }

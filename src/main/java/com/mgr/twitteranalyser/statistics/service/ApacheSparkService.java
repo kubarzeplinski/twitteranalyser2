@@ -2,6 +2,7 @@ package com.mgr.twitteranalyser.statistics.service;
 
 import com.mgr.twitteranalyser.global.model.InterestedInRelation;
 import com.mgr.twitteranalyser.global.model.Keyword;
+import com.mgr.twitteranalyser.global.model.RetweetedToRelation;
 import com.mgr.twitteranalyser.global.model.TwitterUser;
 import com.mgr.twitteranalyser.global.repository.KeywordRepository;
 import com.mgr.twitteranalyser.global.repository.TwitterUserRepository;
@@ -48,7 +49,8 @@ public class ApacheSparkService implements Serializable {
         JavaPairDStream<User, Status> userStatusStream =
                 filteredDStream.mapToPair((status) -> new Tuple2<>(status.getUser(), status));
 
-        Keyword finalKeyword = keyword;
+        Keyword finalKeyword1 = keyword;
+        Keyword finalKeyword2 = keyword;
         userStatusStream.foreachRDD((VoidFunction<JavaPairRDD<User, Status>>) pairRDD ->
                 pairRDD.foreach((VoidFunction<Tuple2<User, Status>>) t -> {
                     User user = t._1();
@@ -58,12 +60,33 @@ public class ApacheSparkService implements Serializable {
                     if (twitterUser == null) {
                         twitterUser = new TwitterUser(user);
                     }
-                    InterestedInRelation interestedInRelation = new InterestedInRelation(finalKeyword, twitterUser, status);
-                    twitterUser.addInterestedInRelation(interestedInRelation);
-                    twitterUserRepository.save(twitterUser);
+
+                    if (status.getRetweetedStatus() != null) {
+                        prepareRetweetedToRelation(finalKeyword1, twitterUser, status);
+                    } else {
+                        InterestedInRelation interestedInRelation = new InterestedInRelation(finalKeyword2, twitterUser, status);
+                        twitterUser.addInterestedInRelation(interestedInRelation);
+                        twitterUserRepository.save(twitterUser);
+                    }
                 })
         );
+    }
 
+    private void prepareRetweetedToRelation(Keyword keyword, TwitterUser retweeter, Status status) {
+        Status retweetedStatus = status.getRetweetedStatus();
+        TwitterUser twitterUser = new TwitterUser(retweetedStatus.getUser());
+        RetweetedToRelation retweetedToRelation = new RetweetedToRelation(retweeter, twitterUser, status);
+        retweeter.addRetweetedToRelation(retweetedToRelation);
+        if (retweetedStatus.getRetweetedStatus() != null) {
+            twitterUserRepository.save(retweeter);
+            twitterUserRepository.save(twitterUser);
+            prepareRetweetedToRelation(keyword, twitterUser, retweetedStatus);
+        } else {
+            InterestedInRelation interestedInRelation = new InterestedInRelation(keyword, twitterUser, status);
+            twitterUser.addInterestedInRelation(interestedInRelation);
+            twitterUserRepository.save(retweeter);
+            twitterUserRepository.save(twitterUser);
+        }
     }
 
 }

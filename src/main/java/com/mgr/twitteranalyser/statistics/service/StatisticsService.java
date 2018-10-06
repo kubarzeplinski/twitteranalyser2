@@ -14,8 +14,9 @@ public class StatisticsService {
 
     private final TwitterUserRepository twitterUserRepository;
 
+    //TODO rewrite to use TwitterUserDTO
     public StatisticsDTO getStatistics(String keyword) {
-        List<TwitterUser> latest5Users = twitterUserRepository.findTop5ByKeywordOrderByCreatedAtDesc(keyword);
+        List<TwitterUser> latest5Users = twitterUserRepository.findTop5CreatedByKeyword(keyword);
         Long numberOfUsers = twitterUserRepository.countByKeyword(keyword);
         List<String> top5Locations = twitterUserRepository.findDistinctTop5ByKeywordOrderByLocationAsc(keyword);
         List<TwitterUser> top5UsersByFollowers =
