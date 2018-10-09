@@ -1,12 +1,12 @@
 package com.mgr.twitteranalyser.global.repository;
 
 import com.mgr.twitteranalyser.global.model.Keyword;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.neo4j.repository.Neo4jRepository;
 
 import java.io.Serializable;
 import java.util.stream.Stream;
 
-public interface KeywordRepository extends CrudRepository<Keyword, Long>, Serializable {
+public interface KeywordRepository extends Neo4jRepository<Keyword, Long>, Serializable {
 
     Keyword findByName(String name);
 

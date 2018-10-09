@@ -64,9 +64,13 @@ public class ApacheSparkService implements Serializable {
                     if (status.getRetweetedStatus() != null) {
                         prepareRetweetedToRelation(finalKeyword1, twitterUser, status);
                     } else {
-                        InterestedInRelation interestedInRelation = new InterestedInRelation(finalKeyword2, twitterUser, status);
-                        twitterUser.addInterestedInRelation(interestedInRelation);
-                        twitterUserRepository.save(twitterUser);
+                        InterestedInRelation interestedInRelation = new InterestedInRelation(
+                                finalKeyword2,
+                                twitterUser,
+                                status
+                        );
+                        finalKeyword1.addInterestedInRelation(interestedInRelation);
+                        keywordRepository.save(finalKeyword1);
                     }
                 })
         );
@@ -83,8 +87,8 @@ public class ApacheSparkService implements Serializable {
             prepareRetweetedToRelation(keyword, twitterUser, retweetedStatus);
         } else {
             InterestedInRelation interestedInRelation = new InterestedInRelation(keyword, twitterUser, status);
-            twitterUser.addInterestedInRelation(interestedInRelation);
-            twitterUserRepository.save(retweeter);
+            keyword.addInterestedInRelation(interestedInRelation);
+            keywordRepository.save(keyword);
             twitterUserRepository.save(twitterUser);
         }
     }
