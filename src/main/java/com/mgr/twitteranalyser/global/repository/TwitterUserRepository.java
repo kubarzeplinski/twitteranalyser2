@@ -51,4 +51,9 @@ public interface TwitterUserRepository extends Neo4jRepository<TwitterUser, Long
             "RETURN user")
     Stream<TwitterUser> findAllInterestedInByKeyword(@Param("keyword") String keyword);
 
+    @Query("MATCH (retweeter:TwitterUser)-[relation1:RETWEETED_TO]->(user:TwitterUser)-[relation2:INTERESTED_IN]->(keyword:Keyword) " +
+            "WHERE keyword.name = {keyword} " +
+            "RETURN retweeter, relation1")
+    Stream<TwitterUser> findAllRetweetedToByKeyword(@Param("keyword") String keyword);
+
 }

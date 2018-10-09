@@ -2,18 +2,19 @@ package com.mgr.twitteranalyser.graph;
 
 import com.mgr.twitteranalyser.global.model.Keyword;
 import com.mgr.twitteranalyser.global.model.KeywordDTO;
+import com.mgr.twitteranalyser.global.model.RetweetedToRelation;
 import com.mgr.twitteranalyser.global.model.TwitterUser;
 import com.mgr.twitteranalyser.global.repository.KeywordRepository;
 import com.mgr.twitteranalyser.global.repository.TwitterUserRepository;
 import com.mgr.twitteranalyser.graph.model.GraphDataDTO;
 import com.mgr.twitteranalyser.graph.model.Link;
-import com.mgr.twitteranalyser.graph.model.Node;
 import com.mgr.twitteranalyser.graph.model.TwitterUserDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -26,35 +27,57 @@ public class GraphService {
     private final KeywordRepository keywordRepository;
     private final TwitterUserRepository twitterUserRepository;
 
-    //TODO fix for retweeted relation
     GraphDataDTO getData(String keyword) {
-        Node keywordNode = getKeywordNode(keyword);
-        if (keywordNode == null) {
+        if (!keywordExists(keyword)) {
             return null;
         }
-        Set<Node> nodes = getUsers(keyword);
-
-        Set<Link> links = nodes
-                .stream()
-                .map(node -> new Link(node.getCaption(), keywordNode.getCaption()))
-                .collect(Collectors.toSet());
-
+        Set<Link> links = new HashSet<>();
+        links.addAll(computeInterestedInLinks(getInterestedInUsers(keyword), keyword));
+        links.addAll(computeRetweetedToLinks(getRetweetedToUsers(keyword)));
         return new GraphDataDTO(links);
     }
 
-    private Node getKeywordNode(String keyword) {
+    private boolean keywordExists(String keyword) {
         Keyword word = keywordRepository.findByName(keyword);
-        if (word != null) {
-            return new Node(word);
-        }
-        return null;
+        return word != null;
     }
 
-    private Set<Node> getUsers(String keyword) {
+    private Set<TwitterUser> getInterestedInUsers(String keyword) {
         return twitterUserRepository
                 .findAllInterestedInByKeyword(keyword)
-                .map(Node::new)
                 .collect(Collectors.toSet());
+    }
+
+    private Set<Link> computeInterestedInLinks(Set<TwitterUser> interestedInUsers, String keywordName) {
+        return interestedInUsers
+                .stream()
+                .map(user -> new Link(user.getScreenName(), keywordName))
+                .collect(Collectors.toSet());
+    }
+
+    private Set<TwitterUser> getRetweetedToUsers(String keyword) {
+        return twitterUserRepository
+                .findAllRetweetedToByKeyword(keyword)
+                .collect(Collectors.toSet());
+    }
+
+    private Set<Link> computeRetweetedToLinks(Set<TwitterUser> retweetedToUsers) {
+        Set<Link> links = new HashSet<>();
+        retweetedToUsers
+                .forEach(user -> {
+                            List<RetweetedToRelation> relations = user.getRetweetedToRelations();
+                            if (relations != null) {
+                                relations.forEach(retweetedToRelation ->
+                                        links.add(new Link(
+                                                        user.getScreenName(),
+                                                        retweetedToRelation.getTwitterUser().getScreenName()
+                                                )
+                                        )
+                                );
+                            }
+                        }
+                );
+        return links;
     }
 
     public List<KeywordDTO> getKeywords() {
