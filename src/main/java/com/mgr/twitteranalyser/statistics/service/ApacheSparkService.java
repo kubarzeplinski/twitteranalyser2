@@ -78,19 +78,19 @@ public class ApacheSparkService implements Serializable {
 
     private void prepareRetweetedToRelation(Keyword keyword, TwitterUser retweeter, Status status) {
         Status retweetedStatus = status.getRetweetedStatus();
-        TwitterUser twitterUser = new TwitterUser(retweetedStatus.getUser());
+        TwitterUser twitterUser = twitterUserRepository.findByUserId(retweetedStatus.getUser().getId());
+        if (twitterUser == null) {
+            twitterUser = new TwitterUser(retweetedStatus.getUser());
+        }
         RetweetedToRelation retweetedToRelation = new RetweetedToRelation(retweeter, twitterUser, status);
         retweeter.addRetweetedToRelation(retweetedToRelation);
+        twitterUserRepository.save(retweeter);
         if (retweetedStatus.getRetweetedStatus() != null) {
-            twitterUserRepository.save(retweeter);
-            twitterUserRepository.save(twitterUser);
             prepareRetweetedToRelation(keyword, twitterUser, retweetedStatus);
-        } else {
-            InterestedInRelation interestedInRelation = new InterestedInRelation(keyword, twitterUser, status);
-            keyword.addInterestedInRelation(interestedInRelation);
-            keywordRepository.save(keyword);
-            twitterUserRepository.save(twitterUser);
         }
+        InterestedInRelation interestedInRelation = new InterestedInRelation(keyword, twitterUser, status);
+        keyword.addInterestedInRelation(interestedInRelation);
+        keywordRepository.save(keyword);
     }
 
 }

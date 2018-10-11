@@ -34,6 +34,7 @@ public class GraphService {
         Set<Link> links = new HashSet<>();
         links.addAll(computeInterestedInLinks(getInterestedInUsers(keyword), keyword));
         links.addAll(computeRetweetedToLinks(getRetweetedToUsers(keyword)));
+        links.add(new Link(keyword, keyword));
         return new GraphDataDTO(links);
     }
 

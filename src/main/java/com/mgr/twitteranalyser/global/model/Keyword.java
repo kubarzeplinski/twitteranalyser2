@@ -9,6 +9,7 @@ import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @NodeEntity
@@ -23,7 +24,7 @@ public class Keyword implements Serializable {
 
     @JsonIgnoreProperties("keyword")
     @Relationship(type = "INTERESTED_IN", direction = Relationship.INCOMING)
-    private List<InterestedInRelation> interestedInRelations;
+    private List<InterestedInRelation> interestedInRelations = new ArrayList<>();
 
     public Keyword(String name) {
         this.name = name;

@@ -9,6 +9,10 @@ export default class GraphContent extends React.Component {
     static propTypes = {
         handleNodeClick: PropTypes.func,
         height: PropTypes.number,
+        links: PropTypes.arrayOf(PropTypes.shape({
+            source: PropTypes.string.isRequired,
+            target: PropTypes.string.isRequired,
+        })),
         nodes_data: PropTypes.array,
         width: PropTypes.number
     };
@@ -21,7 +25,7 @@ export default class GraphContent extends React.Component {
         this.nodes = _.map(links, link => {
             return {name: link.source}
         });
-        this.nodes.push({name: links[0] && links[0].target});
+        // this.nodes.push({name: links[0] && links[0].target});
     }
 
     render() {
