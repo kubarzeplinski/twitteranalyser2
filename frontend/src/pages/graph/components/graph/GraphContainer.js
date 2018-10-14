@@ -6,7 +6,7 @@ import {handleUserDataFetch, handleUserDialogOpen} from "../../redux/graph-page"
 function mapStateToProps(state) {
     const {data, isDataLoading} = state.graphControls;
     return {
-        links: prepareData(data),
+        data: prepareData(data),
         isDataLoading
     };
 }
@@ -27,9 +27,9 @@ function mapDispatchToProps(dispatch) {
 
 function prepareData(data) {
     if (_.isNil(data)) {
-        return [];
+        return {links: [], nodes: []};
     }
-    return data.links;
+    return data;
 }
 
 const GraphContainer = connect(

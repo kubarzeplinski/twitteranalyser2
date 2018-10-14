@@ -8,6 +8,7 @@ import com.mgr.twitteranalyser.global.repository.KeywordRepository;
 import com.mgr.twitteranalyser.global.repository.TwitterUserRepository;
 import com.mgr.twitteranalyser.graph.model.GraphDataDTO;
 import com.mgr.twitteranalyser.graph.model.Link;
+import com.mgr.twitteranalyser.graph.model.Node;
 import com.mgr.twitteranalyser.graph.model.TwitterUserDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,11 +32,21 @@ public class GraphService {
         if (!keywordExists(keyword)) {
             return null;
         }
+
         Set<Link> links = new HashSet<>();
-        links.addAll(computeInterestedInLinks(getInterestedInUsers(keyword), keyword));
-        links.addAll(computeRetweetedToLinks(getRetweetedToUsers(keyword)));
-        links.add(new Link(keyword, keyword));
-        return new GraphDataDTO(links);
+        Set<Node> nodes = new HashSet<>();
+
+        Set<TwitterUser> interestedInUsers = getInterestedInUsers(keyword);
+        Set<TwitterUser> retweetedToUsers = getRetweetedToUsers(keyword);
+
+        nodes.addAll(computeNodes(interestedInUsers));
+        nodes.addAll(computeNodes(retweetedToUsers));
+        nodes.add(new Node(keyword, "red"));
+
+        links.addAll(computeInterestedInLinks(interestedInUsers, keyword));
+        links.addAll(computeRetweetedToLinks(retweetedToUsers));
+
+        return new GraphDataDTO(links, nodes);
     }
 
     private boolean keywordExists(String keyword) {
@@ -46,6 +57,12 @@ public class GraphService {
     private Set<TwitterUser> getInterestedInUsers(String keyword) {
         return twitterUserRepository
                 .findAllInterestedInByKeyword(keyword)
+                .collect(Collectors.toSet());
+    }
+
+    private Set<Node> computeNodes(Set<TwitterUser> users) {
+        return users.stream()
+                .map(user -> new Node(user.getScreenName(), "red"))
                 .collect(Collectors.toSet());
     }
 

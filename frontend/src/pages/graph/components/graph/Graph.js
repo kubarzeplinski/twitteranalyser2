@@ -9,10 +9,16 @@ import GraphNavigation from "./graph-navigation/GraphNavigation";
 export default class Graph extends React.Component {
 
     static propTypes = {
-        links: PropTypes.arrayOf(PropTypes.shape({
-            source: PropTypes.string.isRequired,
-            target: PropTypes.string.isRequired,
-        })),
+        data: PropTypes.shape({
+            links: PropTypes.arrayOf(PropTypes.shape({
+                source: PropTypes.string.isRequired,
+                target: PropTypes.string.isRequired,
+            })),
+            nodes: PropTypes.arrayOf(PropTypes.shape({
+                name: PropTypes.string.isRequired,
+                color: PropTypes.string.isRequired
+            }))
+        }),
         isDataLoading: PropTypes.bool,
         handleNodeClick: PropTypes.func,
         handleUserDialogClose: PropTypes.func
@@ -24,7 +30,7 @@ export default class Graph extends React.Component {
                 <div className="card-label">
                     <h5>Number of users</h5>
                     <Tag className="bp3-large">
-                        <span>{this.props.links.length}</span>
+                        <span>{this.props.data.links.length}</span>
                     </Tag>
                 </div>
                 <GraphNavigation

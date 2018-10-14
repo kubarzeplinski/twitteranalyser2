@@ -9,23 +9,21 @@ export default class GraphContent extends React.Component {
     static propTypes = {
         handleNodeClick: PropTypes.func,
         height: PropTypes.number,
-        links: PropTypes.arrayOf(PropTypes.shape({
-            source: PropTypes.string.isRequired,
-            target: PropTypes.string.isRequired,
-        })),
-        nodes_data: PropTypes.array,
+        data: PropTypes.shape({
+            links: PropTypes.arrayOf(PropTypes.shape({
+                source: PropTypes.string.isRequired,
+                target: PropTypes.string.isRequired,
+            })),
+            nodes: PropTypes.arrayOf(PropTypes.shape({
+                name: PropTypes.string.isRequired,
+                color: PropTypes.string.isRequired
+            }))
+        }),
         width: PropTypes.number
     };
 
     componentDidMount() {
         this.renderGraph();
-    }
-
-    computeDistinctNodes(links) {
-        this.nodes = _.map(links, link => {
-            return {name: link.source}
-        });
-        // this.nodes.push({name: links[0] && links[0].target});
     }
 
     render() {
@@ -42,8 +40,9 @@ export default class GraphContent extends React.Component {
     }
 
     renderGraph() {
-        this.links = _.cloneDeep(this.props.links);
-        this.computeDistinctNodes(_.cloneDeep(this.links));
+        this.links = _.cloneDeep(this.props.data.links);
+        this.nodes = _.cloneDeep(this.props.data.nodes);
+        // this.computeDistinctNodes(_.cloneDeep(this.links));
         this.createSimulation();
         this.createLinks();
         this.createNodes();
