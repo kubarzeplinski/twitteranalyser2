@@ -1,6 +1,5 @@
-package com.mgr.twitteranalyser.global.repository;
+package com.mgr.twitteranalyser.twitteruser;
 
-import com.mgr.twitteranalyser.global.model.TwitterUser;
 import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.repository.query.Param;

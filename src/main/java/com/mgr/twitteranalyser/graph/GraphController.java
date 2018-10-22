@@ -1,6 +1,8 @@
 package com.mgr.twitteranalyser.graph;
 
-import com.mgr.twitteranalyser.global.model.KeywordDTO;
+import com.mgr.twitteranalyser.keyword.KeywordService;
+import com.mgr.twitteranalyser.twitteruser.TwitterUserService;
+import com.mgr.twitteranalyser.keyword.KeywordDTO;
 import com.mgr.twitteranalyser.graph.model.GraphDataDTO;
 import com.mgr.twitteranalyser.graph.model.TwitterUserDTO;
 import lombok.AllArgsConstructor;
@@ -17,6 +19,8 @@ import java.util.List;
 public class GraphController {
 
     private final GraphService graphService;
+    private final TwitterUserService twitterUserService;
+    private final KeywordService keywordService;
 
     @GetMapping("/{keyword}")
     public GraphDataDTO getData(@PathVariable String keyword) {
@@ -25,12 +29,12 @@ public class GraphController {
 
     @GetMapping("/keywords")
     public List<KeywordDTO> getKeywords() {
-        return graphService.getKeywords();
+        return keywordService.getKeywords();
     }
 
     @GetMapping("/user/{screenName}")
     public TwitterUserDTO getUser(@PathVariable String screenName) {
-        return graphService.getUser(screenName);
+        return twitterUserService.getUser(screenName);
     }
 
 }

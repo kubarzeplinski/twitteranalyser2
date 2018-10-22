@@ -1,5 +1,8 @@
-package com.mgr.twitteranalyser.global.model;
+package com.mgr.twitteranalyser.twitteruser;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.mgr.twitteranalyser.interestedinrelation.InterestedInRelation;
+import com.mgr.twitteranalyser.retweetedtorelation.RetweetedToRelation;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.neo4j.ogm.annotation.GeneratedValue;
@@ -34,10 +37,12 @@ public class TwitterUser implements Serializable {
     private String screenName;
     private String timeZone;
 
-    @Relationship(type = "INTERESTED_IN")
-    private List<Keyword> keywords = new ArrayList<>();
     @Relationship(type = "RETWEETED_TO")
     private List<RetweetedToRelation> retweetedToRelations = new ArrayList<>();
+
+    @JsonIgnoreProperties("twitterUser")
+    @Relationship(type = "INTERESTED_IN")
+    private List<InterestedInRelation> interestedInRelations = new ArrayList<>();
 
     public TwitterUser(User user) {
         this.createdAt = user.getCreatedAt();
@@ -55,6 +60,10 @@ public class TwitterUser implements Serializable {
 
     public void addRetweetedToRelation(RetweetedToRelation relation) {
         this.retweetedToRelations.add(relation);
+    }
+
+    public void addInterestedInRelation(InterestedInRelation interestedInRelation) {
+        this.interestedInRelations.add(interestedInRelation);
     }
 
 }

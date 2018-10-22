@@ -1,8 +1,8 @@
 package com.mgr.twitteranalyser.statistics.service;
 
 import com.mgr.twitteranalyser.statistics.model.StatisticsDTO;
-import com.mgr.twitteranalyser.global.model.TwitterUser;
-import com.mgr.twitteranalyser.global.repository.TwitterUserRepository;
+import com.mgr.twitteranalyser.twitteruser.TwitterUser;
+import com.mgr.twitteranalyser.twitteruser.TwitterUserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

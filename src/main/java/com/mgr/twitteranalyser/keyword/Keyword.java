@@ -1,6 +1,5 @@
-package com.mgr.twitteranalyser.global.model;
+package com.mgr.twitteranalyser.keyword;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.neo4j.ogm.annotation.GeneratedValue;
@@ -22,16 +21,11 @@ public class Keyword implements Serializable {
     private Long id;
     private String name;
 
-    @JsonIgnoreProperties("keyword")
     @Relationship(type = "INTERESTED_IN", direction = Relationship.INCOMING)
-    private List<InterestedInRelation> interestedInRelations = new ArrayList<>();
+    private List<Keyword> twitterUsers = new ArrayList<>();
 
     public Keyword(String name) {
         this.name = name;
-    }
-
-    public void addInterestedInRelation(InterestedInRelation interestedInRelation) {
-        this.interestedInRelations.add(interestedInRelation);
     }
 
 }

@@ -2,7 +2,7 @@ package com.mgr.twitteranalyser.statistics;
 
 import com.mgr.twitteranalyser.config.apachespark.ApacheSparkConfigService;
 import com.mgr.twitteranalyser.config.apachespark.TwitterCredentials;
-import com.mgr.twitteranalyser.global.model.KeywordDTO;
+import com.mgr.twitteranalyser.keyword.KeywordDTO;
 import com.mgr.twitteranalyser.statistics.service.ApacheSparkService;
 import com.mgr.twitteranalyser.statistics.service.StatisticsService;
 import lombok.extern.slf4j.Slf4j;

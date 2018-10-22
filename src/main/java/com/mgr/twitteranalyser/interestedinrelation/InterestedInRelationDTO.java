@@ -1,4 +1,4 @@
-package com.mgr.twitteranalyser.global.model;
+package com.mgr.twitteranalyser.interestedinrelation;
 
 import lombok.Getter;
 import lombok.Setter;

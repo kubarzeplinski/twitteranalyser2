@@ -42,7 +42,6 @@ export default class GraphContent extends React.Component {
     renderGraph() {
         this.links = _.cloneDeep(this.props.data.links);
         this.nodes = _.cloneDeep(this.props.data.nodes);
-        // this.computeDistinctNodes(_.cloneDeep(this.links));
         this.createSimulation();
         this.createLinks();
         this.createNodes();
@@ -76,7 +75,7 @@ export default class GraphContent extends React.Component {
         this.node = nodes
             .append("circle")
             .attr("r", 5)
-            .attr("fill", "red");
+            .attr("fill", (node) => node.color);
         this.nodeLabel = nodes
             .append("text")
             .attr("class", "node-label")

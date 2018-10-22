@@ -1,6 +1,6 @@
 package com.mgr.twitteranalyser.graph.model;
 
-import com.mgr.twitteranalyser.global.model.TwitterUser;
+import com.mgr.twitteranalyser.twitteruser.TwitterUser;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

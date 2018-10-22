@@ -1,11 +1,11 @@
 package com.mgr.twitteranalyser.statistics.service;
 
-import com.mgr.twitteranalyser.global.model.InterestedInRelation;
-import com.mgr.twitteranalyser.global.model.Keyword;
-import com.mgr.twitteranalyser.global.model.RetweetedToRelation;
-import com.mgr.twitteranalyser.global.model.TwitterUser;
-import com.mgr.twitteranalyser.global.repository.KeywordRepository;
-import com.mgr.twitteranalyser.global.repository.TwitterUserRepository;
+import com.mgr.twitteranalyser.interestedinrelation.InterestedInRelation;
+import com.mgr.twitteranalyser.keyword.Keyword;
+import com.mgr.twitteranalyser.keyword.KeywordRepository;
+import com.mgr.twitteranalyser.retweetedtorelation.RetweetedToRelation;
+import com.mgr.twitteranalyser.twitteruser.TwitterUser;
+import com.mgr.twitteranalyser.twitteruser.TwitterUserRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.function.VoidFunction;
@@ -33,44 +33,39 @@ public class ApacheSparkService implements Serializable {
         ApacheSparkService.keywordRepository = keywordRepository;
     }
 
-    public void processData(JavaReceiverInputDStream<Status> inputStream, String keywordString) {
-        String finalKeywordString = keywordString.toLowerCase();
-
-        Keyword keyword = keywordRepository.findByName(finalKeywordString);
-        if (keyword == null) {
-            keyword = new Keyword(finalKeywordString);
-            keywordRepository.save(keyword);
-        }
-
+    public void processData(JavaReceiverInputDStream<Status> inputStream, String keywordName) {
+        String finalKeywordName = keywordName.toLowerCase();
+        Keyword keyword = keywordRepository.findByName(finalKeywordName)
+                .orElseGet(() -> {
+                    Keyword k = new Keyword(finalKeywordName);
+                    keywordRepository.save(k);
+                    return k;
+                });
         JavaDStream<Status> filteredDStream = inputStream.filter(status ->
-                StringUtils.containsIgnoreCase(status.getText(), finalKeywordString)
+                StringUtils.containsIgnoreCase(status.getText(), finalKeywordName)
         );
-
-        JavaPairDStream<User, Status> userStatusStream =
-                filteredDStream.mapToPair((status) -> new Tuple2<>(status.getUser(), status));
-
-        Keyword finalKeyword1 = keyword;
-        Keyword finalKeyword2 = keyword;
+        JavaPairDStream<User, Status> userStatusStream = filteredDStream.mapToPair(
+                (status) -> new Tuple2<>(status.getUser(), status)
+        );
         userStatusStream.foreachRDD((VoidFunction<JavaPairRDD<User, Status>>) pairRDD ->
                 pairRDD.foreach((VoidFunction<Tuple2<User, Status>>) t -> {
                     User user = t._1();
                     Status status = t._2();
-
                     TwitterUser twitterUser = twitterUserRepository.findByUserId(user.getId());
                     if (twitterUser == null) {
                         twitterUser = new TwitterUser(user);
                     }
 
                     if (status.getRetweetedStatus() != null) {
-                        prepareRetweetedToRelation(finalKeyword1, twitterUser, status);
+                        prepareRetweetedToRelation(keyword, twitterUser, status);
                     } else {
                         InterestedInRelation interestedInRelation = new InterestedInRelation(
-                                finalKeyword2,
+                                keyword,
                                 twitterUser,
                                 status
                         );
-                        finalKeyword1.addInterestedInRelation(interestedInRelation);
-                        keywordRepository.save(finalKeyword1);
+                        twitterUser.addInterestedInRelation(interestedInRelation);
+                        twitterUserRepository.save(twitterUser);
                     }
                 })
         );
@@ -86,11 +81,11 @@ public class ApacheSparkService implements Serializable {
         retweeter.addRetweetedToRelation(retweetedToRelation);
         twitterUserRepository.save(retweeter);
         if (retweetedStatus.getRetweetedStatus() != null) {
-            prepareRetweetedToRelation(keyword, twitterUser, retweetedStatus);
+            prepareRetweetedToRelation(keyword, retweeter, retweetedStatus);
         }
         InterestedInRelation interestedInRelation = new InterestedInRelation(keyword, twitterUser, status);
-        keyword.addInterestedInRelation(interestedInRelation);
-        keywordRepository.save(keyword);
+        twitterUser.addInterestedInRelation(interestedInRelation);
+        twitterUserRepository.save(twitterUser);
     }
 
 }

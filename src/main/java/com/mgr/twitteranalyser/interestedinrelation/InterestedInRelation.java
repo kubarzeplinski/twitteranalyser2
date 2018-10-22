@@ -1,5 +1,7 @@
-package com.mgr.twitteranalyser.global.model;
+package com.mgr.twitteranalyser.interestedinrelation;
 
+import com.mgr.twitteranalyser.keyword.Keyword;
+import com.mgr.twitteranalyser.twitteruser.TwitterUser;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.neo4j.ogm.annotation.EndNode;

@@ -1,20 +1,21 @@
 package com.mgr.twitteranalyser.graph;
 
-import com.mgr.twitteranalyser.global.model.Keyword;
-import com.mgr.twitteranalyser.global.model.KeywordDTO;
-import com.mgr.twitteranalyser.global.model.RetweetedToRelation;
-import com.mgr.twitteranalyser.global.model.TwitterUser;
-import com.mgr.twitteranalyser.global.repository.KeywordRepository;
-import com.mgr.twitteranalyser.global.repository.TwitterUserRepository;
+import com.mgr.twitteranalyser.keyword.KeywordService;
+import com.mgr.twitteranalyser.twitteruser.TwitterUserService;
+import com.mgr.twitteranalyser.interestedinrelation.InterestedInRelation;
+import com.mgr.twitteranalyser.retweetedtorelation.RetweetedToRelation;
+import com.mgr.twitteranalyser.twitteruser.TwitterUser;
 import com.mgr.twitteranalyser.graph.model.GraphDataDTO;
 import com.mgr.twitteranalyser.graph.model.Link;
 import com.mgr.twitteranalyser.graph.model.Node;
-import com.mgr.twitteranalyser.graph.model.TwitterUserDTO;
+import com.mgr.twitteranalyser.sentiment.Sentiment;
+import com.mgr.twitteranalyser.sentiment.SentimentService;
+import com.mgr.twitteranalyser.utils.NumberUtils;
+import com.mgr.twitteranalyser.utils.TweetUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -25,45 +26,60 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class GraphService {
 
-    private final KeywordRepository keywordRepository;
-    private final TwitterUserRepository twitterUserRepository;
+    private final KeywordService keywordService;
+    private final TwitterUserService twitterUserService;
+    private final SentimentService sentimentService;
 
     GraphDataDTO getData(String keyword) {
-        if (!keywordExists(keyword)) {
-            return null;
-        }
-
+        keywordService.getKeywordOrThrowException(keyword);
         Set<Link> links = new HashSet<>();
         Set<Node> nodes = new HashSet<>();
-
-        Set<TwitterUser> interestedInUsers = getInterestedInUsers(keyword);
-        Set<TwitterUser> retweetedToUsers = getRetweetedToUsers(keyword);
-
-        nodes.addAll(computeNodes(interestedInUsers));
-        nodes.addAll(computeNodes(retweetedToUsers));
-        nodes.add(new Node(keyword, "red"));
-
+        Set<TwitterUser> interestedInUsers = twitterUserService.getInterestedInUsers(keyword);
+        Set<TwitterUser> retweeters = twitterUserService.getRetweeters(keyword);
+        nodes.addAll(computeInterestedInNodes(interestedInUsers));
+        nodes.addAll(computeRetweetersNodes(retweeters));
+        nodes.add(new Node(keyword, Sentiment.NEUTRAL.getColor()));
         links.addAll(computeInterestedInLinks(interestedInUsers, keyword));
-        links.addAll(computeRetweetedToLinks(retweetedToUsers));
-
+        links.addAll(computeRetweetedToLinks(retweeters));
         return new GraphDataDTO(links, nodes);
     }
 
-    private boolean keywordExists(String keyword) {
-        Keyword word = keywordRepository.findByName(keyword);
-        return word != null;
-    }
-
-    private Set<TwitterUser> getInterestedInUsers(String keyword) {
-        return twitterUserRepository
-                .findAllInterestedInByKeyword(keyword)
+    private Set<Node> computeInterestedInNodes(Set<TwitterUser> users) {
+        return users
+                .stream()
+                .map(user -> new Node(user.getScreenName(), getInterestedInNodeColor(user.getInterestedInRelations())))
                 .collect(Collectors.toSet());
     }
 
-    private Set<Node> computeNodes(Set<TwitterUser> users) {
-        return users.stream()
-                .map(user -> new Node(user.getScreenName(), "red"))
+    private String getInterestedInNodeColor(List<InterestedInRelation> interestedInRelations) {
+        List<Integer> sentiments = interestedInRelations
+                .stream()
+                .map(interestedInRelation -> {
+                    String text = interestedInRelation.getText();
+                    return sentimentService.computeSentiment(TweetUtils.cleanTweet(text));
+                })
+                .collect(Collectors.toList());
+        return sentimentService.getSentimentColor(NumberUtils.calculateAverage(sentiments));
+    }
+
+    private Set<Node> computeRetweetersNodes(Set<TwitterUser> retweeters) {
+        return retweeters.stream()
+                .map(retweeter -> new Node(
+                        retweeter.getScreenName(),
+                        getRetweetedToNodeColor(retweeter.getRetweetedToRelations()))
+                )
                 .collect(Collectors.toSet());
+    }
+
+    private String getRetweetedToNodeColor(List<RetweetedToRelation> retweetedToRelations) {
+        List<Integer> sentiments = retweetedToRelations
+                .stream()
+                .map(retweetedToRelation -> {
+                    String text = retweetedToRelation.getText();
+                    return sentimentService.computeSentiment(TweetUtils.cleanTweet(text));
+                })
+                .collect(Collectors.toList());
+        return sentimentService.getSentimentColor(NumberUtils.calculateAverage(sentiments));
     }
 
     private Set<Link> computeInterestedInLinks(Set<TwitterUser> interestedInUsers, String keywordName) {
@@ -73,21 +89,15 @@ public class GraphService {
                 .collect(Collectors.toSet());
     }
 
-    private Set<TwitterUser> getRetweetedToUsers(String keyword) {
-        return twitterUserRepository
-                .findAllRetweetedToByKeyword(keyword)
-                .collect(Collectors.toSet());
-    }
-
-    private Set<Link> computeRetweetedToLinks(Set<TwitterUser> retweetedToUsers) {
+    private Set<Link> computeRetweetedToLinks(Set<TwitterUser> retweeters) {
         Set<Link> links = new HashSet<>();
-        retweetedToUsers
-                .forEach(user -> {
-                            List<RetweetedToRelation> relations = user.getRetweetedToRelations();
+        retweeters
+                .forEach(retweeter -> {
+                            List<RetweetedToRelation> relations = retweeter.getRetweetedToRelations();
                             if (relations != null) {
                                 relations.forEach(retweetedToRelation ->
                                         links.add(new Link(
-                                                        user.getScreenName(),
+                                                        retweeter.getScreenName(),
                                                         retweetedToRelation.getTwitterUser().getScreenName()
                                                 )
                                         )
@@ -96,21 +106,6 @@ public class GraphService {
                         }
                 );
         return links;
-    }
-
-    public List<KeywordDTO> getKeywords() {
-        return keywordRepository.readAllByNameNotNull()
-                .map(KeywordDTO::new)
-                .sorted(Comparator.comparing(KeywordDTO::getName))
-                .collect(Collectors.toList());
-    }
-
-    public TwitterUserDTO getUser(String screenName) {
-        TwitterUser twitterUser = twitterUserRepository.findByScreenName(screenName)
-                .orElseThrow(
-                        () -> new RuntimeException(String.format("User with screen name: %s not found.", screenName))
-                );
-        return new TwitterUserDTO(twitterUser);
     }
 
 }

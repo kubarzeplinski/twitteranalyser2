@@ -1,5 +1,6 @@
-package com.mgr.twitteranalyser.global.model;
+package com.mgr.twitteranalyser.retweetedtorelation;
 
+import com.mgr.twitteranalyser.twitteruser.TwitterUser;
 import lombok.Getter;
 import lombok.Setter;
 import twitter4j.GeoLocation;

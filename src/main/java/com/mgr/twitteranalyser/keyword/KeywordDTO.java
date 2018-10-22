@@ -1,4 +1,4 @@
-package com.mgr.twitteranalyser.global.model;
+package com.mgr.twitteranalyser.keyword;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
