@@ -40,7 +40,33 @@ export default class GraphPage extends React.Component {
                         title="Graph"
                     >
                         <div className={Classes.DIALOG_BODY}>
-                            Some content
+                            <p>
+                                Graph page is a place where you can analyze historical Twitter data from your sessions
+                                from Statistics page.
+                            </p>
+                            <p>
+                                Start analysis with selected keyword from dropdown and press search button.
+                            </p>
+                            <p>
+                                Then you can analyse graph with user nodes and relationships.
+                            </p>
+                            <p>
+                                Relationships contain information about tweets.
+                            </p>
+                            <p>
+                                Color of nodes is determined by user tweets for this keyword and result is calculated
+                                with Stanford Natural Language Processing sentiment analysis.
+                            </p>
+                            <p>
+                                Click on nodes to fetch more information about user.
+                            </p>
+                            <p>
+                                If you want to start analysis for different keyword please select another keyword from
+                                dropdown and click search button.
+                            </p>
+                            <p>
+                                <b>Enjoy Twitter data presented on directed graph!!!</b>
+                            </p>
                         </div>
                     </Dialog>
                     {this.renderUserDialog()}
