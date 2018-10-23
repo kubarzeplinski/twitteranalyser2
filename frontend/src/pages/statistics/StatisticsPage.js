@@ -166,7 +166,7 @@ export default class StatisticsPage extends React.Component {
         }
         let counter = 0;
         return _.map(latest5RetweetedToRelations, (relation) =>
-            <Tag key={counter++} intent={Intent.WARNING}>
+            <Tag key={counter++}>
                 <span>{relation}</span>
             </Tag>
         );
