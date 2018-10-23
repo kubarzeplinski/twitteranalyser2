@@ -28,9 +28,29 @@ export default class Graph extends React.Component {
         return (
             <div>
                 <div className="card-label">
-                    <h5>Number of users</h5>
+                    <h5>Users</h5>
                     <Tag className="bp3-large">
                         <span>{this.props.data.links.length}</span>
+                    </Tag>
+                    <h5>Very Positive Users</h5>
+                    <Tag className="bp3-large" style={{backgroundColor: "green"}}>
+                        <span>1234</span>
+                    </Tag>
+                    <h5>Positive Users</h5>
+                    <Tag className="bp3-large" style={{backgroundColor: "lime"}}>
+                        <span>1234</span>
+                    </Tag>
+                    <h5>Neutral Users</h5>
+                    <Tag className="bp3-large" style={{backgroundColor: "grey"}}>
+                        <span>1234</span>
+                    </Tag>
+                    <h5>Negative Users</h5>
+                    <Tag className="bp3-large" style={{backgroundColor: "orange"}}>
+                        <span>1234</span>
+                    </Tag>
+                    <h5>Very Negative Users</h5>
+                    <Tag className="bp3-large" style={{backgroundColor: "red"}}>
+                        <span>1234</span>
                     </Tag>
                 </div>
                 <GraphNavigation
