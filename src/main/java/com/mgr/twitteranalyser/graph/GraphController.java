@@ -4,7 +4,7 @@ import com.mgr.twitteranalyser.keyword.KeywordService;
 import com.mgr.twitteranalyser.twitteruser.TwitterUserService;
 import com.mgr.twitteranalyser.keyword.KeywordDTO;
 import com.mgr.twitteranalyser.graph.model.GraphDataDTO;
-import com.mgr.twitteranalyser.graph.model.TwitterUserDTO;
+import com.mgr.twitteranalyser.twitteruser.TwitterUserDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

@@ -12,16 +12,14 @@ import twitter4j.Place;
 import twitter4j.Status;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @RelationshipEntity(type = "INTERESTED_IN")
 @NoArgsConstructor
 @Getter
 public class InterestedInRelation implements Serializable {
 
-    @Deprecated
-    private java.util.Date createdAt;
-    private LocalDate createdAtLocalDate;
+    private LocalDateTime createdAt;
     private GeoLocation geoLocation;
     private Long id;
     @EndNode
@@ -33,8 +31,7 @@ public class InterestedInRelation implements Serializable {
     private TwitterUser twitterUser;
 
     public InterestedInRelation(Keyword keyword, TwitterUser twitterUser, Status status) {
-        this.createdAt = status.getCreatedAt();
-        this.createdAtLocalDate = new java.sql.Date(status.getCreatedAt().getTime()).toLocalDate();
+        this.createdAt = new java.sql.Timestamp(status.getCreatedAt().getTime()).toLocalDateTime();
         this.geoLocation = status.getGeoLocation();
         this.keyword = keyword;
         this.location = status.getUser().getLocation();

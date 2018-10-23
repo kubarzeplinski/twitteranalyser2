@@ -1,6 +1,5 @@
 package com.mgr.twitteranalyser.twitteruser;
 
-import com.mgr.twitteranalyser.graph.model.TwitterUserDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,14 +24,36 @@ public class TwitterUserService {
 
     public Set<TwitterUser> getInterestedInUsers(String keyword) {
         return twitterUserRepository
-                .findAllInterestedInByKeyword(keyword)
+                .findAllInterestedIn(keyword)
                 .collect(Collectors.toSet());
     }
 
     public Set<TwitterUser> getRetweeters(String keyword) {
         return twitterUserRepository
-                .findAllRetweetedToByKeyword(keyword)
+                .findAllRetweetedTo(keyword)
                 .collect(Collectors.toSet());
+    }
+
+    public Set<TwitterUserDTO> getLatests5Users(String keyword) {
+        return twitterUserRepository.findLatest5(keyword)
+                .map(TwitterUserDTO::new)
+                .collect(Collectors.toSet());
+
+    }
+
+    public Long countUsers(String keyword) {
+        return twitterUserRepository.getCount(keyword);
+    }
+
+    public Set<String> getTop5UsersLocations(String keyword) {
+        return twitterUserRepository.findTop5Locations(keyword);
+    }
+
+    public Set<TwitterUserDTO> getTop5UsersByFollowers(String keyword) {
+        return twitterUserRepository.findTop5ByFollowers(keyword)
+                .map(TwitterUserDTO::new)
+                .collect(Collectors.toSet());
+
     }
 
 }

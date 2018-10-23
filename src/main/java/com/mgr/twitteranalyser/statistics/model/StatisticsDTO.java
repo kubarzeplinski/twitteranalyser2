@@ -1,20 +1,21 @@
 package com.mgr.twitteranalyser.statistics.model;
 
-import com.mgr.twitteranalyser.twitteruser.TwitterUser;
+import com.mgr.twitteranalyser.twitteruser.TwitterUserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.util.List;
+import java.util.Set;
 
 @Builder
 @AllArgsConstructor
 @Getter
 public class StatisticsDTO {
 
-    private final List<TwitterUser> latest5Users;
+    private final Set<String> latest5InterestedInRelations;
+    private final Set<TwitterUserDTO> latest5Users;
     private final Long numberOfUsers;
-    private final List<String> top5Locations;
-    private final List<TwitterUser> top5UsersByFollowers;
+    private final Set<String> top5Locations;
+    private final Set<TwitterUserDTO> top5UsersByFollowers;
 
 }

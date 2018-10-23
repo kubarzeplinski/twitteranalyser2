@@ -53,8 +53,7 @@ export default class GraphPage extends React.Component {
 
     renderUserDialog() {
         const {isUserDialogOpen, handleUserDialogClose, userData} = this.props;
-        const date = userData.createdAtLocalDate || userData.createdAt;
-        const createdAtDate = moment(date).format("DD/MM/YYYY").valueOf();
+        const createdAtDate = moment(userData.createdAt).format("DD/MM/YYYY").valueOf();
         return (
             <Dialog
                 icon={IconNames.USER}

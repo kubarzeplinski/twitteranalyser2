@@ -71,7 +71,10 @@ public class StatisticsController {
     public void getStatisticsData() {
         if (contextInitialized && apacheSparkStarted) {
             log.info("Sending graph data...");
-            simpMessagingTemplate.convertAndSend("/statistics/statisticsData", statisticsService.getStatistics(keywordName));
+            simpMessagingTemplate.convertAndSend(
+                    "/statistics/statisticsData",
+                    statisticsService.getStatistics(keywordName)
+            );
         }
     }
 

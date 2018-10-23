@@ -21,9 +21,7 @@ import java.util.List;
 @Getter
 public class TwitterUser implements Serializable {
 
-    @Deprecated
-    private java.util.Date createdAt;
-    private LocalDate createdAtLocalDate;
+    private LocalDate createdAt;
     private String description;
     private int favouritesCount;
     private int followersCount;
@@ -45,8 +43,7 @@ public class TwitterUser implements Serializable {
     private List<InterestedInRelation> interestedInRelations = new ArrayList<>();
 
     public TwitterUser(User user) {
-        this.createdAt = user.getCreatedAt();
-        this.createdAtLocalDate = new java.sql.Date(user.getCreatedAt().getTime()).toLocalDate();
+        this.createdAt = new java.sql.Date(user.getCreatedAt().getTime()).toLocalDate();
         this.description = user.getDescription();
         this.favouritesCount = user.getFavouritesCount();
         this.followersCount = user.getFollowersCount();

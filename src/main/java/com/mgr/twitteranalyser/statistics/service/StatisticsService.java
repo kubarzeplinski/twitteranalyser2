@@ -1,32 +1,25 @@
 package com.mgr.twitteranalyser.statistics.service;
 
+import com.mgr.twitteranalyser.interestedinrelation.InterestedInRelationService;
 import com.mgr.twitteranalyser.statistics.model.StatisticsDTO;
-import com.mgr.twitteranalyser.twitteruser.TwitterUser;
-import com.mgr.twitteranalyser.twitteruser.TwitterUserRepository;
+import com.mgr.twitteranalyser.twitteruser.TwitterUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @AllArgsConstructor
 public class StatisticsService {
 
-    private final TwitterUserRepository twitterUserRepository;
+    private final TwitterUserService twitterUserService;
+    private final InterestedInRelationService interestedInRelationService;
 
-    //TODO rewrite to use TwitterUserDTO
     public StatisticsDTO getStatistics(String keyword) {
-        List<TwitterUser> latest5Users = twitterUserRepository.findTop5CreatedByKeyword(keyword);
-        Long numberOfUsers = twitterUserRepository.countByKeyword(keyword);
-        List<String> top5Locations = twitterUserRepository.findDistinctTop5ByKeywordOrderByLocationAsc(keyword);
-        List<TwitterUser> top5UsersByFollowers =
-                twitterUserRepository.findTop5ByKeywordOrderByFollowersCountDesc(keyword);
-
         return StatisticsDTO.builder()
-                .latest5Users(latest5Users)
-                .numberOfUsers(numberOfUsers)
-                .top5Locations(top5Locations)
-                .top5UsersByFollowers(top5UsersByFollowers)
+                .latest5Users(twitterUserService.getLatests5Users(keyword))
+                .numberOfUsers(twitterUserService.countUsers(keyword))
+                .top5Locations(twitterUserService.getTop5UsersLocations(keyword))
+                .top5UsersByFollowers(twitterUserService.getTop5UsersByFollowers(keyword))
+                .latest5InterestedInRelations(interestedInRelationService.getLatest5Tweets(keyword))
                 .build();
     }
 
