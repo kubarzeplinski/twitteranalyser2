@@ -1,5 +1,6 @@
 package com.mgr.twitteranalyser.keyword;
 
+import com.mgr.twitteranalyser.twitteruser.TwitterUser;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.neo4j.ogm.annotation.GeneratedValue;
@@ -22,7 +23,7 @@ public class Keyword implements Serializable {
     private String name;
 
     @Relationship(type = "INTERESTED_IN", direction = Relationship.INCOMING)
-    private List<Keyword> twitterUsers = new ArrayList<>();
+    private List<TwitterUser> twitterUsers = new ArrayList<>();
 
     public Keyword(String name) {
         this.name = name;

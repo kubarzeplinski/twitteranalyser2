@@ -8,7 +8,7 @@ public final class TweetUtils {
 
     public static String cleanTweet(String tweetData) {
         tweetData = tweetData.toLowerCase();
-        tweetData = tweetData.replaceAll("(@[A-Za-z0-9_]+)|([^0-9A-Za-z \\t])|(\\w+:\\/\\/\\S+)", " ");
+        tweetData = tweetData.replaceAll("(@[A-Za-z0-9_]+)|([^0-9A-Za-z \\t])|(\\w+:\\/\\/\\S+)|[RTrt]", " ");
         return tweetData;
     }
 

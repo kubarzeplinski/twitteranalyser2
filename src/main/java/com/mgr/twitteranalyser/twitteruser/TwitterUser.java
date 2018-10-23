@@ -1,6 +1,5 @@
 package com.mgr.twitteranalyser.twitteruser;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mgr.twitteranalyser.interestedinrelation.InterestedInRelation;
 import com.mgr.twitteranalyser.retweetedtorelation.RetweetedToRelation;
 import lombok.Getter;
@@ -38,7 +37,6 @@ public class TwitterUser implements Serializable {
     @Relationship(type = "RETWEETED_TO")
     private List<RetweetedToRelation> retweetedToRelations = new ArrayList<>();
 
-    @JsonIgnoreProperties("twitterUser")
     @Relationship(type = "INTERESTED_IN")
     private List<InterestedInRelation> interestedInRelations = new ArrayList<>();
 
@@ -59,8 +57,8 @@ public class TwitterUser implements Serializable {
         this.retweetedToRelations.add(relation);
     }
 
-    public void addInterestedInRelation(InterestedInRelation interestedInRelation) {
-        this.interestedInRelations.add(interestedInRelation);
+    public void addInterestedInRelation(InterestedInRelation relation) {
+        this.interestedInRelations.add(relation);
     }
 
 }
