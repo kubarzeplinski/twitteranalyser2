@@ -58,6 +58,24 @@ export default class StatisticsPage extends React.Component {
                                 Statistics page is a place where you can analyze twitter live streaming data by every
                                 keyword.
                             </p>
+                            <p>
+                                Start analysis with typing keyword and press start button.
+                            </p>
+                            <p>
+                                Then you can analyse statistics of stream of data from Twitter filtered by your
+                                keyword.
+                            </p>
+                            <p>
+                                You can switch page without pressing stop button. All of the data for your keyword
+                                will be saved.
+                            </p>
+                            <p>
+                                If you want to start analysis for different keyword please press stop button and
+                                then type another keyword and press start.
+                            </p>
+                            <p>
+                                <b>Enjoy Twitter live data stream!!!</b>
+                            </p>
                         </div>
                     </Dialog>
                 </h4>
