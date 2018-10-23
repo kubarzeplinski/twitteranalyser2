@@ -82,6 +82,12 @@ export default class StatisticsPage extends React.Component {
                         {this.prepareTop5UsersByFollowers()}
                     </Card>
                 </div>
+                <div>
+                    <Card elevation={Elevation.TWO} className="large">
+                        <h4>Latest 5 tweets</h4>
+                        {this.prepareLatest5Tweets()}
+                    </Card>
+                </div>
             </div>
         );
     }
@@ -130,6 +136,19 @@ export default class StatisticsPage extends React.Component {
         return _.map(top5UsersByFollowers, (user) =>
             <Tag key={user.userId} className="bp3-large" intent={Intent.WARNING}>
                 <span>{user.screenName}</span>
+            </Tag>
+        );
+    }
+
+    prepareLatest5Tweets() {
+        const {latest5InterestedInRelations} = this.state.data;
+        if (_.isUndefined(latest5InterestedInRelations)) {
+            return;
+        }
+        let counter = 0;
+        return _.map(latest5InterestedInRelations, (relation) =>
+            <Tag key={counter++} className="bp3-large" intent={Intent.PRIMARY}>
+                <span>{relation}</span>
             </Tag>
         );
     }
