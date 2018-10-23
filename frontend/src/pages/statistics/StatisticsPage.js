@@ -153,7 +153,7 @@ export default class StatisticsPage extends React.Component {
         }
         let counter = 0;
         return _.map(latest5InterestedInRelations, (relation) =>
-            <Tag key={counter++} className="bp3-large" intent={Intent.PRIMARY}>
+            <Tag key={counter++} intent={Intent.PRIMARY}>
                 <span>{relation}</span>
             </Tag>
         );
@@ -166,7 +166,7 @@ export default class StatisticsPage extends React.Component {
         }
         let counter = 0;
         return _.map(latest5RetweetedToRelations, (relation) =>
-            <Tag key={counter++} className="bp3-large" intent={Intent.PRIMARY}>
+            <Tag key={counter++} intent={Intent.WARNING}>
                 <span>{relation}</span>
             </Tag>
         );
