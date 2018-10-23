@@ -13,6 +13,7 @@ import java.util.Set;
 public class StatisticsDTO {
 
     private final Set<String> latest5InterestedInRelations;
+    private final Set<String> latest5RetweetedToRelations;
     private final Set<TwitterUserDTO> latest5Users;
     private final Long numberOfUsers;
     private final Set<String> top5Locations;

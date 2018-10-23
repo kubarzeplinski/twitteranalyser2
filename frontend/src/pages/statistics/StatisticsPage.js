@@ -88,6 +88,12 @@ export default class StatisticsPage extends React.Component {
                         {this.prepareLatest5Tweets()}
                     </Card>
                 </div>
+                <div>
+                    <Card elevation={Elevation.TWO} className="large">
+                        <h4>Latest 5 retweets</h4>
+                        {this.prepareLatest5Retweets()}
+                    </Card>
+                </div>
             </div>
         );
     }
@@ -147,6 +153,19 @@ export default class StatisticsPage extends React.Component {
         }
         let counter = 0;
         return _.map(latest5InterestedInRelations, (relation) =>
+            <Tag key={counter++} className="bp3-large" intent={Intent.PRIMARY}>
+                <span>{relation}</span>
+            </Tag>
+        );
+    }
+
+    prepareLatest5Retweets() {
+        const {latest5RetweetedToRelations} = this.state.data;
+        if (_.isUndefined(latest5RetweetedToRelations)) {
+            return;
+        }
+        let counter = 0;
+        return _.map(latest5RetweetedToRelations, (relation) =>
             <Tag key={counter++} className="bp3-large" intent={Intent.PRIMARY}>
                 <span>{relation}</span>
             </Tag>
