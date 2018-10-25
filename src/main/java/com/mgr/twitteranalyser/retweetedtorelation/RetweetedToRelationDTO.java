@@ -6,13 +6,13 @@ import lombok.Setter;
 import twitter4j.GeoLocation;
 import twitter4j.Place;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
 public class RetweetedToRelationDTO {
 
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
     private GeoLocation geoLocation;
     private String location;
     private Place place;

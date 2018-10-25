@@ -11,14 +11,14 @@ import twitter4j.Place;
 import twitter4j.Status;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @RelationshipEntity(type = "RETWEETED_TO")
 @NoArgsConstructor
 @Getter
 public class RetweetedToRelation implements Serializable {
 
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
     private GeoLocation geoLocation;
     private Long id;
     private String location;
@@ -30,7 +30,7 @@ public class RetweetedToRelation implements Serializable {
     private TwitterUser twitterUser;
 
     public RetweetedToRelation(TwitterUser retweeter, TwitterUser twitterUser, Status status) {
-        this.createdAt = new java.sql.Date(status.getCreatedAt().getTime()).toLocalDate();
+        this.createdAt = new java.sql.Timestamp(status.getCreatedAt().getTime()).toLocalDateTime();
         this.geoLocation = status.getGeoLocation();
         this.location = status.getUser().getLocation();
         this.place = status.getPlace();
