@@ -11,5 +11,6 @@ public class Node {
 
     private String name;
     private String color;
+    private int size;
 
 }

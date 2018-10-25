@@ -62,6 +62,9 @@ export default class GraphContent extends React.Component {
     }
 
     createNodes() {
+        this.setMinNodeSize();
+        this.setMaxNodeSize();
+        const scaleRadius = d3.scaleSqrt().domain([this.minNodeSize, this.maxNodeSize]).range([5, 30]);
         this.nodesViewContainer = this.svg
             .append("g")
             .attr("class", "nodes");
@@ -74,7 +77,7 @@ export default class GraphContent extends React.Component {
             .on("click", this.handleNodeClick.bind(this));
         this.node = nodes
             .append("circle")
-            .attr("r", 5)
+            .attr("r", node => scaleRadius(node.size))
             .attr("fill", (node) => node.color);
         this.nodeLabel = nodes
             .append("text")
@@ -82,6 +85,20 @@ export default class GraphContent extends React.Component {
             .attr("x", 12)
             .attr("dy", ".35em")
             .text(d => d.name);
+    }
+
+    setMinNodeSize() {
+        if (_.isEmpty(this.nodes)) {
+            return;
+        }
+        this.minNodeSize = _.minBy(this.nodes, (obj) => obj.size).size;
+    }
+
+    setMaxNodeSize() {
+        if (_.isEmpty(this.nodes)) {
+            return;
+        }
+        this.maxNodeSize = _.maxBy(this.nodes, (obj) => obj.size).size;
     }
 
     createLinks() {

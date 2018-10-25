@@ -39,7 +39,7 @@ public class GraphService {
         Set<TwitterUser> retweeters = twitterUserService.getRetweeters(keyword);
         nodes.addAll(computeInterestedInNodes(interestedInUsers, keyword));
         nodes.addAll(computeRetweetersNodes(retweeters, keyword));
-        nodes.add(new Node(keyword, Sentiment.NEUTRAL.getColor()));
+        nodes.add(new Node(keyword, Sentiment.NEUTRAL.getColor(), 1000));
         links.addAll(computeInterestedInLinks(interestedInUsers, keyword));
         links.addAll(computeRetweetedToLinks(retweeters));
         return new GraphDataDTO(links, nodes);
@@ -49,8 +49,10 @@ public class GraphService {
         return users
                 .stream()
                 .map(user -> new Node(
-                        user.getScreenName(),
-                        getInterestedInNodeColor(user.getInterestedInRelations(), keyword))
+                                user.getScreenName(),
+                                getInterestedInNodeColor(user.getInterestedInRelations(), keyword),
+                                user.getFollowersCount()
+                        )
                 )
                 .collect(Collectors.toSet());
     }
@@ -70,8 +72,10 @@ public class GraphService {
     private Set<Node> computeRetweetersNodes(Set<TwitterUser> retweeters, String keyword) {
         return retweeters.stream()
                 .map(retweeter -> new Node(
-                        retweeter.getScreenName(),
-                        getRetweetedToNodeColor(retweeter.getRetweetedToRelations(), keyword))
+                                retweeter.getScreenName(),
+                                getRetweetedToNodeColor(retweeter.getRetweetedToRelations(), keyword),
+                                retweeter.getFollowersCount()
+                        )
                 )
                 .collect(Collectors.toSet());
     }
