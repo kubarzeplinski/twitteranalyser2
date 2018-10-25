@@ -1,18 +1,19 @@
 package com.mgr.twitteranalyser.graph;
 
-import com.mgr.twitteranalyser.keyword.KeywordService;
-import com.mgr.twitteranalyser.twitteruser.TwitterUserService;
-import com.mgr.twitteranalyser.interestedinrelation.InterestedInRelation;
-import com.mgr.twitteranalyser.retweetedtorelation.RetweetedToRelation;
-import com.mgr.twitteranalyser.twitteruser.TwitterUser;
 import com.mgr.twitteranalyser.graph.model.GraphDataDTO;
 import com.mgr.twitteranalyser.graph.model.Link;
 import com.mgr.twitteranalyser.graph.model.Node;
+import com.mgr.twitteranalyser.interestedinrelation.InterestedInRelation;
+import com.mgr.twitteranalyser.keyword.KeywordService;
+import com.mgr.twitteranalyser.retweetedtorelation.RetweetedToRelation;
 import com.mgr.twitteranalyser.sentiment.Sentiment;
 import com.mgr.twitteranalyser.sentiment.SentimentService;
+import com.mgr.twitteranalyser.twitteruser.TwitterUser;
+import com.mgr.twitteranalyser.twitteruser.TwitterUserService;
 import com.mgr.twitteranalyser.utils.NumberUtils;
 import com.mgr.twitteranalyser.utils.TweetUtils;
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,24 +37,28 @@ public class GraphService {
         Set<Node> nodes = new HashSet<>();
         Set<TwitterUser> interestedInUsers = twitterUserService.getInterestedInUsers(keyword);
         Set<TwitterUser> retweeters = twitterUserService.getRetweeters(keyword);
-        nodes.addAll(computeInterestedInNodes(interestedInUsers));
-        nodes.addAll(computeRetweetersNodes(retweeters));
+        nodes.addAll(computeInterestedInNodes(interestedInUsers, keyword));
+        nodes.addAll(computeRetweetersNodes(retweeters, keyword));
         nodes.add(new Node(keyword, Sentiment.NEUTRAL.getColor()));
         links.addAll(computeInterestedInLinks(interestedInUsers, keyword));
         links.addAll(computeRetweetedToLinks(retweeters));
         return new GraphDataDTO(links, nodes);
     }
 
-    private Set<Node> computeInterestedInNodes(Set<TwitterUser> users) {
+    private Set<Node> computeInterestedInNodes(Set<TwitterUser> users, String keyword) {
         return users
                 .stream()
-                .map(user -> new Node(user.getScreenName(), getInterestedInNodeColor(user.getInterestedInRelations())))
+                .map(user -> new Node(
+                        user.getScreenName(),
+                        getInterestedInNodeColor(user.getInterestedInRelations(), keyword))
+                )
                 .collect(Collectors.toSet());
     }
 
-    private String getInterestedInNodeColor(List<InterestedInRelation> interestedInRelations) {
+    private String getInterestedInNodeColor(List<InterestedInRelation> interestedInRelations, String keyword) {
         List<Integer> sentiments = interestedInRelations
                 .stream()
+                .filter(interestedInRelation -> StringUtils.containsIgnoreCase(interestedInRelation.getText(), keyword))
                 .map(interestedInRelation -> {
                     String text = interestedInRelation.getText();
                     return sentimentService.computeSentiment(TweetUtils.cleanTweet(text));
@@ -62,18 +67,19 @@ public class GraphService {
         return sentimentService.getSentimentColor(NumberUtils.calculateAverage(sentiments));
     }
 
-    private Set<Node> computeRetweetersNodes(Set<TwitterUser> retweeters) {
+    private Set<Node> computeRetweetersNodes(Set<TwitterUser> retweeters, String keyword) {
         return retweeters.stream()
                 .map(retweeter -> new Node(
                         retweeter.getScreenName(),
-                        getRetweetedToNodeColor(retweeter.getRetweetedToRelations()))
+                        getRetweetedToNodeColor(retweeter.getRetweetedToRelations(), keyword))
                 )
                 .collect(Collectors.toSet());
     }
 
-    private String getRetweetedToNodeColor(List<RetweetedToRelation> retweetedToRelations) {
+    private String getRetweetedToNodeColor(List<RetweetedToRelation> retweetedToRelations, String keyword) {
         List<Integer> sentiments = retweetedToRelations
                 .stream()
+                .filter(retweetedToRelation -> StringUtils.containsIgnoreCase(retweetedToRelation.getText(), keyword))
                 .map(retweetedToRelation -> {
                     String text = retweetedToRelation.getText();
                     return sentimentService.computeSentiment(TweetUtils.cleanTweet(text));
