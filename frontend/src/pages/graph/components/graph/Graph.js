@@ -17,7 +17,14 @@ export default class Graph extends React.Component {
             nodes: PropTypes.arrayOf(PropTypes.shape({
                 name: PropTypes.string.isRequired,
                 color: PropTypes.string.isRequired
-            }))
+            })),
+            sentimentStatistics: PropTypes.shape({
+                negativeUsers: PropTypes.number.isRequired,
+                neutralUsers: PropTypes.number.isRequired,
+                positiveUsers: PropTypes.number.isRequired,
+                veryNegativeUsers: PropTypes.number.isRequired,
+                veryPositiveUsers: PropTypes.number.isRequired,
+            })
         }),
         isDataLoading: PropTypes.bool,
         handleNodeClick: PropTypes.func,
@@ -30,27 +37,27 @@ export default class Graph extends React.Component {
                 <div className="card-label">
                     <h5>Users</h5>
                     <Tag className="bp3-large">
-                        <span>{this.props.data.links.length}</span>
+                        <span>{this.props.data.nodes.length >= 1 ? this.props.data.nodes.length - 1 : 0}</span>
                     </Tag>
                     <h5>Very Positive Users</h5>
                     <Tag className="bp3-large" style={{backgroundColor: "green"}}>
-                        <span>1234</span>
+                        <span>{this.props.data.sentimentStatistics.veryPositiveUsers}</span>
                     </Tag>
                     <h5>Positive Users</h5>
                     <Tag className="bp3-large" style={{backgroundColor: "lime"}}>
-                        <span>1234</span>
+                        <span>{this.props.data.sentimentStatistics.positiveUsers}</span>
                     </Tag>
                     <h5>Neutral Users</h5>
                     <Tag className="bp3-large" style={{backgroundColor: "grey"}}>
-                        <span>1234</span>
+                        <span>{this.props.data.sentimentStatistics.neutralUsers}</span>
                     </Tag>
                     <h5>Negative Users</h5>
                     <Tag className="bp3-large" style={{backgroundColor: "orange"}}>
-                        <span>1234</span>
+                        <span>{this.props.data.sentimentStatistics.negativeUsers}</span>
                     </Tag>
                     <h5>Very Negative Users</h5>
                     <Tag className="bp3-large" style={{backgroundColor: "red"}}>
-                        <span>1234</span>
+                        <span>{this.props.data.sentimentStatistics.veryNegativeUsers}</span>
                     </Tag>
                 </div>
                 <GraphNavigation

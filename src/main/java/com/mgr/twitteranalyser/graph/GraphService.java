@@ -3,6 +3,7 @@ package com.mgr.twitteranalyser.graph;
 import com.mgr.twitteranalyser.graph.model.GraphDataDTO;
 import com.mgr.twitteranalyser.graph.model.Link;
 import com.mgr.twitteranalyser.graph.model.Node;
+import com.mgr.twitteranalyser.graph.model.UsersSentimentStatisticsDTO;
 import com.mgr.twitteranalyser.interestedinrelation.InterestedInRelation;
 import com.mgr.twitteranalyser.keyword.KeywordService;
 import com.mgr.twitteranalyser.retweetedtorelation.RetweetedToRelation;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -41,10 +43,11 @@ public class GraphService {
         Set<TwitterUser> retweeters = twitterUserService.getRetweeters(keyword);
         nodes.addAll(computeInterestedInNodes(interestedInUsers, keyword));
         nodes.addAll(computeRetweetersNodes(retweeters, keyword));
+        UsersSentimentStatisticsDTO sentimentStatistics = computeUsersSentimentStatistics(nodes);
         nodes.add(new Node(keyword, Sentiment.NEUTRAL.getColor(), 1000));
         links.addAll(computeInterestedInLinks(interestedInUsers, keyword));
         links.addAll(computeRetweetedToLinks(retweeters));
-        return new GraphDataDTO(links, nodes);
+        return new GraphDataDTO(links, nodes, sentimentStatistics);
     }
 
     private Set<Node> computeInterestedInNodes(Set<TwitterUser> users, String keyword) {
@@ -98,6 +101,23 @@ public class GraphService {
                 })
                 .collect(Collectors.toList());
         return sentimentService.getSentimentColor(NumberUtils.calculateAverage(sentiments));
+    }
+
+    private UsersSentimentStatisticsDTO computeUsersSentimentStatistics(Set<Node> nodes) {
+        Map<String, List<Node>> map = nodes.stream()
+                .collect(Collectors.groupingBy(Node::getColor));
+        List<Node> negativeNodes = map.get(Sentiment.NEGATIVE.getColor());
+        List<Node> neutralNodes = map.get(Sentiment.NEUTRAL.getColor());
+        List<Node> positiveNodes = map.get(Sentiment.POSITIVE.getColor());
+        List<Node> veryNegativeNodes = map.get(Sentiment.VERY_NEGATIVE.getColor());
+        List<Node> veryPositiveNodes = map.get(Sentiment.VERY_POSITIVE.getColor());
+        return UsersSentimentStatisticsDTO.builder()
+                .negativeUsers(negativeNodes != null ? negativeNodes.size() : 0)
+                .neutralUsers(neutralNodes != null ? neutralNodes.size() : 0)
+                .positiveUsers(positiveNodes != null ? positiveNodes.size() : 0)
+                .veryNegativeUsers(veryNegativeNodes != null ? veryNegativeNodes.size() : 0)
+                .veryPositiveUsers(veryPositiveNodes != null ? veryPositiveNodes.size() : 0)
+                .build();
     }
 
     private Set<Link> computeInterestedInLinks(Set<TwitterUser> interestedInUsers, String keywordName) {

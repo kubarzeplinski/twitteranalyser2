@@ -27,7 +27,17 @@ function mapDispatchToProps(dispatch) {
 
 function prepareData(data) {
     if (_.isNil(data)) {
-        return {links: [], nodes: []};
+        return {
+            links: [],
+            nodes: [],
+            sentimentStatistics: {
+                negativeUsers: 0,
+                neutralUsers: 0,
+                positiveUsers: 0,
+                veryNegativeUsers: 0,
+                veryPositiveUsers: 0
+            }
+        };
     }
     return data;
 }

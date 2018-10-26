@@ -11,5 +11,6 @@ public class GraphDataDTO {
 
     private final Set<Link> links;
     private final Set<Node> nodes;
+    private final UsersSentimentStatisticsDTO sentimentStatistics;
 
 }
