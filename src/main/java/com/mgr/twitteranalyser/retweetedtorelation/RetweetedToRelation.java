@@ -21,6 +21,7 @@ public class RetweetedToRelation implements Serializable {
     private LocalDateTime createdAt;
     private GeoLocation geoLocation;
     private Long id;
+    private String language;
     private String location;
     private Place place;
     @StartNode
@@ -32,6 +33,7 @@ public class RetweetedToRelation implements Serializable {
     public RetweetedToRelation(TwitterUser retweeter, TwitterUser twitterUser, Status status) {
         this.createdAt = new java.sql.Timestamp(status.getCreatedAt().getTime()).toLocalDateTime();
         this.geoLocation = status.getGeoLocation();
+        this.language = status.getLang();
         this.location = status.getUser().getLocation();
         this.place = status.getPlace();
         this.text = status.getText();

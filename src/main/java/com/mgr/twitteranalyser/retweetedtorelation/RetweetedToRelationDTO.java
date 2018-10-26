@@ -14,6 +14,7 @@ public class RetweetedToRelationDTO {
 
     private LocalDateTime createdAt;
     private GeoLocation geoLocation;
+    private String language;
     private String location;
     private Place place;
     private TwitterUser retweeter;
@@ -23,6 +24,7 @@ public class RetweetedToRelationDTO {
     public RetweetedToRelationDTO(RetweetedToRelation relation) {
         this.createdAt = relation.getCreatedAt();
         this.geoLocation = relation.getGeoLocation();
+        this.language = relation.getLanguage();
         this.location = relation.getLocation();
         this.place = relation.getPlace();
         this.retweeter = relation.getRetweeter();

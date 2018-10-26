@@ -27,6 +27,8 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class GraphService {
 
+    private static final String ENGLISH_LANGUAGE_ABBREVIATION = "en";
+
     private final KeywordService keywordService;
     private final TwitterUserService twitterUserService;
     private final SentimentService sentimentService;
@@ -60,7 +62,10 @@ public class GraphService {
     private String getInterestedInNodeColor(List<InterestedInRelation> interestedInRelations, String keyword) {
         List<Integer> sentiments = interestedInRelations
                 .stream()
-                .filter(interestedInRelation -> StringUtils.containsIgnoreCase(interestedInRelation.getText(), keyword))
+                .filter(interestedInRelation ->
+                        StringUtils.containsIgnoreCase(interestedInRelation.getText(), keyword) &&
+                                ENGLISH_LANGUAGE_ABBREVIATION.equals(interestedInRelation.getLanguage())
+                )
                 .map(interestedInRelation -> {
                     String text = interestedInRelation.getText();
                     return sentimentService.computeSentiment(TweetUtils.cleanTweet(text));
@@ -83,7 +88,10 @@ public class GraphService {
     private String getRetweetedToNodeColor(List<RetweetedToRelation> retweetedToRelations, String keyword) {
         List<Integer> sentiments = retweetedToRelations
                 .stream()
-                .filter(retweetedToRelation -> StringUtils.containsIgnoreCase(retweetedToRelation.getText(), keyword))
+                .filter(retweetedToRelation ->
+                        StringUtils.containsIgnoreCase(retweetedToRelation.getText(), keyword) &&
+                                ENGLISH_LANGUAGE_ABBREVIATION.equals(retweetedToRelation.getLanguage())
+                )
                 .map(retweetedToRelation -> {
                     String text = retweetedToRelation.getText();
                     return sentimentService.computeSentiment(TweetUtils.cleanTweet(text));

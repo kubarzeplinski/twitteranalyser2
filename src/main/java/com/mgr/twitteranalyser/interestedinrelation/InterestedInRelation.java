@@ -24,6 +24,7 @@ public class InterestedInRelation implements Serializable {
     private Long id;
     @EndNode
     private Keyword keyword;
+    private String language;
     private String location;
     private Place place;
     private String text;
@@ -34,6 +35,7 @@ public class InterestedInRelation implements Serializable {
         this.createdAt = new java.sql.Timestamp(status.getCreatedAt().getTime()).toLocalDateTime();
         this.geoLocation = status.getGeoLocation();
         this.keyword = keyword;
+        this.language = status.getLang();
         this.location = status.getUser().getLocation();
         this.place = status.getPlace();
         this.text = status.getText();

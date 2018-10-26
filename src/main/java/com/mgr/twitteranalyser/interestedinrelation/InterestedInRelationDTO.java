@@ -13,6 +13,7 @@ public class InterestedInRelationDTO {
 
     private LocalDateTime createdAt;
     private GeoLocation geoLocation;
+    private String language;
     private String location;
     private Place place;
     private String text;
@@ -21,6 +22,7 @@ public class InterestedInRelationDTO {
     public InterestedInRelationDTO(InterestedInRelation relation) {
         this.createdAt = relation.getCreatedAt();
         this.geoLocation = relation.getGeoLocation();
+        this.language = relation.getLanguage();
         this.location = relation.getLocation();
         this.place = relation.getPlace();
         this.text = relation.getText();
