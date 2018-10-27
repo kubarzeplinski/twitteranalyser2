@@ -1,7 +1,7 @@
 import Controls from "./components/controls/ControlsContainer";
 import Graph from "./components/graph/GraphContainer";
 import React from "react";
-import {Button, Dialog, Classes} from "@blueprintjs/core";
+import {Button, Classes, Dialog} from "@blueprintjs/core";
 import {IconNames} from "@blueprintjs/icons";
 import PropTypes from "prop-types";
 import moment from "moment";
@@ -10,9 +10,14 @@ export default class GraphPage extends React.Component {
 
     static propTypes = {
         isInfoDialogOpen: PropTypes.bool,
+        isRelationDialogOpen: PropTypes.bool,
+        isUserDialogOpen: PropTypes.bool,
         handleInfoButtonClick: PropTypes.func,
         handleInfoDialogClose: PropTypes.func,
         handleKeywordsFetch: PropTypes.func,
+        handleRelationDialogClose: PropTypes.func,
+        handleUserDialogClose: PropTypes.func,
+        relationData: PropTypes.array,
         userData: PropTypes.object
     };
 
@@ -70,6 +75,7 @@ export default class GraphPage extends React.Component {
                         </div>
                     </Dialog>
                     {this.renderUserDialog()}
+                    {this.renderRelationDialog()}
                 </h4>
                 <Controls/>
                 <Graph/>
@@ -105,6 +111,41 @@ export default class GraphPage extends React.Component {
                     <b>Location:</b> {userData.location}
                     <br/>
                     <b>Time zone:</b> {userData.timeZone}
+                </div>
+            </Dialog>
+        );
+    }
+
+    renderRelationDialog() {
+        const {isRelationDialogOpen, handleRelationDialogClose, relationData} = this.props;
+        const content = _.map(relationData, (relationData) =>
+            <p>
+                <b>Created at:</b> {moment(relationData.createdAt).format("DD/MM/YYYY hh:mm:ss").valueOf()}
+                <br/>
+                <b>Language:</b> {relationData.language}
+                <br/>
+                <b>Keyword:</b> {relationData.keyword}
+                <br/>
+                <b>Sentiment:</b> {relationData.sentiment}
+                <br/>
+                <b>Source:</b> {relationData.source}
+                <br/>
+                <b>Target:</b> {relationData.target}
+                <br/>
+                <b>Text:</b> {relationData.text}
+                <br/>
+                <b>Type:</b> {relationData.type}
+            </p>
+        );
+        return (
+            <Dialog
+                icon={IconNames.FLOWS}
+                isOpen={isRelationDialogOpen}
+                onClose={handleRelationDialogClose}
+                title="RELATIONS"
+            >
+                <div className={Classes.DIALOG_BODY}>
+                    {content}
                 </div>
             </Dialog>
         );

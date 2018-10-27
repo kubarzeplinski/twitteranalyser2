@@ -7,7 +7,9 @@ import lombok.Getter;
 @Getter
 public class Link {
 
+    private final String keyword;
     private final String source;
     private final String target;
+    private final RelationType type;
 
 }

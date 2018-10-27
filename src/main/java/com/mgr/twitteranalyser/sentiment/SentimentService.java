@@ -41,19 +41,19 @@ public class SentimentService {
         );
     }
 
-    public String getSentimentColor(int sentiment) {
+    public Sentiment getSentiment(int sentiment) {
         switch (sentiment) {
             case 0:
-                return Sentiment.VERY_NEGATIVE.getColor();
+                return Sentiment.VERY_NEGATIVE;
             case 1:
-                return Sentiment.NEGATIVE.getColor();
+                return Sentiment.NEGATIVE;
             case 2:
             default:
-                return Sentiment.NEUTRAL.getColor();
+                return Sentiment.NEUTRAL;
             case 3:
-                return Sentiment.POSITIVE.getColor();
+                return Sentiment.POSITIVE;
             case 4:
-                return Sentiment.VERY_POSITIVE.getColor();
+                return Sentiment.VERY_POSITIVE;
         }
     }
 

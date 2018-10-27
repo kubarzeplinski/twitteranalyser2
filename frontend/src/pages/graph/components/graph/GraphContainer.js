@@ -1,7 +1,13 @@
 import {connect} from "react-redux";
 import _ from "lodash";
 import Graph from "./Graph";
-import {handleUserDataFetch, handleUserDialogOpen} from "../../redux/graph-page";
+import {
+    handleRelationDataFetch,
+    handleRelationDataFetched,
+    handleRelationDialogOpen,
+    handleUserDataFetch,
+    handleUserDialogOpen
+} from "../../redux/graph-page";
 
 function mapStateToProps(state) {
     const {data, isDataLoading} = state.graphControls;
@@ -14,13 +20,28 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         handleNodeClick(screenName) {
-            fetch('http://localhost:8080/graph/user/' + screenName, {
+            fetch('http://localhost:8080/graphs/users/' + screenName, {
                 method: 'GET',
                 headers: {'Content-Type': 'application/json'}
             })
                 .then((response) => response.json())
                 .then((response) => dispatch(handleUserDataFetch(response)))
                 .then(() => dispatch(handleUserDialogOpen()));
+        },
+        handleLinkClick(event) {
+            fetch('http://localhost:8080/graphs/relation', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    keyword: event.keyword,
+                    source: event.source.name,
+                    target: event.target.name,
+                    type: event.type
+                })
+            })
+                .then((response) => response.json())
+                .then((response) => dispatch(handleRelationDataFetch(response)))
+                .then(() => dispatch(handleRelationDialogOpen()));
         }
     };
 }

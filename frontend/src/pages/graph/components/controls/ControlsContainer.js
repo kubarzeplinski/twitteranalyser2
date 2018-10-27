@@ -17,7 +17,7 @@ function mapDispatchToProps(dispatch) {
         },
         handleSearchButtonClick(keyword) {
             dispatch(handleSearchButtonClick());
-            fetch('http://localhost:8080/graph/' + keyword, {
+            fetch('http://localhost:8080/graphs/' + keyword, {
                 method: 'GET',
                 headers: {'Content-Type': 'application/json'}
             })

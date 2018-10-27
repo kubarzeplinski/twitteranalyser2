@@ -7,8 +7,6 @@ import * as d3 from "d3";
 export default class GraphContent extends React.Component {
 
     static propTypes = {
-        handleNodeClick: PropTypes.func,
-        height: PropTypes.number,
         data: PropTypes.shape({
             links: PropTypes.arrayOf(PropTypes.shape({
                 source: PropTypes.string.isRequired,
@@ -19,6 +17,9 @@ export default class GraphContent extends React.Component {
                 color: PropTypes.string.isRequired
             }))
         }),
+        handleLinkClick: PropTypes.func,
+        handleNodeClick: PropTypes.func,
+        height: PropTypes.number,
         width: PropTypes.number
     };
 
@@ -108,7 +109,8 @@ export default class GraphContent extends React.Component {
             .selectAll("line")
             .data(this.links)
             .enter().append("line")
-            .attr("stroke-width", 2);
+            .attr("stroke-width", 4)
+            .on("click", this.handleLinkClick.bind(this));
     }
 
     handleTick() {
@@ -142,6 +144,10 @@ export default class GraphContent extends React.Component {
 
     handleNodeClick(event) {
         this.props.handleNodeClick(event.name);
+    }
+
+    handleLinkClick(event) {
+        this.props.handleLinkClick(event);
     }
 
 }

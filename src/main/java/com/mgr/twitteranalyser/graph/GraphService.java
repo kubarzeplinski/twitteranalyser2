@@ -1,12 +1,11 @@
 package com.mgr.twitteranalyser.graph;
 
-import com.mgr.twitteranalyser.graph.model.GraphDataDTO;
-import com.mgr.twitteranalyser.graph.model.Link;
-import com.mgr.twitteranalyser.graph.model.Node;
-import com.mgr.twitteranalyser.graph.model.UsersSentimentStatisticsDTO;
+import com.mgr.twitteranalyser.graph.model.*;
 import com.mgr.twitteranalyser.interestedinrelation.InterestedInRelation;
+import com.mgr.twitteranalyser.interestedinrelation.InterestedInRelationService;
 import com.mgr.twitteranalyser.keyword.KeywordService;
 import com.mgr.twitteranalyser.retweetedtorelation.RetweetedToRelation;
+import com.mgr.twitteranalyser.retweetedtorelation.RetweetedToRelationService;
 import com.mgr.twitteranalyser.sentiment.Sentiment;
 import com.mgr.twitteranalyser.sentiment.SentimentService;
 import com.mgr.twitteranalyser.twitteruser.TwitterUser;
@@ -18,10 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,6 +30,8 @@ public class GraphService {
     private final KeywordService keywordService;
     private final TwitterUserService twitterUserService;
     private final SentimentService sentimentService;
+    private final InterestedInRelationService interestedInRelationService;
+    private final RetweetedToRelationService retweetedToRelationService;
 
     GraphDataDTO getData(String keyword) {
         keywordService.getKeywordOrThrowException(keyword);
@@ -46,7 +44,7 @@ public class GraphService {
         UsersSentimentStatisticsDTO sentimentStatistics = computeUsersSentimentStatistics(nodes);
         nodes.add(new Node(keyword, Sentiment.NEUTRAL.getColor(), 1000));
         links.addAll(computeInterestedInLinks(interestedInUsers, keyword));
-        links.addAll(computeRetweetedToLinks(retweeters));
+        links.addAll(computeRetweetedToLinks(retweeters, keyword));
         return new GraphDataDTO(links, nodes, sentimentStatistics);
     }
 
@@ -74,7 +72,10 @@ public class GraphService {
                     return sentimentService.computeSentiment(TweetUtils.cleanTweet(text));
                 })
                 .collect(Collectors.toList());
-        return sentimentService.getSentimentColor(NumberUtils.calculateAverage(sentiments));
+        if (sentiments.isEmpty()) {
+            return Sentiment.NEUTRAL.getColor();
+        }
+        return sentimentService.getSentiment(NumberUtils.calculateAverage(sentiments)).getColor();
     }
 
     private Set<Node> computeRetweetersNodes(Set<TwitterUser> retweeters, String keyword) {
@@ -100,7 +101,10 @@ public class GraphService {
                     return sentimentService.computeSentiment(TweetUtils.cleanTweet(text));
                 })
                 .collect(Collectors.toList());
-        return sentimentService.getSentimentColor(NumberUtils.calculateAverage(sentiments));
+        if (sentiments.isEmpty()) {
+            return Sentiment.NEUTRAL.getColor();
+        }
+        return sentimentService.getSentiment(NumberUtils.calculateAverage(sentiments)).getColor();
     }
 
     private UsersSentimentStatisticsDTO computeUsersSentimentStatistics(Set<Node> nodes) {
@@ -123,11 +127,16 @@ public class GraphService {
     private Set<Link> computeInterestedInLinks(Set<TwitterUser> interestedInUsers, String keywordName) {
         return interestedInUsers
                 .stream()
-                .map(user -> new Link(user.getScreenName(), keywordName))
+                .map(user -> new Link(
+                        keywordName,
+                        user.getScreenName(),
+                        keywordName,
+                        RelationType.INTERESTED_IN)
+                )
                 .collect(Collectors.toSet());
     }
 
-    private Set<Link> computeRetweetedToLinks(Set<TwitterUser> retweeters) {
+    private Set<Link> computeRetweetedToLinks(Set<TwitterUser> retweeters, String keyword) {
         Set<Link> links = new HashSet<>();
         retweeters
                 .forEach(retweeter -> {
@@ -135,8 +144,10 @@ public class GraphService {
                             if (relations != null) {
                                 relations.forEach(retweetedToRelation ->
                                         links.add(new Link(
+                                                        keyword,
                                                         retweeter.getScreenName(),
-                                                        retweetedToRelation.getTwitterUser().getScreenName()
+                                                        retweetedToRelation.getTwitterUser().getScreenName(),
+                                                        RelationType.RETWEETED_TO
                                                 )
                                         )
                                 );
@@ -144,6 +155,36 @@ public class GraphService {
                         }
                 );
         return links;
+    }
+
+    public List<RelationDataDTO> getRelationData(LinkDataDTO dto) {
+        List<String> results = Collections.emptyList();
+        if (dto.getType() == RelationType.INTERESTED_IN) {
+            results = interestedInRelationService.getRelations(dto.getKeyword(), dto.getSource());
+        } else if (dto.getType() == RelationType.RETWEETED_TO) {
+            results = retweetedToRelationService.getRelations(dto.getKeyword(), dto.getTarget(), dto.getSource());
+        }
+        return results.stream()
+                .map(result -> prepareRelationData(dto, result))
+                .collect(Collectors.toList());
+    }
+
+    private RelationDataDTO prepareRelationData(LinkDataDTO dto, String result) {
+        String[] results = result.split("!#!#!RELATION!#!#!");
+        String text = results[2];
+        Sentiment sentiment = ENGLISH_LANGUAGE_ABBREVIATION.equals(results[1]) ?
+                sentimentService.getSentiment(sentimentService.computeSentiment(TweetUtils.cleanTweet(text))) :
+                Sentiment.NEUTRAL;
+        return RelationDataDTO.builder()
+                .createdAt(results[0])
+                .keyword(dto.getKeyword())
+                .language(results[1])
+                .sentiment(sentiment)
+                .source(dto.getSource())
+                .target(dto.getTarget())
+                .text(text)
+                .type(dto.getType())
+                .build();
     }
 
 }

@@ -1,20 +1,19 @@
 package com.mgr.twitteranalyser.graph;
 
-import com.mgr.twitteranalyser.keyword.KeywordService;
-import com.mgr.twitteranalyser.twitteruser.TwitterUserService;
-import com.mgr.twitteranalyser.keyword.KeywordDTO;
 import com.mgr.twitteranalyser.graph.model.GraphDataDTO;
+import com.mgr.twitteranalyser.graph.model.LinkDataDTO;
+import com.mgr.twitteranalyser.graph.model.RelationDataDTO;
+import com.mgr.twitteranalyser.keyword.KeywordDTO;
+import com.mgr.twitteranalyser.keyword.KeywordService;
 import com.mgr.twitteranalyser.twitteruser.TwitterUserDTO;
+import com.mgr.twitteranalyser.twitteruser.TwitterUserService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/graph")
+@RequestMapping("/graphs")
 @AllArgsConstructor
 public class GraphController {
 
@@ -32,9 +31,14 @@ public class GraphController {
         return keywordService.getKeywords();
     }
 
-    @GetMapping("/user/{screenName}")
+    @GetMapping("/users/{screenName}")
     public TwitterUserDTO getUser(@PathVariable String screenName) {
         return twitterUserService.getUser(screenName);
+    }
+
+    @PostMapping("/relation")
+    public List<RelationDataDTO> getRelationData(@RequestBody LinkDataDTO dto) {
+        return graphService.getRelationData(dto);
     }
 
 }
