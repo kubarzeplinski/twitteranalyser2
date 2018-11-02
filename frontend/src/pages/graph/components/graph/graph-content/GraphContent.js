@@ -41,8 +41,8 @@ export default class GraphContent extends React.Component {
     }
 
     renderGraph() {
-        this.links = _.cloneDeep(this.props.data.links);
-        this.nodes = _.cloneDeep(this.props.data.nodes);
+        this.linksData = _.cloneDeep(this.props.data.links);
+        this.nodesData = _.cloneDeep(this.props.data.nodes);
         this.createSimulation();
         this.createLinks();
         this.createNodes();
@@ -57,10 +57,10 @@ export default class GraphContent extends React.Component {
 
     createSimulation() {
         this.simulation = d3.forceSimulation()
-            .nodes(this.nodes)
+            .nodes(this.nodesData)
             .force("charge", d3.forceManyBody().strength(-200))
             .force("center", d3.forceCenter(this.props.width / 2, this.props.height / 2))
-            .force("links", d3.forceLink(this.links).id(d => d.name));
+            .force("links", d3.forceLink(this.linksData).id(d => d.name));
     }
 
     createNodes() {
@@ -72,16 +72,21 @@ export default class GraphContent extends React.Component {
             .attr("class", "nodes");
         const nodes = this.nodesViewContainer
             .selectAll(".node")
-            .data(this.nodes)
+            .data(this.nodesData)
             .enter()
             .append("g")
             .attr("class", "node")
             .on("click", this.handleNodeClick.bind(this));
-        this.node = nodes
+        this.nodes = nodes
             .append("circle")
             .attr("r", node => scaleRadius(node.size))
-            .attr("fill", (node) => node.color);
-        this.nodeLabel = nodes
+            .attr("fill", (node) => node.color)
+            .call(
+                d3
+                    .drag()
+                    .on("drag", this.handleDrag.bind(this))
+            );
+        this.nodesLabels = nodes
             .append("text")
             .attr("class", "node-label")
             .attr("x", 12)
@@ -90,25 +95,25 @@ export default class GraphContent extends React.Component {
     }
 
     setMinNodeSize() {
-        if (_.isEmpty(this.nodes)) {
+        if (_.isEmpty(this.nodesData)) {
             return;
         }
-        this.minNodeSize = _.minBy(this.nodes, (obj) => obj.size).size;
+        this.minNodeSize = _.minBy(this.nodesData, (obj) => obj.size).size;
     }
 
     setMaxNodeSize() {
-        if (_.isEmpty(this.nodes)) {
+        if (_.isEmpty(this.nodesData)) {
             return;
         }
-        this.maxNodeSize = _.maxBy(this.nodes, (obj) => obj.size).size;
+        this.maxNodeSize = _.maxBy(this.nodesData, (obj) => obj.size).size;
     }
 
     createLinks() {
         this.linksViewContainer = this.svg.append("g");
-        this.link = this.linksViewContainer
+        this.links = this.linksViewContainer
             .attr("class", "links")
             .selectAll("line")
-            .data(this.links)
+            .data(this.linksData)
             .enter().append("line")
             .attr("stroke-width", 4)
             .attr("marker-end", "url(#end)")
@@ -116,19 +121,28 @@ export default class GraphContent extends React.Component {
     }
 
     handleTick() {
-        this.node
+        this.nodes
             .attr("cx", (d) => d.x)
             .attr("cy", (d) => d.y);
 
-        this.nodeLabel
+        this.nodesLabels
             .attr("x", (d) => d.x)
             .attr("dy", (d) => d.y);
 
-        this.link
+        this.links
             .attr("x1", (d) => d.source.x)
             .attr("y1", (d) => d.source.y)
             .attr("x2", (d) => d.target.x)
             .attr("y2", (d) => d.target.y);
+    }
+
+    handleDrag(d) {
+        d.x = d3.event.x;
+        d.y = d3.event.y;
+        this.nodes.filter(node => node.name === d.name).attr("cx", (d) => d.x).attr("cy", (d) => d.y);
+        this.nodesLabels.filter(nodeLabel => nodeLabel.name === d.name).attr("x", (d) => d.x).attr("dy", (d) => d.y);
+        this.links.filter(link => link.source.name === d.name).attr("x1", d.x).attr("y1", d.y);
+        this.links.filter(link => link.target.name === d.name).attr("x2", d.x).attr("y2", d.y);
     }
 
     buildArrow() {
