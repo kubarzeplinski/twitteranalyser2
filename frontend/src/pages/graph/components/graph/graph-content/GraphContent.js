@@ -48,6 +48,7 @@ export default class GraphContent extends React.Component {
         this.createNodes();
         this.simulation.on("tick", this.handleTick.bind(this));
         this.initZoom();
+        this.buildArrow();
     }
 
     get svg() {
@@ -110,6 +111,7 @@ export default class GraphContent extends React.Component {
             .data(this.links)
             .enter().append("line")
             .attr("stroke-width", 4)
+            .attr("marker-end", "url(#end)")
             .on("click", this.handleLinkClick.bind(this));
     }
 
@@ -127,6 +129,22 @@ export default class GraphContent extends React.Component {
             .attr("y1", (d) => d.source.y)
             .attr("x2", (d) => d.target.x)
             .attr("y2", (d) => d.target.y);
+    }
+
+    buildArrow() {
+        this.svg.append("svg:defs")
+            .selectAll("marker")
+            .data(["end"])
+            .enter().append("svg:marker")
+            .attr("id", String)
+            .attr("viewBox", "0 -5 10 10")
+            .attr("refX", 15)
+            .attr("refY", 0)
+            .attr("markerWidth", 4)
+            .attr("markerHeight", 3)
+            .attr("orient", "auto")
+            .append("svg:path")
+            .attr("d", "M0,-5L10,0L0,5");
     }
 
     initZoom() {
