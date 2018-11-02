@@ -142,7 +142,7 @@ export default class GraphPage extends React.Component {
                 icon={IconNames.FLOWS}
                 isOpen={isRelationDialogOpen}
                 onClose={handleRelationDialogClose}
-                title="RELATIONS"
+                title="RELATIONSHIP"
             >
                 <div className={Classes.DIALOG_BODY}>
                     {content}
