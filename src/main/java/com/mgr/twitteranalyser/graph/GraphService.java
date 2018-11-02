@@ -20,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.mgr.twitteranalyser.utils.NumberUtils.calculatePercentage;
+
 @Service
 @Transactional
 @AllArgsConstructor
@@ -61,6 +63,9 @@ public class GraphService {
     }
 
     private String getInterestedInNodeColor(List<InterestedInRelation> interestedInRelations, String keyword) {
+        if (!allEnglishInterestedInRelations(interestedInRelations, keyword)) {
+            return Sentiment.UNKNOWN.getColor();
+        }
         List<Integer> sentiments = interestedInRelations
                 .stream()
                 .filter(interestedInRelation ->
@@ -78,6 +83,13 @@ public class GraphService {
         return sentimentService.getSentiment(NumberUtils.calculateAverage(sentiments)).getColor();
     }
 
+    private boolean allEnglishInterestedInRelations(List<InterestedInRelation> interestedInRelations, String keyword) {
+        return interestedInRelations
+                .stream()
+                .filter(interestedInRelation -> StringUtils.containsIgnoreCase(interestedInRelation.getText(), keyword))
+                .allMatch(interestedInRelation -> ENGLISH_LANGUAGE_ABBREVIATION.equals(interestedInRelation.getLanguage()));
+    }
+
     private Set<Node> computeRetweetersNodes(Set<TwitterUser> retweeters, String keyword) {
         return retweeters.stream()
                 .map(retweeter -> new Node(
@@ -90,12 +102,12 @@ public class GraphService {
     }
 
     private String getRetweetedToNodeColor(List<RetweetedToRelation> retweetedToRelations, String keyword) {
+        if (!allEnglishRetweetedToRelations(retweetedToRelations, keyword)) {
+            return Sentiment.UNKNOWN.getColor();
+        }
         List<Integer> sentiments = retweetedToRelations
                 .stream()
-                .filter(retweetedToRelation ->
-                        StringUtils.containsIgnoreCase(retweetedToRelation.getText(), keyword) &&
-                                ENGLISH_LANGUAGE_ABBREVIATION.equals(retweetedToRelation.getLanguage())
-                )
+                .filter(retweetedToRelation -> StringUtils.containsIgnoreCase(retweetedToRelation.getText(), keyword))
                 .map(retweetedToRelation -> {
                     String text = retweetedToRelation.getText();
                     return sentimentService.computeSentiment(TweetUtils.cleanTweet(text));
@@ -107,6 +119,13 @@ public class GraphService {
         return sentimentService.getSentiment(NumberUtils.calculateAverage(sentiments)).getColor();
     }
 
+    private boolean allEnglishRetweetedToRelations(List<RetweetedToRelation> retweetedToRelations, String keyword) {
+        return retweetedToRelations
+                .stream()
+                .filter(retweetedToRelation -> StringUtils.containsIgnoreCase(retweetedToRelation.getText(), keyword))
+                .allMatch(retweetedToRelation -> ENGLISH_LANGUAGE_ABBREVIATION.equals(retweetedToRelation.getLanguage()));
+    }
+
     private UsersSentimentStatisticsDTO computeUsersSentimentStatistics(Set<Node> nodes) {
         Map<String, List<Node>> map = nodes.stream()
                 .collect(Collectors.groupingBy(Node::getColor));
@@ -115,12 +134,21 @@ public class GraphService {
         List<Node> positiveNodes = map.get(Sentiment.POSITIVE.getColor());
         List<Node> veryNegativeNodes = map.get(Sentiment.VERY_NEGATIVE.getColor());
         List<Node> veryPositiveNodes = map.get(Sentiment.VERY_POSITIVE.getColor());
+        List<Node> unknownNodes = map.get(Sentiment.UNKNOWN.getColor());
+        int nodesSize = nodes.size();
         return UsersSentimentStatisticsDTO.builder()
                 .negativeUsers(negativeNodes != null ? negativeNodes.size() : 0)
+                .negativeUsersPercentage(negativeNodes != null ? calculatePercentage(negativeNodes.size(), nodesSize) : 0)
                 .neutralUsers(neutralNodes != null ? neutralNodes.size() : 0)
+                .neutralUsersPercentage(neutralNodes != null ? calculatePercentage(neutralNodes.size(), nodesSize) : 0)
                 .positiveUsers(positiveNodes != null ? positiveNodes.size() : 0)
+                .positiveUsersPercentage(positiveNodes != null ? calculatePercentage(positiveNodes.size(), nodesSize) : 0)
+                .unknownUsers(unknownNodes != null ? unknownNodes.size() : 0)
+                .unknownUsersPercentage(unknownNodes != null ? calculatePercentage(unknownNodes.size(), nodesSize) : 0)
                 .veryNegativeUsers(veryNegativeNodes != null ? veryNegativeNodes.size() : 0)
+                .veryNegativeUsersPercentage(veryNegativeNodes != null ? calculatePercentage(veryNegativeNodes.size(), nodesSize) : 0)
                 .veryPositiveUsers(veryPositiveNodes != null ? veryPositiveNodes.size() : 0)
+                .veryPositiveUsersPercentage(veryPositiveNodes != null ? calculatePercentage(veryPositiveNodes.size(), nodesSize) : 0)
                 .build();
     }
 
@@ -174,7 +202,7 @@ public class GraphService {
         String text = results[2];
         Sentiment sentiment = ENGLISH_LANGUAGE_ABBREVIATION.equals(results[1]) ?
                 sentimentService.getSentiment(sentimentService.computeSentiment(TweetUtils.cleanTweet(text))) :
-                Sentiment.NEUTRAL;
+                Sentiment.UNKNOWN;
         return RelationDataDTO.builder()
                 .createdAt(results[0])
                 .keyword(dto.getKeyword())

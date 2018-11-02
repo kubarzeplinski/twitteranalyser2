@@ -29,7 +29,7 @@ public class TwitterUser implements Serializable {
     @GeneratedValue
     private Long id;
     private long userId;
-    private String lang;
+    private String language;
     private String location;
     private String screenName;
     private String timeZone;
@@ -47,7 +47,7 @@ public class TwitterUser implements Serializable {
         this.followersCount = user.getFollowersCount();
         this.friendsCount = user.getFollowersCount();
         this.userId = user.getId();
-        this.lang = user.getLang();
+        this.language = user.getLang();
         this.location = user.getLocation();
         this.screenName = user.getScreenName();
         this.timeZone = user.getTimeZone();

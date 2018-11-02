@@ -15,7 +15,7 @@ public class TwitterUserDTO {
     private int followersCount;
     private int friendsCount;
     private long userId;
-    private String lang;
+    private String language;
     private String location;
     private String screenName;
     private String timeZone;
@@ -27,7 +27,7 @@ public class TwitterUserDTO {
         this.followersCount = user.getFollowersCount();
         this.friendsCount = user.getFriendsCount();
         this.userId = user.getUserId();
-        this.lang = user.getLang();
+        this.language = user.getLanguage();
         this.location = user.getLocation();
         this.screenName = user.getScreenName();
         this.timeZone = user.getTimeZone();

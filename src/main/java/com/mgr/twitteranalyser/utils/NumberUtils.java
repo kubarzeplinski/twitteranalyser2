@@ -17,4 +17,8 @@ public class NumberUtils {
         );
     }
 
+    public static double calculatePercentage(int value, int sum) {
+        return Math.round((double) value / sum * 100.0);
+    }
+
 }

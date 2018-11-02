@@ -20,10 +20,17 @@ export default class Graph extends React.Component {
             })),
             sentimentStatistics: PropTypes.shape({
                 negativeUsers: PropTypes.number.isRequired,
+                negativeUsersPercentage: PropTypes.number.isRequired,
                 neutralUsers: PropTypes.number.isRequired,
+                neutralUsersPercentage: PropTypes.number.isRequired,
                 positiveUsers: PropTypes.number.isRequired,
+                positiveUsersPercentage: PropTypes.number.isRequired,
+                unknownUsers: PropTypes.number.isRequired,
+                unknownUsersPercentage: PropTypes.number.isRequired,
                 veryNegativeUsers: PropTypes.number.isRequired,
+                veryNegativeUsersPercentage: PropTypes.number.isRequired,
                 veryPositiveUsers: PropTypes.number.isRequired,
+                veryPositiveUsersPercentage: PropTypes.number.isRequired,
             })
         }),
         handleLinkClick: PropTypes.func,
@@ -43,23 +50,27 @@ export default class Graph extends React.Component {
                     </Tag>
                     <h5>Very Positive Users</h5>
                     <Tag className="bp3-large" style={{backgroundColor: "green"}}>
-                        <span>{sentimentStatistics.veryPositiveUsers}</span>
+                        <span>{sentimentStatistics.veryPositiveUsers} ({sentimentStatistics.veryPositiveUsersPercentage}%)</span>
                     </Tag>
                     <h5>Positive Users</h5>
                     <Tag className="bp3-large" style={{backgroundColor: "lime"}}>
-                        <span>{sentimentStatistics.positiveUsers}</span>
+                        <span>{sentimentStatistics.positiveUsers} ({sentimentStatistics.positiveUsersPercentage}%)</span>
                     </Tag>
                     <h5>Neutral Users</h5>
                     <Tag className="bp3-large" style={{backgroundColor: "grey"}}>
-                        <span>{sentimentStatistics.neutralUsers}</span>
+                        <span>{sentimentStatistics.neutralUsers} ({sentimentStatistics.neutralUsersPercentage}%)</span>
                     </Tag>
                     <h5>Negative Users</h5>
                     <Tag className="bp3-large" style={{backgroundColor: "orange"}}>
-                        <span>{sentimentStatistics.negativeUsers}</span>
+                        <span>{sentimentStatistics.negativeUsers} ({sentimentStatistics.negativeUsersPercentage}%)</span>
                     </Tag>
                     <h5>Very Negative Users</h5>
                     <Tag className="bp3-large" style={{backgroundColor: "red"}}>
-                        <span>{sentimentStatistics.veryNegativeUsers}</span>
+                        <span>{sentimentStatistics.veryNegativeUsers} ({sentimentStatistics.veryNegativeUsersPercentage}%)</span>
+                    </Tag>
+                    <h5>Unknown Users</h5>
+                    <Tag className="bp3-large" style={{backgroundColor: "white", color: "black"}}>
+                        <span>{sentimentStatistics.unknownUsers} ({sentimentStatistics.unknownUsersPercentage}%)</span>
                     </Tag>
                 </div>
                 <GraphNavigation

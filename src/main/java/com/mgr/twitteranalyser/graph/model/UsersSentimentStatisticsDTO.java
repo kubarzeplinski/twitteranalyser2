@@ -10,9 +10,16 @@ import lombok.Setter;
 public class UsersSentimentStatisticsDTO {
 
     private int negativeUsers;
+    private double negativeUsersPercentage;
     private int neutralUsers;
+    private double neutralUsersPercentage;
     private int positiveUsers;
+    private double positiveUsersPercentage;
+    private int unknownUsers;
+    private double unknownUsersPercentage;
     private int veryNegativeUsers;
+    private double veryNegativeUsersPercentage;
     private int veryPositiveUsers;
+    private double veryPositiveUsersPercentage;
 
 }

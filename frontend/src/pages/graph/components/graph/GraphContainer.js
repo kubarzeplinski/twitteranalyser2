@@ -3,7 +3,6 @@ import _ from "lodash";
 import Graph from "./Graph";
 import {
     handleRelationDataFetch,
-    handleRelationDataFetched,
     handleRelationDialogOpen,
     handleUserDataFetch,
     handleUserDialogOpen
@@ -53,10 +52,17 @@ function prepareData(data) {
             nodes: [],
             sentimentStatistics: {
                 negativeUsers: 0,
+                negativeUsersStatistics: 0,
                 neutralUsers: 0,
+                neutralUsersStatistics: 0,
                 positiveUsers: 0,
+                positiveUsersStatistics: 0,
+                unknownUsers: 0,
+                unknownUsersStatistics: 0,
                 veryNegativeUsers: 0,
-                veryPositiveUsers: 0
+                veryNegativeUsersStatistics: 0,
+                veryPositiveUsers: 0,
+                veryPositiveUsersStatistics: 0
             }
         };
     }

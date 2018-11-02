@@ -11,6 +11,7 @@ public enum Sentiment {
     NEGATIVE("negative", "#FFA500"),
     NEUTRAL("neutral", "#808080"),
     POSITIVE("positive", "#00FF00"),
+    UNKNOWN("unknown", "#FFFFFF"),
     VERY_POSITIVE("very positive", "#008000");
 
     private String name;
